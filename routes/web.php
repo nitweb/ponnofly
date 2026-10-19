@@ -3,6 +3,7 @@
 use App\Http\Controllers\Frontend\AccountController;
 use App\Http\Controllers\Frontend\AccountOrderController;
 use App\Http\Controllers\Frontend\AddressController;
+use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
@@ -42,6 +43,8 @@ Route::prefix('cart')->as('cart.')->middleware('throttle:120,1')->group(function
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
 Route::get('/order/success/{number}', [CheckoutController::class, 'success'])->where('number', 'NM-\d+')->name('checkout.success');
+
+Route::get('/about', [AboutController::class, 'show'])->name('about.show');
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');

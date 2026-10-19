@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -75,6 +76,9 @@ Route::middleware('auth:admin')
         // Coupon Routes
         Route::patch('coupons/{coupon}/toggle', [CouponController::class, 'toggle'])->name('coupons.toggle');
         Route::resource('coupons', CouponController::class)->except('show');
+        // About Page Routes
+        Route::get('about', [AboutController::class, 'edit'])->name('about.edit');
+        Route::put('about', [AboutController::class, 'update'])->name('about.update');
         // FAQ Routes
         Route::patch('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
         Route::patch('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');

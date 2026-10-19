@@ -94,6 +94,13 @@
             <span>Banners & Sliders</span>
         </a>
 
+        <a href="{{ route('admin.about.edit') }}" class="nav-link {{ request()->routeIs('admin.about.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-file" />
+            </svg>
+            <span>About</span>
+        </a>
+
         <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-help" />
