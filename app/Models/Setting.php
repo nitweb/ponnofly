@@ -31,7 +31,7 @@ class Setting extends Model
      */
     public static function textKeys(): array
     {
-        $keys = ['store_name', 'tagline', 'currency', 'timezone', 'announcement', 'support_email', 'careers_email', 'phone', 'opening_hours', 'address', 'facebook', 'instagram', 'youtube', 'tiktok', 'free_delivery_above', 'min_order', 'chat_call', 'chat_whatsapp', 'chat_messenger', 'meta_title', 'meta_description', 'canonical_domain', 'ga_id', 'pixel_id', 'gsc_code', 'color_primary', 'color_accent', 'color_text', 'color_background', 'font_heading', 'font_body'];
+        $keys = ['store_name', 'tagline', 'currency', 'timezone', 'announcement', 'support_email', 'phone', 'opening_hours', 'address', 'facebook', 'instagram', 'youtube', 'tiktok', 'free_delivery_above', 'min_order', 'chat_call', 'chat_whatsapp', 'chat_messenger', 'meta_title', 'meta_description', 'canonical_domain', 'ga_id', 'pixel_id', 'gsc_code', 'color_primary', 'color_accent', 'color_text', 'color_background', 'font_heading', 'font_body'];
 
         foreach (array_keys(self::ZONES) as $zone) {
             $keys[] = "{$zone}_charge";
@@ -95,7 +95,6 @@ class Setting extends Model
             'show_out_of_stock' => '1',
 
             'support_email' => 'hello@nebulamart.com',
-            'careers_email' => 'careers@nebulamart.com',
             'phone' => '01711-927829',
             'opening_hours' => 'Sat–Thu · 10:00 AM – 8:00 PM',
             'address' => '4th floor, Razia Plaza, 184, Senpara Parbata, Dhaka 1216',

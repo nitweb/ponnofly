@@ -61,7 +61,7 @@
                     <li><a href="shipping.html" class="hover:text-white">Shipping info</a></li>
                     <li><a href="returns.html" class="hover:text-white">Returns &amp; refunds</a></li>
                     <li><a href="faq.html" class="hover:text-white">FAQ</a></li>
-                    <li><a href="contact.html" class="hover:text-white">Contact us</a></li>
+                    <li><a href="{{ route('contact.show') }}" class="hover:text-white">Contact us</a></li>
                 </ul>
             </nav>
 
@@ -69,7 +69,6 @@
                 <h3 class="font-display font-extrabold text-lg text-accent mb-4">Company</h3>
                 <ul class="grid gap-2.5 text-white/75">
                     <li><a href="about.html" class="hover:text-white">About us</a></li>
-                    <li><a href="careers.html" class="hover:text-white">Careers</a></li>
                     <li><a href="privacy.html" class="hover:text-white">Privacy policy</a></li>
                     <li><a href="terms.html" class="hover:text-white">Terms of service</a></li>
                 </ul>

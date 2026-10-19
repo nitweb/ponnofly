@@ -94,13 +94,6 @@
             <span>Banners & Sliders</span>
         </a>
 
-        <a href="pages.html" class="nav-link">
-            <svg class="ic ">
-                <use href="#i-file" />
-            </svg>
-            <span>Pages</span>
-        </a>
-
         <a href="faqs.html" class="nav-link">
             <svg class="ic ">
                 <use href="#i-help" />
@@ -108,12 +101,14 @@
             <span>FAQs</span>
         </a>
 
-        <a href="messages.html" class="nav-link">
+        <a href="{{ route('admin.messages.index') }}" class="nav-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-mail" />
             </svg>
             <span>Messages</span>
-            <span class="nav-badge">5</span>
+            @if (($unreadMessages = \App\Models\ContactMessage::unread()->count()) > 0)
+                <span class="nav-badge">{{ $unreadMessages }}</span>
+            @endif
         </a>
 
         <p class="nav-label">Insights</p>

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\FlashDealController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
@@ -73,6 +74,12 @@ Route::middleware('auth:admin')
         // Coupon Routes
         Route::patch('coupons/{coupon}/toggle', [CouponController::class, 'toggle'])->name('coupons.toggle');
         Route::resource('coupons', CouponController::class)->except('show');
+        // Message Routes
+        Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+        Route::patch('messages/read-all', [MessageController::class, 'readAll'])->name('messages.read-all');
+        Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+        Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
+        Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
         // Customer Routes
         Route::get('customers', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
         // Order Routes

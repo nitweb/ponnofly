@@ -26,7 +26,6 @@ class SettingRequest extends FormRequest
             'announcement' => ['nullable', 'string', 'max:500'],
 
             'support_email' => ['nullable', 'email', 'max:120'],
-            'careers_email' => ['nullable', 'email', 'max:120'],
             'phone' => ['nullable', 'string', 'max:40'],
             'opening_hours' => ['nullable', 'string', 'max:120'],
             'address' => ['nullable', 'string', 'max:255'],

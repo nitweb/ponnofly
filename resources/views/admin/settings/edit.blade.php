@@ -161,10 +161,6 @@
                                 <div class="input-group"><svg class="ic"><use href="#i-mail" /></svg><input class="input" id="support_email" name="support_email" type="email" value="{{ $value('support_email') }}"></div>
                             </div>
                             <div>
-                                <label class="lbl" for="careers_email">Careers email</label>
-                                <div class="input-group"><svg class="ic"><use href="#i-mail" /></svg><input class="input" id="careers_email" name="careers_email" type="email" value="{{ $value('careers_email') }}"></div>
-                            </div>
-                            <div>
                                 <label class="lbl" for="phone">Phone</label>
                                 <div class="input-group"><svg class="ic"><use href="#i-phone" /></svg><input class="input" id="phone" name="phone" type="text" value="{{ $value('phone') }}"></div>
                             </div>
