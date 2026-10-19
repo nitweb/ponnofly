@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\FlashDealController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController as StorefrontProductController;
 use App\Http\Controllers\Frontend\SearchController;
+use App\Http\Controllers\Frontend\ShippingController;
 use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Frontend\PrivacyController;
 use App\Http\Controllers\Frontend\TermsController;
@@ -53,6 +54,7 @@ Route::post('/contact', [ContactController::class, 'store'])->middleware('thrott
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/privacy', [PrivacyController::class, 'show'])->name('privacy.show');
+Route::get('/shipping', [ShippingController::class, 'show'])->name('shipping.show');
 Route::get('/terms', [TermsController::class, 'show'])->name('terms.show');
 
 Route::get('/track', [TrackController::class, 'show'])->name('track.show');

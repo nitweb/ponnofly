@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FlashDealController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\PrivacyPageController;
+use App\Http\Controllers\Admin\ShippingPageController;
 use App\Http\Controllers\Admin\TermsPageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -86,6 +87,9 @@ Route::middleware('auth:admin')
         Route::put('privacy', [PrivacyPageController::class, 'update'])->name('privacy.update');
         Route::get('terms', [TermsPageController::class, 'edit'])->name('terms.edit');
         Route::put('terms', [TermsPageController::class, 'update'])->name('terms.update');
+        // Shipping Page Routes
+        Route::get('shipping', [ShippingPageController::class, 'edit'])->name('shipping.edit');
+        Route::put('shipping', [ShippingPageController::class, 'update'])->name('shipping.update');
         // FAQ Routes
         Route::patch('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
         Route::patch('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');

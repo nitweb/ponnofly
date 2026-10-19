@@ -6,11 +6,7 @@
         $value = fn (string $key) => old($key, $setting($key));
         $checked = fn (string $key) => session()->hasOldInput() ? (bool) old($key) : $setting($key) === '1';
         $imageSrc = fn (string $key) => $setting($key) ? asset($setting($key)) : asset('assets/admin/img/no-image.svg');
-        $zoneAreas = [
-            'inside_dhaka' => 'Dhaka city',
-            'nearby_dhaka' => 'Gazipur, Narayanganj, Narsingdi, Munshiganj, Manikganj',
-            'outside_dhaka' => 'All other districts',
-        ];
+        $shippingPage = \App\Models\ShippingPage::instance();
         $fonts = ['Plus Jakarta Sans', 'Inter'];
     @endphp
 
@@ -203,7 +199,7 @@
                             <tbody>
                                 @foreach (\App\Models\Setting::ZONES as $zone => $label)
                                     <tr>
-                                        <td><b>{{ $label }}</b><p class="text-xs text-ink/50">{{ $zoneAreas[$zone] }}</p></td>
+                                        <td><b>{{ $label }}</b><p class="text-xs text-ink/50">{{ $shippingPage->zoneArea($zone)['areas'] }}</p></td>
                                         <td>
                                             <div class="addon"><span>৳</span><input class="input" name="{{ $zone }}_charge" type="number" min="0" value="{{ $value($zone.'_charge') }}" placeholder="0"></div>
                                         </td>

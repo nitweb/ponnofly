@@ -58,7 +58,7 @@
                 <h3 class="font-display font-extrabold text-lg text-accent mb-4">Help</h3>
                 <ul class="grid gap-2.5 text-white/75">
                     <li><a href="{{ route('track.show') }}" class="hover:text-white">Track order</a></li>
-                    <li><a href="shipping.html" class="hover:text-white">Shipping info</a></li>
+                    <li><a href="{{ route('shipping.show') }}" class="hover:text-white">Shipping info</a></li>
                     <li><a href="returns.html" class="hover:text-white">Returns &amp; refunds</a></li>
                     <li><a href="{{ route('faq.index') }}" class="hover:text-white">FAQ</a></li>
                     <li><a href="{{ route('contact.show') }}" class="hover:text-white">Contact us</a></li>

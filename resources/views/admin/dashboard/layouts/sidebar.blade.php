@@ -115,6 +115,13 @@
             <span>Terms of service</span>
         </a>
 
+        <a href="{{ route('admin.shipping.edit') }}" class="nav-link {{ request()->routeIs('admin.shipping.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-truck" />
+            </svg>
+            <span>Shipping info</span>
+        </a>
+
         <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-help" />
