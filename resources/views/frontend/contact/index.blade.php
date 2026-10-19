@@ -119,7 +119,7 @@
                     @endif
                 </div>
 
-                <div class="cquick"><a class="card" href="{{ route('track.show') }}"><span class="ic ic-package" aria-hidden="true"></span> Track my order <span class="ic ic-arrow" aria-hidden="true"></span></a><a class="card" href="returns.html"><span class="ic ic-return" aria-hidden="true"></span> Start a return <span class="ic ic-arrow" aria-hidden="true"></span></a><a class="card" href="{{ route('faq.index') }}"><span class="ic ic-help" aria-hidden="true"></span> Read the FAQ <span class="ic ic-arrow" aria-hidden="true"></span></a></div>
+                <div class="cquick"><a class="card" href="{{ route('track.show') }}"><span class="ic ic-package" aria-hidden="true"></span> Track my order <span class="ic ic-arrow" aria-hidden="true"></span></a><a class="card" href="{{ route('returns.show') }}"><span class="ic ic-return" aria-hidden="true"></span> Start a return <span class="ic ic-arrow" aria-hidden="true"></span></a><a class="card" href="{{ route('faq.index') }}"><span class="ic ic-help" aria-hidden="true"></span> Read the FAQ <span class="ic ic-arrow" aria-hidden="true"></span></a></div>
             </div>
         </section>
     </div>

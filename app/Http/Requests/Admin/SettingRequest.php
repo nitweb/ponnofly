@@ -36,6 +36,8 @@ class SettingRequest extends FormRequest
 
             'free_delivery_above' => ['nullable', 'numeric', 'min:0'],
             'min_order' => ['nullable', 'numeric', 'min:0'],
+            'return_days' => ['required', 'integer', 'min:1', 'max:90'],
+            'refund_time' => ['required', 'string', 'max:60'],
 
             'chat_call' => ['nullable', 'string', 'max:40'],
             'chat_whatsapp' => ['nullable', 'string', 'max:40'],

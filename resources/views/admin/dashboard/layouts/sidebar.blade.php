@@ -122,6 +122,13 @@
             <span>Shipping info</span>
         </a>
 
+        <a href="{{ route('admin.returns.edit') }}" class="nav-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-refresh" />
+            </svg>
+            <span>Returns &amp; refunds</span>
+        </a>
+
         <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-help" />

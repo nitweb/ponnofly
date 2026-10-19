@@ -66,7 +66,7 @@
                             <h3>Quick links</h3>
                             <a href="{{ route('track.show') }}"><span class="ic ic-package" aria-hidden="true"></span> Track order</a>
                             <a href="{{ route('shipping.show') }}"><span class="ic ic-truck" aria-hidden="true"></span> Shipping info</a>
-                            <a href="returns.html"><span class="ic ic-return" aria-hidden="true"></span> Returns &amp; refunds</a>
+                            <a href="{{ route('returns.show') }}"><span class="ic ic-return" aria-hidden="true"></span> Returns &amp; refunds</a>
                         </div>
                     </aside>
                 </div>

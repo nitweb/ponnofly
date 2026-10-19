@@ -55,7 +55,7 @@
                 </div>
                 @foreach (\App\Models\Setting::ZONES as $zone => $label)
                     @php $area = $page->zoneArea($zone); @endphp
-                    <div class="grid sm:grid-cols-[150px_1fr_2fr] gap-3 items-end">
+                    <div class="grid sm:grid-cols-[150px_minmax(0,1.2fr)_minmax(0,2fr)] gap-3 items-end rounded-2xl border border-line p-4">
                         <div><label class="lbl">Icon</label>
                             <select class="select" name="zone_areas[{{ $zone }}][icon]">
                                 @foreach ($icons as $key => $iconLabel)
@@ -64,7 +64,14 @@
                             </select></div>
                         <div>
                             <label class="lbl">Zone</label>
-                            <p class="input flex items-center bg-ink/5">{{ $label }}@if (isset($zoneRates[$zone])) <span class="text-xs text-ink/50 ml-2">৳{{ number_format($zoneRates[$zone]['fee']) }} · {{ $zoneRates[$zone]['time'] }}</span>@endif</p>
+                            <div class="flex items-center justify-between gap-3 rounded-xl border border-line bg-primary-soft/40 px-4 h-[46px]">
+                                <b class="truncate">{{ $label }}</b>
+                                @if (isset($zoneRates[$zone]))
+                                    <span class="shrink-0 text-xs font-semibold text-primary whitespace-nowrap">৳{{ number_format($zoneRates[$zone]['fee']) }} · {{ $zoneRates[$zone]['time'] }}</span>
+                                @else
+                                    <span class="shrink-0 text-xs text-ink/50">Turned off</span>
+                                @endif
+                            </div>
                         </div>
                         <div><label class="lbl">Areas covered</label><input class="input" name="zone_areas[{{ $zone }}][areas]" value="{{ old("zone_areas.{$zone}.areas", $area['areas']) }}"></div>
                     </div>

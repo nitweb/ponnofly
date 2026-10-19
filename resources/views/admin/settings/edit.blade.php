@@ -225,6 +225,16 @@
                                 <div class="addon"><span>৳</span><input class="input" id="min_order" name="min_order" type="number" min="0" value="{{ $value('min_order') }}" placeholder="0"></div>
                             </div>
                         </div>
+                        <div class="grid sm:grid-cols-2 gap-5 mt-5">
+                            <div>
+                                <label class="lbl" for="return_days">Return window (days)</label>
+                                <input class="input" id="return_days" name="return_days" type="number" min="1" max="90" value="{{ $value('return_days') }}" required>
+                            </div>
+                            <div>
+                                <label class="lbl" for="refund_time">Refund time</label>
+                                <input class="input" id="refund_time" name="refund_time" value="{{ $value('refund_time') }}" placeholder="3–5 working days" required>
+                            </div>
+                        </div>
                         <div class="space-y-5 mt-6 pt-6 border-t border-line">
                             <div class="flex items-center justify-between gap-4">
                                 <div>
@@ -243,7 +253,7 @@
                             <div class="flex items-center justify-between gap-4">
                                 <div>
                                     <p class="font-semibold">Allow returns</p>
-                                    <p class="text-xs text-ink/50">7-day return window</p>
+                                    <p class="text-xs text-ink/50">{{ $value('return_days') }}-day return window</p>
                                 </div>
                                 <label class="switch"><input type="checkbox" name="allow_returns" value="1" @checked($checked('allow_returns'))><i></i></label>
                             </div>
