@@ -29,7 +29,7 @@
             'url' => $siteBase . '/',
             'potentialAction' => [
                 '@type' => 'SearchAction',
-                'target' => $siteBase . '/shop?q={search_term_string}',
+                'target' => $siteBase . '/search?q={search_term_string}',
                 'query-input' => 'required name=search_term_string',
             ],
         ];
@@ -305,7 +305,6 @@
     <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[90] bg-ink text-white font-bold px-5 py-3 rounded-xl border border-accent opacity-0 pointer-events-none transition-opacity" role="status" aria-live="polite"></div>
 
 
-    <script src="{{ asset('assets/frontend/js/search-index.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/electronics-data.js') }}" defer></script>
     <script>
         window.NEBULA_CART = {

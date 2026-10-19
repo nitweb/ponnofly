@@ -72,6 +72,36 @@ class Product extends Model
         $query->whereIn('category_id', [$categoryId, ...Category::descendantIds($categoryId)]);
     }
 
+    /** Every word of the term must appear in the product name. */
+    #[Scope]
+    protected function matchingName(Builder $query, string $term): void
+    {
+        foreach (static::searchWords($term) as $word) {
+            $query->where('name', 'like', "%{$word}%");
+        }
+    }
+
+    /** Every word of the term must appear in the name, description, tags, brand or category. */
+    #[Scope]
+    protected function matching(Builder $query, string $term): void
+    {
+        foreach (static::searchWords($term) as $word) {
+            $query->where(function (Builder $w) use ($word) {
+                $w->where('name', 'like', "%{$word}%")
+                    ->orWhere('short_description', 'like', "%{$word}%")
+                    ->orWhere('tags', 'like', "%{$word}%")
+                    ->orWhereHas('brand', fn (Builder $b) => $b->where('name', 'like', "%{$word}%"))
+                    ->orWhereHas('category', fn (Builder $c) => $c->where('name', 'like', "%{$word}%"));
+            });
+        }
+    }
+
+    /** @return list<string> */
+    protected static function searchWords(string $term): array
+    {
+        return array_slice(array_values(array_unique(preg_split('/\s+/u', mb_strtolower(trim($term)), -1, PREG_SPLIT_NO_EMPTY))), 0, 5);
+    }
+
     public function getUrlAttribute(): string
     {
         return url('/product/'.$this->slug);

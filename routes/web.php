@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\FlashDealController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController as StorefrontProductController;
+use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Frontend\TrackController;
 use App\Http\Controllers\Frontend\WishlistController;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/search/suggest', [SearchController::class, 'suggest'])->middleware('throttle:120,1')->name('search.suggest');
 Route::get('/flash-deals', [FlashDealController::class, 'index'])->name('flash-deals');
 Route::get('/category/{category:slug}', [ShopController::class, 'category'])->name('category.show');
 Route::get('/brand/{brand:slug}', [ShopController::class, 'brand'])->name('brand.show');

@@ -51,7 +51,7 @@
                 </a>
 
                 <!-- Search (desktop) -->
-                <form action="shop.html" method="GET" role="search" class="hidden lg:flex flex-1 max-w-2xl mx-auto">
+                <form action="{{ route('search') }}" method="GET" role="search" data-suggest-url="{{ route('search.suggest') }}" class="hidden lg:flex flex-1 max-w-2xl mx-auto">
                     <div class="flex w-full rounded-2xl border border-line bg-paper overflow-hidden focus-within:shadow-md transition-shadow">
                         <label class="sr-only" for="search-q">Search products</label>
                         <input id="search-q" type="search" name="q" placeholder="Search for shoes, phones, skincare…" class="flex-1 bg-transparent px-4 py-3 text-[15px] placeholder:text-ink/50 focus:outline-none">
@@ -127,7 +127,7 @@
             </div>
 
             <!-- Search (mobile) -->
-            <form action="shop.html" method="GET" role="search" class="lg:hidden pb-3">
+            <form action="{{ route('search') }}" method="GET" role="search" data-suggest-url="{{ route('search.suggest') }}" class="lg:hidden pb-3">
                 <div class="flex rounded-xl border border-line bg-paper overflow-hidden">
                     <label class="sr-only" for="search-m">Search products</label>
                     <input id="search-m" type="search" name="q" placeholder="Search products…" class="flex-1 bg-transparent px-4 py-2.5 text-[15px] focus:outline-none">

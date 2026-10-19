@@ -237,52 +237,75 @@
     });
   }
 
-  /* live search (AJAX: loads shop.html once, filters as you type) */
+  /* shop page: AJAX name search (grid + count + pagination), separate from the header search */
+  if (PAGE === 'catalog') run('shop-search', function () {
+    var form = document.getElementById('shop-form'), q = document.getElementById('shop-q'), box = document.getElementById('shop-results');
+    if (!form || !q || !box) return;
+    var tm, ctl = null, seq = 0;
+    function done() { box.style.opacity = ''; box.removeAttribute('aria-busy') }
+    function load(url, scroll) {
+      var id = ++seq;
+      if (ctl) ctl.abort();
+      ctl = window.AbortController ? new AbortController() : null;
+      box.setAttribute('aria-busy', 'true'); box.style.opacity = '.5';
+      fetch(url, { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin', signal: ctl ? ctl.signal : undefined })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
+        .then(function (d) { if (id !== seq) return; box.innerHTML = d.html; done(); if (scroll) box.scrollIntoView({ behavior: 'smooth', block: 'start' }) })
+        .catch(function (e) { if (id !== seq || (e && e.name === 'AbortError')) return; done() });
+    }
+    function search(scroll) { load((form.getAttribute('action') || location.pathname) + '?' + new URLSearchParams(new FormData(form)).toString(), scroll) }
+    q.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(search, 250) });
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(tm); search() } });
+    box.addEventListener('click', function (e) {
+      var a = e.target.closest('nav[aria-label=Pagination] a'); if (!a) return;
+      e.preventDefault(); load(a.href, true);
+    });
+  });
+
+  /* live search (AJAX: asks /search/suggest as you type) */
   run('search', function () {
     var forms = document.querySelectorAll('form[role=search]'); if (!forms.length) return;
-    var cache = null, loading = null;
     var qs = new URLSearchParams(location.search).get('q') || '';
     function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] }) }
     function rx(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') }
-    function parse(html) {
-      var doc = new DOMParser().parseFromString(html, 'text/html');
-      return [].map.call(doc.querySelectorAll('#shop-grid > li'), function (li) {
-        var a = li.querySelector('h3 a'), im = li.querySelector('img'), pr = li.querySelector('.font-display');
-        return { name: a ? a.textContent.trim() : '', href: a ? a.getAttribute('href') : 'product.html', img: im ? im.getAttribute('src') : '', price: pr ? pr.textContent.trim() : '', cat: li.dataset.cat || '', brand: li.dataset.brand || '' };
-      });
-    }
-    function load() {
-      if (cache) return Promise.resolve(cache);
-      if (window.NM_SEARCH && window.NM_SEARCH.length) return Promise.resolve((cache = window.NM_SEARCH));
-      if (!loading) loading = fetch('shop.html', { credentials: 'same-origin' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text() }).then(function (t) { return (cache = parse(t)) }).catch(function () { loading = null; return null });
-      return loading;
-    }
     forms.forEach(function (form) {
-      var input = form.querySelector('input[type=search]'), pop = document.createElement('div'), act = -1, tm, seq = 0;
+      var input = form.querySelector('input[type=search]'), pop = document.createElement('div'), act = -1, tm, seq = 0, ctl = null, cache = {};
+      var api = form.getAttribute('data-suggest-url'), shop = form.getAttribute('action') || '/search';
+      if (!input || !api) return;
       pop.className = 's-pop'; pop.hidden = true; pop.setAttribute('role', 'listbox'); form.appendChild(pop);
       input.setAttribute('autocomplete', 'off'); input.setAttribute('role', 'combobox'); input.setAttribute('aria-expanded', 'false'); input.setAttribute('aria-controls', input.id + '-list'); pop.id = input.id + '-list';
-      if (qs) input.value = qs;
+      if (qs && PAGE === 'search') input.value = qs;
+      function shopUrl(q) { return shop + (shop.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q) }
       function show(h) { pop.innerHTML = h; pop.hidden = false; act = -1; input.setAttribute('aria-expanded', 'true') }
       function hide() { pop.hidden = true; act = -1; input.setAttribute('aria-expanded', 'false') }
-      function go(q) { location.href = 'shop.html?q=' + encodeURIComponent(q) }
+      function go(q) { location.href = shopUrl(q) }
+      function fetchHits(q) {
+        if (cache[q]) return Promise.resolve(cache[q]);
+        if (ctl) ctl.abort();
+        ctl = window.AbortController ? new AbortController() : null;
+        return fetch(api + (api.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin', signal: ctl ? ctl.signal : undefined })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
+          .then(function (d) { return (cache[q] = d) });
+      }
+      function render(q, d) {
+        var hit = d.products || [], toks = q.toLowerCase().split(/\s+/).filter(Boolean), re = new RegExp('(' + toks.map(rx).join('|') + ')', 'gi');
+        if (!hit.length) { show('<div class="s-msg">No products found for “' + esc(q) + '”</div>'); return }
+        function hl(t) { return String(t).split(re).map(function (p, i) { return i % 2 ? '<mark>' + esc(p) + '</mark>' : esc(p) }).join('') }
+        show(hit.map(function (p) {
+          return '<a class="s-item" role="option" href="' + esc(p.url) + '"><img src="' + esc(p.image) + '" alt="" width="52" height="52"><span class="s-t"><span class="s-n">' + hl(p.name) + '</span><span class="s-p">' + esc(p.price) + '</span><span class="s-c">' + hl(p.brand || p.category || '') + '</span></span></a>';
+        }).join('') + '<a class="s-all" href="' + esc(shopUrl(q)) + '">See all ' + d.total + ' result' + (d.total === 1 ? '' : 's') + ' for “' + esc(q) + '”</a>');
+      }
       function run2() {
         var q = input.value.trim(), id = ++seq;
-        if (!q) { hide(); return }
-        show('<div class="s-msg">Searching…</div>');
-        load().then(function (all) {
-          if (id !== seq) return;
-          if (!all) { show('<a class="s-all" href="shop.html?q=' + encodeURIComponent(q) + '">Search for “' + esc(q) + '” in shop</a>'); return }
-          var toks = q.toLowerCase().split(/\s+/).filter(Boolean), re = new RegExp('(' + toks.map(rx).join('|') + ')', 'gi');
-          var hit = all.filter(function (p) { var h = (p.name + ' ' + p.cat + ' ' + p.brand).toLowerCase(); return toks.every(function (t) { return h.indexOf(t) >= 0 }) });
-          if (!hit.length) { show('<div class="s-msg">No products found for “' + esc(q) + '”</div>'); return }
-          function hl(t) { return t.split(re).map(function (p, i) { return i % 2 ? '<mark>' + esc(p) + '</mark>' : esc(p) }).join('') }
-          show(hit.slice(0, 10).map(function (p) {
-            return '<a class="s-item" role="option" href="' + esc(p.href) + '"><img src="' + esc(p.img) + '" alt="" width="52" height="52"><span class="s-t"><span class="s-n">' + hl(p.name) + '</span><span class="s-p">' + esc(p.price) + '</span><span class="s-c">' + hl(p.brand || p.cat) + '</span></span></a>';
-          }).join('') + '<a class="s-all" href="shop.html?q=' + encodeURIComponent(q) + '">See all ' + hit.length + ' result' + (hit.length === 1 ? '' : 's') + ' for “' + esc(q) + '”</a>');
+        if (q.length < 2) { if (ctl) ctl.abort(); hide(); return }
+        if (!cache[q]) show('<div class="s-msg">Searching…</div>');
+        fetchHits(q).then(function (d) { if (id === seq) render(q, d) }).catch(function (e) {
+          if (id !== seq || (e && e.name === 'AbortError')) return;
+          show('<a class="s-all" href="' + esc(shopUrl(q)) + '">Search for “' + esc(q) + '” in shop</a>');
         });
       }
-      input.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(run2, 150) });
-      input.addEventListener('focus', function () { load(); if (input.value.trim() && pop.innerHTML) pop.hidden = false });
+      input.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(run2, 200) });
+      input.addEventListener('focus', function () { if (input.value.trim() && pop.innerHTML) pop.hidden = false });
       input.addEventListener('keydown', function (e) {
         var its = pop.querySelectorAll('.s-item');
         if (e.key === 'Escape') { hide(); return }
