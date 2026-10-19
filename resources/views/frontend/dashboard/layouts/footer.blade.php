@@ -69,8 +69,8 @@
                 <h3 class="font-display font-extrabold text-lg text-accent mb-4">Company</h3>
                 <ul class="grid gap-2.5 text-white/75">
                     <li><a href="{{ route('about.show') }}" class="hover:text-white">About us</a></li>
-                    <li><a href="privacy.html" class="hover:text-white">Privacy policy</a></li>
-                    <li><a href="terms.html" class="hover:text-white">Terms of service</a></li>
+                    <li><a href="{{ route('privacy.show') }}" class="hover:text-white">Privacy policy</a></li>
+                    <li><a href="{{ route('terms.show') }}" class="hover:text-white">Terms of service</a></li>
                 </ul>
             </nav>
 

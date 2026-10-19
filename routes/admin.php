@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FlashDealController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\PrivacyPageController;
+use App\Http\Controllers\Admin\TermsPageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
@@ -79,6 +81,11 @@ Route::middleware('auth:admin')
         // About Page Routes
         Route::get('about', [AboutController::class, 'edit'])->name('about.edit');
         Route::put('about', [AboutController::class, 'update'])->name('about.update');
+        // Privacy / Terms Page Routes
+        Route::get('privacy', [PrivacyPageController::class, 'edit'])->name('privacy.edit');
+        Route::put('privacy', [PrivacyPageController::class, 'update'])->name('privacy.update');
+        Route::get('terms', [TermsPageController::class, 'edit'])->name('terms.edit');
+        Route::put('terms', [TermsPageController::class, 'update'])->name('terms.update');
         // FAQ Routes
         Route::patch('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
         Route::patch('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');

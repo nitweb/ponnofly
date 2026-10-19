@@ -101,6 +101,20 @@
             <span>About</span>
         </a>
 
+        <a href="{{ route('admin.privacy.edit') }}" class="nav-link {{ request()->routeIs('admin.privacy.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-shield" />
+            </svg>
+            <span>Privacy policy</span>
+        </a>
+
+        <a href="{{ route('admin.terms.edit') }}" class="nav-link {{ request()->routeIs('admin.terms.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-file" />
+            </svg>
+            <span>Terms of service</span>
+        </a>
+
         <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-help" />

@@ -13,6 +13,8 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController as StorefrontProductController;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Frontend\ShopController;
+use App\Http\Controllers\Frontend\PrivacyController;
+use App\Http\Controllers\Frontend\TermsController;
 use App\Http\Controllers\Frontend\TrackController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\ProfileController;
@@ -50,6 +52,8 @@ Route::get('/contact', [ContactController::class, 'show'])->name('contact.show')
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+Route::get('/privacy', [PrivacyController::class, 'show'])->name('privacy.show');
+Route::get('/terms', [TermsController::class, 'show'])->name('terms.show');
 
 Route::get('/track', [TrackController::class, 'show'])->name('track.show');
 Route::post('/track', [TrackController::class, 'lookup'])->name('track.lookup');
