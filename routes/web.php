@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\AddressController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\FaqController;
 use App\Http\Controllers\Frontend\FlashDealController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController as StorefrontProductController;
@@ -44,6 +45,8 @@ Route::get('/order/success/{number}', [CheckoutController::class, 'success'])->w
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 
 Route::get('/track', [TrackController::class, 'show'])->name('track.show');
 Route::post('/track', [TrackController::class, 'lookup'])->name('track.lookup');

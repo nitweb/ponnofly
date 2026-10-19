@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FlashDealController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OrderController;
@@ -74,6 +75,10 @@ Route::middleware('auth:admin')
         // Coupon Routes
         Route::patch('coupons/{coupon}/toggle', [CouponController::class, 'toggle'])->name('coupons.toggle');
         Route::resource('coupons', CouponController::class)->except('show');
+        // FAQ Routes
+        Route::patch('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
+        Route::patch('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');
+        Route::resource('faqs', FaqController::class)->only(['index', 'store', 'update', 'destroy']);
         // Message Routes
         Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
         Route::patch('messages/read-all', [MessageController::class, 'readAll'])->name('messages.read-all');

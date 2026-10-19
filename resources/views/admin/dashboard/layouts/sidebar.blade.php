@@ -94,7 +94,7 @@
             <span>Banners & Sliders</span>
         </a>
 
-        <a href="faqs.html" class="nav-link">
+        <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-help" />
             </svg>
