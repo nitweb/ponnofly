@@ -84,12 +84,14 @@
                     </svg>
                     My profile
                 </a>
-                <a href="{{ route('admin.settings.edit') }}">
-                    <svg class="ic ">
-                        <use href="#i-settings" />
-                    </svg>
-                    Site settings
-                </a>
+                @if (auth('admin')->user()->hasPermission('settings:view'))
+                    <a href="{{ route('admin.settings.edit') }}">
+                        <svg class="ic ">
+                            <use href="#i-settings" />
+                        </svg>
+                        Site settings
+                    </a>
+                @endif
                 <a href="../index.html" target="_blank">
                     <svg class="ic ">
                         <use href="#i-external" />

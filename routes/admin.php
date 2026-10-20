@@ -25,7 +25,9 @@ use App\Http\Controllers\Admin\ShippingPageController;
 use App\Http\Controllers\Admin\TermsPageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')
@@ -64,59 +66,91 @@ Route::middleware('auth:admin')
 
         // Custom Routes
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
-        // Banner Routes
-        Route::resource('banners', BannerController::class)->except('show');
-        // Category Routes
-        Route::patch('categories/{category}/toggle', [CategoryController::class, 'toggle'])->name('categories.toggle');
-        Route::resource('categories', CategoryController::class)->except('show');
 
-        Route::patch('products/{product}/toggle', [ProductController::class, 'toggle'])->name('products.toggle');
-        Route::resource('products', ProductController::class)->except('show');
-
-        Route::patch('brands/{brand}/toggle', [BrandController::class, 'toggle'])->name('brands.toggle');
-        Route::resource('brands', BrandController::class)->except('show');
-        // Flash Deal Routes
-        Route::patch('flash-deals/{flash_deal}/toggle', [FlashDealController::class, 'toggle'])->name('flash-deals.toggle');
-        Route::resource('flash-deals', FlashDealController::class)->except('show');
-        // Coupon Routes
-        Route::patch('coupons/{coupon}/toggle', [CouponController::class, 'toggle'])->name('coupons.toggle');
-        Route::resource('coupons', CouponController::class)->except('show');
-        // About Page Routes
-        Route::get('about', [AboutController::class, 'edit'])->name('about.edit');
-        Route::put('about', [AboutController::class, 'update'])->name('about.update');
-        // Privacy / Terms Page Routes
-        Route::get('privacy', [PrivacyPageController::class, 'edit'])->name('privacy.edit');
-        Route::put('privacy', [PrivacyPageController::class, 'update'])->name('privacy.update');
-        Route::get('terms', [TermsPageController::class, 'edit'])->name('terms.edit');
-        Route::put('terms', [TermsPageController::class, 'update'])->name('terms.update');
-        // Shipping Page Routes
-        Route::get('shipping', [ShippingPageController::class, 'edit'])->name('shipping.edit');
-        Route::put('shipping', [ShippingPageController::class, 'update'])->name('shipping.update');
-        // Returns Page Routes
-        Route::get('returns', [ReturnsPageController::class, 'edit'])->name('returns.edit');
-        Route::put('returns', [ReturnsPageController::class, 'update'])->name('returns.update');
-        // FAQ Routes
-        Route::patch('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
-        Route::patch('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');
-        Route::resource('faqs', FaqController::class)->only(['index', 'store', 'update', 'destroy']);
-        // Message Routes
-        Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
-        Route::patch('messages/read-all', [MessageController::class, 'readAll'])->name('messages.read-all');
-        Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-        Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
-        Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
-        // Customer Routes
-        Route::get('customers', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
-        // Order Routes
-        Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-        Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-        Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-        Route::patch('orders/{order}/note', [OrderController::class, 'note'])->name('orders.note');
-        // Profile Routes
+        // Profile Routes (every signed-in admin)
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+        // Banner Routes
+        Route::middleware('permission:banners')->group(function () {
+            Route::resource('banners', BannerController::class)->except('show');
+        });
+        // Category Routes
+        Route::middleware('permission:categories')->group(function () {
+            Route::patch('categories/{category}/toggle', [CategoryController::class, 'toggle'])->name('categories.toggle');
+            Route::resource('categories', CategoryController::class)->except('show');
+        });
+        // Product Routes
+        Route::middleware('permission:products')->group(function () {
+            Route::patch('products/{product}/toggle', [ProductController::class, 'toggle'])->name('products.toggle');
+            Route::resource('products', ProductController::class)->except('show');
+        });
+        // Brand Routes
+        Route::middleware('permission:brands')->group(function () {
+            Route::patch('brands/{brand}/toggle', [BrandController::class, 'toggle'])->name('brands.toggle');
+            Route::resource('brands', BrandController::class)->except('show');
+        });
+        // Flash Deal Routes
+        Route::middleware('permission:flash')->group(function () {
+            Route::patch('flash-deals/{flash_deal}/toggle', [FlashDealController::class, 'toggle'])->name('flash-deals.toggle');
+            Route::resource('flash-deals', FlashDealController::class)->except('show');
+        });
+        // Coupon Routes
+        Route::middleware('permission:coupons')->group(function () {
+            Route::patch('coupons/{coupon}/toggle', [CouponController::class, 'toggle'])->name('coupons.toggle');
+            Route::resource('coupons', CouponController::class)->except('show');
+        });
+        // About / Privacy / Terms / Shipping / Returns Page Routes
+        Route::middleware('permission:pages,singleton')->group(function () {
+            Route::get('about', [AboutController::class, 'edit'])->name('about.edit');
+            Route::put('about', [AboutController::class, 'update'])->name('about.update');
+            Route::get('privacy', [PrivacyPageController::class, 'edit'])->name('privacy.edit');
+            Route::put('privacy', [PrivacyPageController::class, 'update'])->name('privacy.update');
+            Route::get('terms', [TermsPageController::class, 'edit'])->name('terms.edit');
+            Route::put('terms', [TermsPageController::class, 'update'])->name('terms.update');
+            Route::get('shipping', [ShippingPageController::class, 'edit'])->name('shipping.edit');
+            Route::put('shipping', [ShippingPageController::class, 'update'])->name('shipping.update');
+            Route::get('returns', [ReturnsPageController::class, 'edit'])->name('returns.edit');
+            Route::put('returns', [ReturnsPageController::class, 'update'])->name('returns.update');
+        });
+        // FAQ Routes
+        Route::middleware('permission:faqs')->group(function () {
+            Route::patch('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
+            Route::patch('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');
+            Route::resource('faqs', FaqController::class)->only(['index', 'store', 'update', 'destroy']);
+        });
+        // Message Routes
+        Route::middleware('permission:messages')->group(function () {
+            Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+            Route::patch('messages/read-all', [MessageController::class, 'readAll'])->name('messages.read-all');
+            Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+            Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
+            Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+        });
+        // Customer Routes
+        Route::middleware('permission:customers')->group(function () {
+            Route::get('customers', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
+        });
+        // Order Routes
+        Route::middleware('permission:orders')->group(function () {
+            Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+            Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+            Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+            Route::patch('orders/{order}/note', [OrderController::class, 'note'])->name('orders.note');
+        });
+        // Role Routes
+        Route::middleware('permission:roles')->group(function () {
+            Route::resource('roles', RoleController::class)->except('show');
+        });
+        // Staff Routes
+        Route::middleware('permission:staff')->group(function () {
+            Route::patch('staff/{staff}/toggle', [StaffController::class, 'toggle'])->name('staff.toggle');
+            Route::resource('staff', StaffController::class)->except('show')->parameters(['staff' => 'staff']);
+        });
         // Setting Routes
-        Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
-        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+        Route::middleware('permission:settings,singleton')->group(function () {
+            Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+            Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+        });
     });
