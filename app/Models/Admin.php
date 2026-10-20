@@ -7,10 +7,11 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'phone', 'bio', 'avatar', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class Admin extends Authenticatable
 {
@@ -28,5 +29,25 @@ class Admin extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(AdminActivity::class)->latest()->latest('id');
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? asset($this->avatar) : null;
+    }
+
+    public function initial(): string
+    {
+        return mb_strtoupper(mb_substr(trim($this->name), 0, 1)) ?: 'A';
+    }
+
+    public function displayTitle(): string
+    {
+        return $this->job_title ?: 'Administrator';
     }
 }

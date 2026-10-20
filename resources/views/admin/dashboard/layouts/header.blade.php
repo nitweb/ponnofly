@@ -64,17 +64,21 @@
         {{-- Profile --}}
         <div class="dropdown">
             <button data-dd class="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-2xl hover:bg-primary-soft transition">
-                <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-[#1d5fd1] text-white grid place-items-center font-display font-extrabold">F</span>
+                @if (auth('admin')->user()->avatarUrl())
+                    <img src="{{ auth('admin')->user()->avatarUrl() }}" alt="" class="w-10 h-10 rounded-xl object-cover">
+                @else
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-[#1d5fd1] text-white grid place-items-center font-display font-extrabold">{{ auth('admin')->user()->initial() }}</span>
+                @endif
                 <span class="hidden sm:block text-left leading-tight">
-                    <b class="block text-sm">Faisal Ahmed</b>
-                    <span class="text-xs text-ink/50">Super Admin</span>
+                    <b class="block text-sm">{{ auth('admin')->user()->name }}</b>
+                    <span class="text-xs text-ink/50">{{ auth('admin')->user()->displayTitle() }}</span>
                 </span>
                 <svg class="ic ic-sm hidden sm:block text-ink/40">
                     <use href="#i-chev-down" />
                 </svg>
             </button>
             <div class="dropdown-menu">
-                <a href="profile.html">
+                <a href="{{ route('admin.profile.edit') }}">
                     <svg class="ic ">
                         <use href="#i-user" />
                     </svg>

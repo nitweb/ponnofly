@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FlashDealController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\PrivacyPageController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReturnsPageController;
 use App\Http\Controllers\Admin\ShippingPageController;
 use App\Http\Controllers\Admin\TermsPageController;
@@ -111,6 +112,10 @@ Route::middleware('auth:admin')
         Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
         Route::patch('orders/{order}/note', [OrderController::class, 'note'])->name('orders.note');
+        // Profile Routes
+        Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
         // Setting Routes
         Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');

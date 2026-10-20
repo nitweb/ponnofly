@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginRequest;
+use App\Models\AdminActivity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,11 +25,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // dd('working');
-
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        AdminActivity::record(Auth::guard('admin')->user(), 'login', 'Signed in to the admin panel', $request);
 
         return redirect()->intended(route('admin.dashboard', absolute: false));
     }

@@ -5,7 +5,7 @@
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
             <h1 class="font-display font-extrabold text-2xl sm:text-[28px] tracking-tight">Dashboard</h1>
-            <p class="text-ink/55 mt-1">Welcome back, Faisal — here’s what’s happening today.</p>
+            <p class="text-ink/55 mt-1">Welcome back, {{ \Illuminate\Support\Str::before(auth('admin')->user()->name, ' ') }} — here’s what’s happening today.</p>
         </div>
         <div class="flex flex-wrap gap-3">
             <button class="btn btn-ghost" data-toast="Report downloaded">

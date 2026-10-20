@@ -179,7 +179,7 @@
             <span>Site Settings</span>
         </a>
 
-        <a href="profile.html" class="nav-link">
+        <a href="{{ route('admin.profile.edit') }}" class="nav-link {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-user" />
             </svg>
