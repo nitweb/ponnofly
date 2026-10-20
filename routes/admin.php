@@ -125,7 +125,6 @@ Route::middleware('auth:admin')
             Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
             Route::patch('messages/read-all', [MessageController::class, 'readAll'])->name('messages.read-all');
             Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-            Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
             Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
         });
         // Customer Routes
