@@ -103,9 +103,6 @@
                             <span class="count" id="c-count">{{ mb_strlen(old('message', '')) }} / 500</span>
                             <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
                             <button type="submit" class="btn btn--primary btn--block">Send message <span class="ic ic-send" aria-hidden="true"></span></button>
-                            @if (session('contact_success'))
-                                <p id="c-msg" class="note is-ok" role="status">{{ session('contact_success') }}</p>
-                            @endif
                         </form>
                     </div>
 
@@ -125,10 +122,19 @@
     </div>
 
     @if (session('contact_success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                var note = document.getElementById('c-msg');
-                if (note) note.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (typeof Swal === 'undefined') return;
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Message sent!',
+                    text: @json(session('contact_success')),
+                    confirmButtonText: 'Okay',
+                    confirmButtonColor: '#0B3A8C',
+                    customClass: { popup: 'swal-contact' },
+                });
             });
         </script>
     @endif
