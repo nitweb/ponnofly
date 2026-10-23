@@ -76,10 +76,13 @@ class StaffController extends Controller
     public function update(StaffRequest $request, Admin $staff): RedirectResponse
     {
         $this->guardSuperAdminTarget($request, $staff);
-        $this->guardRoleAssignment($request, $request->integer('role_id'));
+        $isSelf = $request->user('admin')->is($staff);
+
+        if (! $isSelf) {
+            $this->guardRoleAssignment($request, $request->integer('role_id'));
+        }
 
         $data = $request->safe()->except(['avatar', 'remove_avatar', 'password']);
-        $isSelf = $request->user('admin')->is($staff);
 
         // Nobody can change their own role or status from here.
         if ($isSelf) {

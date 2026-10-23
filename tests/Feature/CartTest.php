@@ -276,7 +276,7 @@ it('merges the guest cart into the customer cart on login', function () {
     addToCart($this, $shared, 3)->assertOk();
     addToCart($this, $guestOnly)->assertOk();
 
-    $this->post('/login', ['email' => $user->email, 'password' => 'password']);
+    $this->post('/login', ['phone' => $user->phone, 'password' => 'password']);
 
     $this->assertAuthenticated();
     expect($cart->items()->where('product_id', $shared->id)->first()->quantity)->toBe(5)

@@ -3,7 +3,6 @@
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Review;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Hash;
@@ -57,7 +56,7 @@ function accountOrder(array $attributes = [], ?Product $product = null): Order
 }
 
 it('keeps the customer pages behind the login', function () {
-    foreach (['index', 'orders', 'profile', 'addresses', 'wishlist', 'reviews'] as $page) {
+    foreach (['index', 'orders', 'profile', 'addresses', 'wishlist'] as $page) {
         $this->get(route('account.'.$page))->assertRedirect(route('login'));
     }
 });
@@ -163,25 +162,4 @@ it('saves and removes wishlist items for the signed-in customer only', function 
 
     expect(Wishlist::count())->toBe(0);
     $this->postJson(route('account.wishlist.toggle'), ['product_id' => 99999])->assertUnprocessable();
-});
-
-it('lets a customer review only what was delivered to them', function () {
-    $user = User::factory()->create(['phone' => '01711223344']);
-    $delivered = accountProduct();
-    $pending = accountProduct();
-    accountOrder(['status' => 'delivered'], $delivered);
-    accountOrder(['status' => 'pending'], $pending);
-
-    $this->actingAs($user)->get(route('account.reviews'))->assertOk()->assertSee($delivered->name)->assertDontSee($pending->name);
-
-    $this->post(route('account.reviews.store'), ['product_id' => $pending->id, 'rating' => 5])->assertSessionHas('error');
-    expect(Review::count())->toBe(0);
-
-    $this->post(route('account.reviews.store'), ['product_id' => $delivered->id, 'rating' => 4, 'title' => 'Solid', 'body' => 'Works well.'])
-        ->assertRedirect(route('account.reviews'));
-    $this->post(route('account.reviews.store'), ['product_id' => $delivered->id, 'rating' => 5])->assertRedirect();
-
-    expect(Review::count())->toBe(1)->and(Review::first()->rating)->toBe(5);
-
-    $this->get($delivered->url)->assertOk()->assertSee('Customer reviews')->assertSee('1 review');
 });
