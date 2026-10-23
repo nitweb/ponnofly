@@ -238,6 +238,8 @@ class CheckoutService
 
         $this->cart->clear();
 
+        AdminNotifier::newOrder($order);
+
         return $order;
     }
 
@@ -316,6 +318,8 @@ class CheckoutService
             $this->takeFlashStock($product, $line);
 
             $product->increment('sold_count', $line['quantity']);
+
+            AdminNotifier::lowStock($product);
         }
     }
 

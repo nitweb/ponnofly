@@ -111,8 +111,8 @@
     var NS = 'http://www.w3.org/2000/svg';
     function area(el, labels, series, colors) {
       var W = 760, H = 280, pl = 44, pb = 28, pt = 14, pr = 12, max = 0; series.forEach(function (s) { s.forEach(function (v) { if (v > max) max = v }) });
-      var step = Math.pow(10, Math.floor(Math.log10(max))); max = Math.ceil(max / step) * step;
-      var x = function (i) { return pl + i * (W - pl - pr) / (labels.length - 1) }, y = function (v) { return pt + (H - pt - pb) * (1 - v / max) };
+      if (!max) max = 1000; var step = Math.pow(10, Math.floor(Math.log10(max))); max = Math.ceil(max / step) * step;
+      var x = function (i) { return pl + i * (W - pl - pr) / Math.max(labels.length - 1, 1) }, y = function (v) { return pt + (H - pt - pb) * (1 - v / max) };
       var g = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="chart w-full h-auto">'; g += '<defs>';
       colors.forEach(function (c, k) { g += '<linearGradient id="g' + el.id + k + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + c + '" stop-opacity=".28"/><stop offset="1" stop-color="' + c + '" stop-opacity="0"/></linearGradient>' }); g += '</defs>';
       for (var i = 0; i <= 4; i++) { var v = max * i / 4, yy = y(v); g += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + yy + '" y2="' + yy + '" stroke="#e2e8f3" stroke-dasharray="4 5"/><text x="' + (pl - 8) + '" y="' + (yy + 4) + '" text-anchor="end">' + (v >= 1000 ? (v / 1000) + 'k' : v) + '</text>' }

@@ -25,41 +25,50 @@
     <div class="flex items-center gap-1 ml-auto sm:ml-0">
 
         {{-- Notification --}}
+        @php($notifyAdmin = auth('admin')->user())
+        @php($unreadNotifications = $notifyAdmin->unreadNotifications()->count())
         <div class="dropdown">
             <button class="icon-btn relative" data-dd aria-label="Notifications">
                 <svg class="ic ">
                     <use href="#i-bell" />
                 </svg>
-                <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-accent ring-2 ring-white"></span>
+                <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-accent ring-2 ring-white {{ $unreadNotifications ? '' : 'hidden' }}"></span>
             </button>
             <div class="dropdown-menu !w-80">
-                <p class="px-3 py-2 font-display font-extrabold">Notifications</p>
-                <a href="orders.html">
-                    <span class="w-9 h-9 rounded-xl bg-primary/10 text-primary grid place-items-center">
-                        <svg class="ic ">
-                            <use href="#i-cart" />
-                        </svg>
-                    </span>
-                    <span class="text-sm"><b>New order #NM-10482</b><br><span class="text-ink/50">2 min ago · ৳4,250</span></span>
-                </a>
-                <a href="products.html">
-                    <span class="w-9 h-9 rounded-xl bg-danger/10 text-danger grid place-items-center">
-                        <svg class="ic ">
-                            <use href="#i-alert" />
-                        </svg>
-                    </span>
-                    <span class="text-sm"><b>Low stock: Omron HEM-7156T</b><br><span class="text-ink/50">Only 3 left</span></span>
-                </a>
-                <a href="messages.html">
-                    <span class="w-9 h-9 rounded-xl bg-accent/20 text-accent-dark grid place-items-center">
-                        <svg class="ic ">
-                            <use href="#i-mail" />
-                        </svg>
-                    </span>
-                    <span class="text-sm"><b>New contact message</b><br><span class="text-ink/50">Rahim Uddin · 1h ago</span></span>
-                </a>
+                <div class="flex items-center justify-between px-3 py-2">
+                    <p class="font-display font-extrabold">Notifications <span id="notif-count" class="text-xs text-ink/50 font-semibold">{{ $unreadNotifications ? '('.$unreadNotifications.')' : '' }}</span></p>
+                </div>
+                <div id="notif-list" class="max-h-96 overflow-y-auto">
+                    @include('admin.notifications._list', ['items' => $notifyAdmin->notifications()->limit(8)->get()])
+                </div>
+                <div class="h-px bg-line my-1"></div>
+                <div class="flex items-center justify-between gap-2 px-1">
+                    <a href="{{ route('admin.notifications.index') }}" class="!w-auto text-sm font-semibold text-primary">View all</a>
+                    <form method="POST" action="{{ route('admin.notifications.read-all') }}">
+                        @csrf
+                        @method('PATCH')
+                        <button class="!w-auto text-sm font-semibold text-primary">Mark all as read</button>
+                    </form>
+                </div>
             </div>
         </div>
+        <script>
+            (function () {
+                var list = document.getElementById('notif-list'), dot = document.getElementById('notif-dot'), count = document.getElementById('notif-count');
+                function refresh() {
+                    fetch(@json(route('admin.notifications.feed')), { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' })
+                        .then(function (r) { return r.ok ? r.json() : null })
+                        .then(function (d) {
+                            if (!d) return;
+                            list.innerHTML = d.html;
+                            dot.classList.toggle('hidden', !d.count);
+                            count.textContent = d.count ? '(' + d.count + ')' : '';
+                        })
+                        .catch(function () { });
+                }
+                setInterval(function () { if (!document.hidden) refresh() }, 30000);
+            })();
+        </script>
 
         {{-- Profile --}}
         <div class="dropdown">

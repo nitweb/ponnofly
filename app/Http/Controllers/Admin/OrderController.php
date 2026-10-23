@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderEvent;
 use App\Models\Setting;
+use App\Services\AdminNotifier;
 use App\Services\CheckoutService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -75,6 +76,8 @@ class OrderController extends Controller
             return back()->with('error', 'This order is '.strtolower($order->status_label).' and can no longer be changed.');
         }
 
+        $previousStatus = $order->status;
+
         DB::transaction(function () use ($order, $data, $checkout) {
             $changed = $order->status !== $data['status'];
 
@@ -98,6 +101,10 @@ class OrderController extends Controller
                 $checkout->restock($order->load('items'));
             }
         });
+
+        if ($previousStatus !== $order->status && $order->isFinal()) {
+            AdminNotifier::orderClosed($order, auth('admin')->id());
+        }
 
         return back()->with('success', 'Order updated');
     }

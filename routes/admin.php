@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FlashDealController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PrivacyPageController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportController;
@@ -69,6 +70,12 @@ Route::middleware('auth:admin')
 
         // Custom Routes
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+
+        // Notification Routes (every signed-in admin)
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notifications/feed', [NotificationController::class, 'feed'])->name('notifications.feed');
+        Route::patch('notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+        Route::get('notifications/{id}/open', [NotificationController::class, 'open'])->name('notifications.open');
 
         // Profile Routes (every signed-in admin)
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
