@@ -37,7 +37,7 @@
                     @forelse ($customers as $customer)
                         <tr>
                             <td>
-                                <p class="font-semibold">{{ $customer->name }}</p>
+                                <a href="{{ route('admin.customers.show', $customer) }}" class="font-semibold text-primary hover:underline">{{ $customer->name }}</a>
                                 <p class="text-xs text-ink/50">{{ $customer->email }}</p>
                             </td>
                             <td>{{ $customer->phone ?? '—' }}</td>

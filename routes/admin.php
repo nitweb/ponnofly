@@ -15,11 +15,14 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ExpenseCategoryController;
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FlashDealController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\PrivacyPageController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReturnsPageController;
 use App\Http\Controllers\Admin\ShippingPageController;
 use App\Http\Controllers\Admin\TermsPageController;
@@ -130,6 +133,7 @@ Route::middleware('auth:admin')
         // Customer Routes
         Route::middleware('permission:customers')->group(function () {
             Route::get('customers', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
+            Route::get('customers/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('customers.show');
         });
         // Order Routes
         Route::middleware('permission:orders')->group(function () {
@@ -137,6 +141,23 @@ Route::middleware('auth:admin')
             Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
             Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
             Route::patch('orders/{order}/note', [OrderController::class, 'note'])->name('orders.note');
+        });
+        // Report Routes
+        Route::middleware('permission:reports')->prefix('reports')->as('reports.')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('index');
+            Route::get('sales', [ReportController::class, 'sales'])->name('sales');
+            Route::get('profit-loss', [ReportController::class, 'profit'])->name('profit');
+            Route::get('products', [ReportController::class, 'products'])->name('products');
+            Route::get('customers', [ReportController::class, 'customers'])->name('customers');
+            Route::get('staff', [ReportController::class, 'staff'])->name('staff');
+            Route::get('staff/{admin}', [ReportController::class, 'staffShow'])->name('staff.show');
+            Route::get('export/{report}', [ReportController::class, 'export'])->name('export');
+        });
+        // Expense Routes
+        Route::middleware('permission:expenses')->group(function () {
+            Route::get('expenses/export', [ExpenseController::class, 'export'])->name('expenses.export');
+            Route::resource('expense-categories', ExpenseCategoryController::class)->only(['index', 'store', 'update', 'destroy'])->parameters(['expense-categories' => 'category'])->names('expense-categories');
+            Route::resource('expenses', ExpenseController::class)->except('show');
         });
         // Role Routes
         Route::middleware('permission:roles')->group(function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\ReportService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -31,5 +32,13 @@ class CustomerController extends Controller
             ->withQueryString();
 
         return view('admin.customers.index', ['customers' => $customers, 'term' => $term]);
+    }
+
+    public function show(User $customer, ReportService $reports): View
+    {
+        return view('admin.customers.show', [
+            'customer' => $customer->load('addresses'),
+            'profile' => $reports->customerProfile($customer),
+        ]);
     }
 }

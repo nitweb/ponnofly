@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
     'order_id', 'product_id', 'variant_id', 'name', 'variant_label', 'sku', 'image',
-    'unit_price', 'old_price', 'quantity', 'line_total',
+    'unit_price', 'old_price', 'cost_price', 'quantity', 'line_total',
 ])]
 class OrderItem extends Model
 {
@@ -17,6 +17,7 @@ class OrderItem extends Model
         return [
             'unit_price' => 'float',
             'old_price' => 'float',
+            'cost_price' => 'float',
             'quantity' => 'integer',
             'line_total' => 'float',
         ];

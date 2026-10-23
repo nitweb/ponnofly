@@ -2,7 +2,7 @@
 
 /*
  | Permission modules shown in the Roles & Permissions matrix.
- | Permission keys are "<module>:<action>", e.g. "products:view" (59 in total).
+ | Permission keys are "<module>:<action>", e.g. "products:view" (see Permissions::total()).
  */
 return [
     'actions' => [
@@ -27,6 +27,7 @@ return [
         'faqs' => ['label' => 'FAQs', 'icon' => 'help', 'actions' => ['view', 'create', 'edit', 'delete']],
         'messages' => ['label' => 'Messages', 'icon' => 'mail', 'actions' => ['view', 'edit', 'delete']],
         'reports' => ['label' => 'Reports', 'icon' => 'chart', 'actions' => ['view', 'export']],
+        'expenses' => ['label' => 'Expenses', 'icon' => 'wallet', 'actions' => ['view', 'create', 'edit', 'delete', 'export']],
         'settings' => ['label' => 'Site Settings', 'icon' => 'settings', 'actions' => ['view', 'edit']],
         'roles' => ['label' => 'Roles & Permissions', 'icon' => 'shield', 'actions' => ['view', 'create', 'edit', 'delete']],
         'staff' => ['label' => 'Staff Members', 'icon' => 'users', 'actions' => ['view', 'create', 'edit', 'delete']],

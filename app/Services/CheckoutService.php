@@ -207,6 +207,7 @@ class CheckoutService
             $order->update(['number' => 'NM-'.(10000 + $order->id)]);
 
             $skus = $this->skus($summary['items']);
+            $costs = Product::query()->whereIn('id', array_column($summary['items'], 'product_id'))->pluck('cost_price', 'id');
 
             foreach ($summary['items'] as $line) {
                 $order->items()->create([
@@ -218,6 +219,7 @@ class CheckoutService
                     'image' => $line['image'],
                     'unit_price' => $line['unit_price'],
                     'old_price' => $line['old_price'],
+                    'cost_price' => $costs[$line['product_id']] ?? null,
                     'quantity' => $line['quantity'],
                     'line_total' => $line['line_total'],
                 ]);

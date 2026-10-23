@@ -182,11 +182,20 @@
         <p class="nav-label">Insights</p>
 
         @if ($navAdmin->hasPermission('reports:view'))
-        <a href="reports.html" class="nav-link">
+        <a href="{{ route('admin.reports.index') }}" class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
             <svg class="ic ">
                 <use href="#i-chart" />
             </svg>
             <span>Reports</span>
+        </a>
+        @endif
+
+        @if ($navAdmin->hasPermission('expenses:view'))
+        <a href="{{ route('admin.expenses.index') }}" class="nav-link {{ request()->routeIs('admin.expenses.*', 'admin.expense-categories.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-wallet" />
+            </svg>
+            <span>Expenses</span>
         </a>
         @endif
 

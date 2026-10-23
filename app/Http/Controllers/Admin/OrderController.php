@@ -91,7 +91,7 @@ class OrderController extends Controller
             $order->save();
 
             if ($changed) {
-                OrderEvent::create(['order_id' => $order->id, 'status' => $data['status'], 'note' => null]);
+                OrderEvent::create(['order_id' => $order->id, 'admin_id' => auth('admin')->id(), 'status' => $data['status'], 'note' => null]);
             }
 
             if ($order->isFinal()) {

@@ -14,6 +14,9 @@ class EnsureAdminPermission
         'edit' => 'edit', 'update' => 'edit', 'toggle' => 'edit', 'reorder' => 'edit',
         'reply' => 'edit', 'note' => 'edit', 'readAll' => 'edit',
         'destroy' => 'delete',
+        'export' => 'export',
+        'sales' => 'view', 'profit' => 'view', 'products' => 'view', 'customers' => 'view',
+        'staff' => 'view', 'staffShow' => 'view',
     ];
 
     /**
