@@ -271,6 +271,14 @@ class CheckoutService
         }
 
         foreach ($order->items as $item) {
+            $quantity = $item->quantity - $item->restocked_quantity;
+
+            if ($quantity <= 0) {
+                continue;
+            }
+
+            $item->update(['restocked_quantity' => $item->quantity]);
+
             if (! $item->product_id) {
                 continue;
             }
@@ -283,13 +291,13 @@ class CheckoutService
 
             if ($product->track_inventory) {
                 if ($item->variant_id) {
-                    ProductVariant::query()->where('id', $item->variant_id)->increment('stock', $item->quantity);
+                    ProductVariant::query()->where('id', $item->variant_id)->increment('stock', $quantity);
                 } else {
-                    $product->increment('stock', $item->quantity);
+                    $product->increment('stock', $quantity);
                 }
             }
 
-            $product->update(['sold_count' => max(0, $product->sold_count - $item->quantity)]);
+            $product->update(['sold_count' => max(0, $product->sold_count - $quantity)]);
         }
 
         $order->update(['restocked_at' => now()]);

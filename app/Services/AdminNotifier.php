@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Admin;
 use App\Models\ContactMessage;
 use App\Models\Order;
+use App\Models\OrderReturn;
 use App\Models\Product;
 use App\Models\User;
 use App\Notifications\AdminAlert;
@@ -28,6 +29,13 @@ class AdminNotifier
         $verb = strtolower($order->status_label);
 
         self::send('cancelled', 'orders', "Order #{$order->number} {$verb}", '৳'.number_format($order->total).' · '.$order->name, route('admin.orders.show', $order, false), null, $exceptAdminId);
+    }
+
+    public static function returnRequested(OrderReturn $return): void
+    {
+        $return->loadMissing('order');
+
+        self::send('cancelled', 'orders', $return->type_label.' request '.$return->number, 'Order #'.$return->order->number.' · '.$return->order->name, route('admin.return-requests.show', $return, false));
     }
 
     public static function newMessage(ContactMessage $message): void

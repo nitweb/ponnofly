@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Frontend\AccountController;
 use App\Http\Controllers\Frontend\AccountOrderController;
+use App\Http\Controllers\Frontend\AccountReturnController;
 use App\Http\Controllers\Frontend\AddressController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\CartController;
@@ -73,6 +74,10 @@ Route::middleware('auth')->prefix('account')->as('account.')->group(function () 
     Route::get('orders', [AccountOrderController::class, 'index'])->name('orders');
     Route::get('orders/{number}', [AccountOrderController::class, 'show'])->where('number', 'NM-\d+')->name('orders.show');
     Route::post('orders/{number}/reorder', [AccountOrderController::class, 'reorder'])->where('number', 'NM-\d+')->name('orders.reorder');
+
+    Route::get('returns', [AccountReturnController::class, 'index'])->name('returns');
+    Route::get('orders/{number}/return', [AccountReturnController::class, 'create'])->where('number', 'NM-\d+')->name('returns.create');
+    Route::post('orders/{number}/return', [AccountReturnController::class, 'store'])->where('number', 'NM-\d+')->middleware('throttle:10,1')->name('returns.store');
 
     Route::get('profile', [AccountController::class, 'profile'])->name('profile');
     Route::patch('profile', [AccountController::class, 'updateProfile'])->name('profile.update');

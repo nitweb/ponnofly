@@ -17,7 +17,7 @@ class AccountOrderController extends Controller
         $status = (string) $request->query('status', '');
 
         $orders = $request->user()->customerOrders()
-            ->with('items')
+            ->with('items.returnItems.orderReturn')
             ->when(array_key_exists($status, Order::STATUSES), fn ($query) => $query->where('status', $status))
             ->latest('id')
             ->paginate(8)
@@ -28,7 +28,7 @@ class AccountOrderController extends Controller
 
     public function show(Request $request, string $number): View
     {
-        $order = $request->user()->customerOrders()->with(['items.product', 'events'])->where('number', $number)->firstOrFail();
+        $order = $request->user()->customerOrders()->with(['items.product', 'items.returnItems.orderReturn', 'events', 'returns.items.orderItem'])->where('number', $number)->firstOrFail();
 
         return view('frontend.account.order', ['order' => $order]);
     }

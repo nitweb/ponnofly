@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PrivacyPageController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\ReturnRequestController;
 use App\Http\Controllers\Admin\ReturnsPageController;
 use App\Http\Controllers\Admin\ShippingPageController;
 use App\Http\Controllers\Admin\TermsPageController;
@@ -152,6 +153,11 @@ Route::middleware('auth:admin')
             Route::get('orders/{order}/invoice/pdf', [OrderController::class, 'invoicePdf'])->name('orders.invoice.pdf');
             Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
             Route::patch('orders/{order}/note', [OrderController::class, 'note'])->name('orders.note');
+            Route::post('orders/{order}/returns', [ReturnRequestController::class, 'manual'])->name('orders.returns.manual');
+            Route::get('return-requests', [ReturnRequestController::class, 'index'])->name('return-requests.index');
+            Route::get('return-requests/{orderReturn}', [ReturnRequestController::class, 'show'])->name('return-requests.show');
+            Route::patch('return-requests/{orderReturn}/approve', [ReturnRequestController::class, 'approve'])->name('return-requests.approve');
+            Route::patch('return-requests/{orderReturn}/reject', [ReturnRequestController::class, 'reject'])->name('return-requests.reject');
         });
         // Report Routes
         Route::middleware('permission:reports')->prefix('reports')->as('reports.')->group(function () {

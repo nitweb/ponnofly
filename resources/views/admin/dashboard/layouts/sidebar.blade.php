@@ -75,6 +75,19 @@
         </a>
         @endif
 
+        @if ($navAdmin->hasPermission('orders:view'))
+        @php($pendingReturns = \App\Models\OrderReturn::where('status', 'pending')->count())
+        <a href="{{ route('admin.return-requests.index') }}" class="nav-link {{ request()->routeIs('admin.return-requests.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-refresh" />
+            </svg>
+            <span>Returns</span>
+            @if ($pendingReturns)
+                <span class="nav-badge">{{ $pendingReturns }}</span>
+            @endif
+        </a>
+        @endif
+
         @if ($navAdmin->hasPermission('customers:view'))
         <a href="{{ route('admin.customers.index') }}" class="nav-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
             <svg class="ic ">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderEvent;
+use App\Models\OrderReturn;
 use App\Models\Setting;
 use App\Services\AdminNotifier;
 use App\Services\CheckoutService;
@@ -60,7 +61,7 @@ class OrderController extends Controller
 
     public function show(Order $order): View
     {
-        $order->load(['items', 'events']);
+        $order->load(['items.returnItems.orderReturn', 'events', 'returns.items.orderItem']);
 
         return view('admin.orders.show', [
             'order' => $order,
@@ -196,7 +197,7 @@ class OrderController extends Controller
     public function update(Request $request, Order $order, CheckoutService $checkout): RedirectResponse
     {
         $data = $request->validate([
-            'status' => ['required', Rule::in(array_keys(Order::STATUSES))],
+            'status' => ['required', Rule::in(array_diff(array_keys(Order::STATUSES), ['returned']))],
             'courier' => ['nullable', Rule::in(array_keys(Setting::COURIERS))],
             'tracking_id' => ['nullable', 'string', 'max:80'],
         ]);
@@ -228,6 +229,13 @@ class OrderController extends Controller
 
             if ($order->isFinal()) {
                 $checkout->restock($order->load('items'));
+
+                OrderReturn::query()->where('order_id', $order->id)->where('status', 'pending')->update([
+                    'status' => 'rejected',
+                    'admin_id' => auth('admin')->id(),
+                    'admin_note' => 'The order was '.strtolower($order->status_label).' by the store.',
+                    'resolved_at' => now(),
+                ]);
             }
         });
 

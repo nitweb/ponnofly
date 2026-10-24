@@ -23,11 +23,13 @@
     color: #1e40af
 }
 
-.acct-badge[data-status="delivered"] {
+.acct-badge[data-status="delivered"],
+.acct-badge[data-status="approved"] {
     background: #d1fae5;
     color: #065f46
 }
 
+.acct-badge[data-status="rejected"],
 .acct-badge[data-status="cancelled"],
 .acct-badge[data-status="returned"] {
     background: #fee2e2;

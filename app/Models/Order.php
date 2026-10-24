@@ -58,6 +58,17 @@ class Order extends Model
         return $this->hasMany(OrderEvent::class)->orderBy('id');
     }
 
+    public function returns(): HasMany
+    {
+        return $this->hasMany(OrderReturn::class)->latest('id');
+    }
+
+    /** Needs items.returnItems.orderReturn loaded to avoid extra queries. */
+    public function canRequestReturn(): bool
+    {
+        return ! $this->isFinal() && $this->items->contains(fn (OrderItem $item) => $item->returnable_quantity > 0);
+    }
+
     public function getStatusLabelAttribute(): string
     {
         return self::STATUSES[$this->status] ?? ucfirst($this->status);
