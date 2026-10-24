@@ -17,7 +17,7 @@
                             <td>{{ $row->updates }}</td>
                             <td>{{ $row->delivered }}</td>
                             <td>{{ $row->cancelled }}</td>
-                            <td class="text-ink/60">{{ $row->last_action?->format('d M, h:i A') ?? '—' }}</td>
+                            <td class="text-ink/60">{{ $row->last_action?->timezone(\App\Models\Setting::tz())->format('d M, h:i A') ?? '—' }}</td>
                             <td class="text-right font-bold">৳{{ number_format($row->delivered_value) }}</td>
                         </tr>
                     @empty

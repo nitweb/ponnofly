@@ -14,15 +14,7 @@
         <span class="text-ink font-semibold">Dashboard</span>
     </div>
 
-    {{-- Search --}}
-    <div class="input-group ml-auto w-full max-w-md hidden sm:block">
-        <svg class="ic ">
-            <use href="#i-search" />
-        </svg>
-        <input class="input !bg-bg" placeholder="Search products, orders, customers…" aria-label="Search">
-    </div>
-
-    <div class="flex items-center gap-1 ml-auto sm:ml-0">
+    <div class="flex items-center gap-1 ml-auto">
 
         {{-- Notification --}}
         @php($notifyAdmin = auth('admin')->user())

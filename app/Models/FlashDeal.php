@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 class FlashDeal extends Model
 {
     /** Deal times are entered and stored as Dhaka wall-clock time (UTC+6, no DST). */
-    public const TIMEZONE = 'Asia/Dhaka';
+    public const TIMEZONE = 'Asia/Dhaka'; // fallback only; see Setting::tz()
 
     private static ?Collection $liveMemo = null;
 
@@ -106,12 +106,12 @@ class FlashDeal extends Model
 
     public function startsAtLocal(): CarbonImmutable
     {
-        return CarbonImmutable::parse($this->starts_at->format('Y-m-d H:i:s'), self::TIMEZONE);
+        return CarbonImmutable::parse($this->starts_at->format('Y-m-d H:i:s'), Setting::tz());
     }
 
     public function endsAtLocal(): CarbonImmutable
     {
-        return CarbonImmutable::parse($this->ends_at->format('Y-m-d H:i:s'), self::TIMEZONE);
+        return CarbonImmutable::parse($this->ends_at->format('Y-m-d H:i:s'), Setting::tz());
     }
 
     /**
@@ -203,7 +203,7 @@ class FlashDeal extends Model
 
     private function localNow(?CarbonInterface $now): CarbonImmutable
     {
-        return CarbonImmutable::instance($now ?? now())->setTimezone(self::TIMEZONE);
+        return CarbonImmutable::instance($now ?? now())->setTimezone(Setting::tz());
     }
 
     /** An end time of 23:59 means "until midnight"; an end before the start time rolls over to the next day. */

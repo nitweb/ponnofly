@@ -10,7 +10,7 @@
                 <div>
                     <p class="font-semibold">{{ $activity->description }}</p>
                     <p class="text-xs text-ink/50">
-                        {{ $activity->created_at->timezone('Asia/Dhaka')->format('d M Y, g:i A') }}
+                        {{ $activity->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, g:i A') }}
                         @if ($activity->ip_address) · {{ $activity->ip_address }} @endif
                         · {{ $activity->browserLabel() }}
                     </p>

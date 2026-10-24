@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'category_id', 'brand_id', 'name', 'slug', 'model', 'short_description', 'description',
     'price', 'compare_price', 'cost_price', 'sku', 'barcode', 'stock', 'low_stock', 'weight',
     'track_inventory', 'status', 'is_featured', 'is_new', 'is_cod',
-    'is_free_delivery', 'is_returnable', 'tags', 'meta_title', 'meta_description', 'sold_count',
+    'is_free_delivery', 'is_returnable', 'tags', 'meta_title', 'meta_description', 'meta_keywords', 'sold_count',
 ])]
 class Product extends Model
 {

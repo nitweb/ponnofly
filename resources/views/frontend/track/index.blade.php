@@ -100,7 +100,7 @@
                                             <span class="trk-node">@if ($done)<span class="ic ic-check"></span>@else{{ $i + 1 }}@endif</span>
                                             <div>
                                                 <p class="trk-t">{{ $title }}</p>
-                                                <p class="trk-d">{{ $text }}@if ($stamp) · {{ $stamp->format('d M, h:i A') }}@endif</p>
+                                                <p class="trk-d">{{ $text }}@if ($stamp) · {{ $stamp->copy()->timezone(\App\Models\Setting::tz())->format('d M, h:i A') }}@endif</p>
                                             </div>
                                         </li>
                                     @endforeach

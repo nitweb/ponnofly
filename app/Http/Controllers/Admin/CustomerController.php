@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\ReportService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -40,5 +41,21 @@ class CustomerController extends Controller
             'customer' => $customer->load('addresses'),
             'profile' => $reports->customerProfile($customer),
         ]);
+    }
+
+    /** Stops (or allows again) this customer from placing orders. They can still sign in and browse. */
+    public function restriction(Request $request, User $customer): RedirectResponse
+    {
+        $restrict = ! $customer->is_restricted;
+
+        $data = $request->validate(['reason' => ['nullable', 'string', 'max:255']]);
+
+        $customer->forceFill([
+            'is_restricted' => $restrict,
+            'restriction_reason' => $restrict ? ($data['reason'] ?? null) : null,
+            'restricted_at' => $restrict ? now() : null,
+        ])->save();
+
+        return back()->with('success', $restrict ? 'Customer restricted from placing orders' : 'Customer can place orders again');
     }
 }

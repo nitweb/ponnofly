@@ -31,6 +31,7 @@
                         <th>Ordered items</th>
                         <th>Total spent</th>
                         <th>Joined</th>
+                        <th>Purchase</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,9 @@
                             <td>
                                 <a href="{{ route('admin.customers.show', $customer) }}" class="font-semibold text-primary hover:underline">{{ $customer->name }}</a>
                                 <p class="text-xs text-ink/50">{{ $customer->email }}</p>
+                                @if ($customer->is_restricted)
+                                    <span class="badge b-danger mt-1">Restricted</span>
+                                @endif
                             </td>
                             <td>{{ $customer->phone ?? '—' }}</td>
                             <td>{{ $customer->orders_count }}</td>
@@ -59,10 +63,17 @@
                                 @endif
                             </td>
                             <td><b>৳{{ number_format((float) $customer->orders_sum_total) }}</b></td>
-                            <td class="text-ink/60">{{ $customer->created_at->format('d M Y') }}</td>
+                            <td class="text-ink/60">{{ $customer->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('admin.customers.restriction', $customer) }}" data-swal data-swal-title="{{ $customer->is_restricted ? 'Allow purchases?' : 'Restrict purchases?' }}" data-swal-text="{{ $customer->is_restricted ? $customer->name.' will be able to place orders again.' : $customer->name.' will not be able to place orders.' }}" data-swal-confirm="{{ $customer->is_restricted ? 'Yes, allow' : 'Yes, restrict' }}" data-swal-danger="{{ $customer->is_restricted ? '0' : '1' }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-ghost btn-sm {{ $customer->is_restricted ? '' : 'text-danger' }}">{{ $customer->is_restricted ? 'Allow' : 'Restrict' }}</button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="text-ink/55">No customers found.</td></tr>
+                        <tr><td colspan="7" class="text-ink/55">No customers found.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -79,5 +90,7 @@
             </div>
         @endif
     </section>
+
+@include('admin.partials.swal-confirm')
 
 @endsection

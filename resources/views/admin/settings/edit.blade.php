@@ -67,7 +67,9 @@
                             <div>
                                 <label class="lbl" for="timezone">Timezone</label>
                                 <select class="select" id="timezone" name="timezone">
-                                    <option value="Asia/Dhaka" @selected($value('timezone') === 'Asia/Dhaka')>Asia/Dhaka (UTC+6)</option>
+                                    @foreach (\App\Models\Setting::TIMEZONES as $zone => $zoneLabel)
+                                        <option value="{{ $zone }}" @selected($value('timezone') === $zone)>{{ $zoneLabel }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -343,6 +345,25 @@
                                 <label class="lbl" for="canonical_domain">Canonical domain</label>
                                 <input class="input" id="canonical_domain" name="canonical_domain" type="url" value="{{ $value('canonical_domain') }}" placeholder="https://nebulamart.com">
                             </div>
+                            <div>
+                                <label class="lbl">Social share image (OG image)</label>
+                                <div class="drop !p-5 flex flex-col sm:flex-row items-center gap-5 text-left">
+                                    <img id="og-img" src="{{ $imageSrc('og_image') }}" class="w-40 h-[84px] rounded-xl object-cover bg-white border border-line shrink-0" alt="">
+                                    <div class="text-center sm:text-left">
+                                        <p class="font-bold">Default share image</p>
+                                        <p class="text-xs text-ink/50 mt-1 mb-3">Exactly 1200 × 630 px · PNG / JPG / WebP · max 2 MB</p>
+                                        <div class="flex gap-2 justify-center sm:justify-start">
+                                            <label class="btn btn-primary btn-sm cursor-pointer">
+                                                <svg class="ic ic-sm"><use href="#i-upload" /></svg>Upload
+                                                <input type="file" name="og_image" class="hidden" accept="image/png,image/jpeg,image/webp" data-preview="#og-img">
+                                            </label>
+                                            <button type="button" class="btn btn-ghost btn-sm" data-reset-img="#og-img">Remove</button>
+                                        </div>
+                                        <input type="hidden" name="remove_og_image" value="0" data-remove>
+                                    </div>
+                                </div>
+                                @error('og_image')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -362,6 +383,18 @@
                             <div class="sm:col-span-2">
                                 <label class="lbl" for="gsc_code">Google Search Console code</label>
                                 <input class="input" id="gsc_code" name="gsc_code" type="text" value="{{ $value('gsc_code') }}">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="custom_header_script">Custom header script</label>
+                                <textarea class="textarea font-mono text-xs" id="custom_header_script" name="custom_header_script" rows="6" spellcheck="false" placeholder="&lt;script&gt;...&lt;/script&gt;">{{ $value('custom_header_script') }}</textarea>
+                                <p class="hint">Added inside &lt;head&gt; on every storefront page. Only paste code you trust.</p>
+                                @error('custom_header_script')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="custom_footer_script">Custom footer script</label>
+                                <textarea class="textarea font-mono text-xs" id="custom_footer_script" name="custom_footer_script" rows="6" spellcheck="false" placeholder="&lt;script&gt;...&lt;/script&gt;">{{ $value('custom_footer_script') }}</textarea>
+                                <p class="hint">Added just before &lt;/body&gt; on every storefront page. Only paste code you trust.</p>
+                                @error('custom_footer_script')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
                         </div>
                     </div>

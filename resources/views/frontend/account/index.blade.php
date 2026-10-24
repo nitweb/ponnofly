@@ -41,7 +41,7 @@
             <a href="{{ route('account.orders.show', $order->number) }}" class="flex flex-wrap items-center justify-between gap-3 py-4 {{ $loop->first ? 'mt-3' : 'border-t-2 border-dashed border-line' }}">
                 <span>
                     <b class="font-display font-extrabold">{{ $order->number }}</b>
-                    <span class="block text-sm text-ink/60">{{ $order->created_at->format('d M Y') }} · {{ $order->items->sum('quantity') }} item(s)</span>
+                    <span class="block text-sm text-ink/60">{{ $order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }} · {{ $order->items->sum('quantity') }} item(s)</span>
                 </span>
                 <span class="flex items-center gap-3">
                     <b>{{ $tk($order->total) }}</b>

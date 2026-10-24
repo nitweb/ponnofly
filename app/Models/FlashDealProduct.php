@@ -35,6 +35,6 @@ class FlashDealProduct extends Model
 
     public function priceFor(float $price): float
     {
-        return round($price * (1 - $this->discount_percent / 100), 2);
+        return (float) round($price * (1 - $this->discount_percent / 100));
     }
 }

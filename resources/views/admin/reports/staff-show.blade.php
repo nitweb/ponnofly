@@ -48,7 +48,7 @@
                             <tr>
                                 <td><a href="{{ route('admin.orders.show', $event->order_id) }}" class="font-bold text-primary hover:underline">#{{ $event->number }}</a><p class="text-xs text-ink/50">{{ $event->name }}</p></td>
                                 <td><span class="badge {{ $badges[$event->status] ?? 'b-muted' }}">{{ \App\Models\Order::STATUSES[$event->status] ?? $event->status }}</span></td>
-                                <td class="text-ink/60">{{ $event->created_at->format('d M, h:i A') }}</td>
+                                <td class="text-ink/60">{{ $event->created_at->timezone(\App\Models\Setting::tz())->format('d M, h:i A') }}</td>
                                 <td class="text-right font-bold">৳{{ number_format($event->total) }}</td>
                             </tr>
                         @empty
@@ -63,7 +63,7 @@
             <div class="card-h"><h3>Account activity</h3></div>
             <div class="card-b space-y-3">
                 @forelse ($profile['activities'] as $activity)
-                    <p class="flex justify-between gap-4"><span>{{ $activity->description }}</span><span class="text-xs text-ink/50" style="white-space:nowrap">{{ $activity->created_at->format('d M, h:i A') }}</span></p>
+                    <p class="flex justify-between gap-4"><span>{{ $activity->description }}</span><span class="text-xs text-ink/50" style="white-space:nowrap">{{ $activity->created_at->timezone(\App\Models\Setting::tz())->format('d M, h:i A') }}</span></p>
                 @empty
                     <p class="text-ink/55">No account activity in this period.</p>
                 @endforelse

@@ -208,7 +208,7 @@
             <div class="inv-title">
                 <h1>INVOICE</h1>
                 <p>No: <b>{{ $order->number }}</b></p>
-                <p>Date: <b>{{ $order->created_at->format('j M Y, g:i A') }}</b></p>
+                <p>Date: <b>{{ $order->created_at->timezone(\App\Models\Setting::tz())->format('j M Y, g:i A') }}</b></p>
             </div>
         </div>
 

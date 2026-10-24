@@ -2,7 +2,7 @@
 
 @section('frontend_title', 'Order '.$order->number.' | '.$setting('store_name'))
 @section('account_title', 'Order '.$order->number)
-@section('account_sub', 'Placed on '.$order->created_at->format('d M Y, h:i A'))
+@section('account_sub', 'Placed on '.$order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, h:i A'))
 
 @section('account_body')
     @php
@@ -22,7 +22,7 @@
                         <span class="mt-1.5 w-3 h-3 rounded-full shrink-0 {{ $loop->first ? 'bg-primary' : 'bg-ink/25' }}"></span>
                         <span>
                             <b>{{ \App\Models\Order::STATUSES[$event->status] ?? ucfirst($event->status) }}</b>
-                            <span class="block text-sm text-ink/60">{{ \Illuminate\Support\Carbon::parse($event->created_at)->format('d M Y, h:i A') }}@if ($event->note) · {{ $event->note }}@endif</span>
+                            <span class="block text-sm text-ink/60">{{ \Illuminate\Support\Carbon::parse($event->created_at)->timezone(\App\Models\Setting::tz())->format('d M Y, h:i A') }}@if ($event->note) · {{ $event->note }}@endif</span>
                         </span>
                     </li>
                 @endforeach

@@ -32,6 +32,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_restricted' => 'boolean',
+            'restricted_at' => 'datetime',
         ];
     }
 
@@ -41,6 +43,14 @@ class User extends Authenticatable
         $phone = preg_replace('/[\s\-]+/', '', (string) $phone);
 
         return (string) preg_replace('/^(\+?88)(?=01)/', '', $phone);
+    }
+
+    /** Message shown when a restricted customer tries to buy. */
+    public static function restrictedMessage(): string
+    {
+        $phone = Setting::get('phone');
+
+        return 'Your account is not allowed to place orders right now.'.($phone ? " Please contact us on {$phone}." : ' Please contact support.');
     }
 
     public function orders(): HasMany

@@ -31,6 +31,9 @@
                 </select>
             </div>
             <button class="btn btn-ghost btn-sm" type="submit">Filter</button>
+            @if ($search !== '' || $roleId)
+                <a href="{{ route('admin.staff.index') }}" class="btn btn-ghost btn-sm">Reset</a>
+            @endif
         </form>
 
         <div class="overflow-x-auto">

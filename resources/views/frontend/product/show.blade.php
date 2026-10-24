@@ -24,6 +24,9 @@
 
 @section('frontend_title', $title)
 @section('frontend_description', $description)
+@if (filled($product->meta_keywords))
+@section('frontend_keywords', $product->meta_keywords)
+@endif
 @section('frontend_image', $product->cover_url)
 @section('page', 'product')
 
@@ -222,13 +225,31 @@
             </div>
             <div id="panel-desc" role="tabpanel" aria-labelledby="tab-desc" class="pt-8">
                 <h2 class="font-display font-extrabold text-2xl mb-4">Description</h2>
-                <div class="max-w-3xl text-ink/80 leading-relaxed grid gap-3">
-                    @forelse (preg_split('/\R{2,}/', trim((string) ($product->description ?: $product->short_description))) as $paragraph)
-                        @if (trim($paragraph) !== '')<p>{!! nl2br(e(trim($paragraph))) !!}</p>@endif
-                    @empty
-                        <p>No description yet.</p>
-                    @endforelse
-                </div>
+                @if (\App\Support\HtmlSanitizer::looksLikeHtml($product->description))
+                    <style>
+                        .product-rich h1 { font-size: 1.75rem; font-weight: 800; margin: 1rem 0 .5rem; }
+                        .product-rich h2 { font-size: 1.4rem; font-weight: 800; margin: 1rem 0 .5rem; }
+                        .product-rich h3 { font-size: 1.15rem; font-weight: 700; margin: .9rem 0 .4rem; }
+                        .product-rich p { margin: 0 0 .75rem; }
+                        .product-rich ul { list-style: disc; padding-left: 1.5rem; margin: 0 0 .75rem; }
+                        .product-rich ol { list-style: decimal; padding-left: 1.5rem; margin: 0 0 .75rem; }
+                        .product-rich blockquote { border-left: 4px solid rgb(0 0 0 / .15); padding-left: 1rem; margin: 0 0 .75rem; font-style: italic; }
+                        .product-rich a { color: rgb(var(--color-primary, 11 58 140)); text-decoration: underline; }
+                        .product-rich img { max-width: 100%; height: auto; border-radius: .75rem; margin: .5rem 0; }
+                        .product-rich .ql-align-center { text-align: center; }
+                        .product-rich .ql-align-right { text-align: right; }
+                        .product-rich .ql-align-justify { text-align: justify; }
+                    </style>
+                    <div class="product-rich max-w-3xl text-ink/80 leading-relaxed">{!! \App\Support\HtmlSanitizer::clean($product->description) !!}</div>
+                @else
+                    <div class="max-w-3xl text-ink/80 leading-relaxed grid gap-3">
+                        @forelse (preg_split('/\R{2,}/', trim((string) ($product->description ?: $product->short_description))) as $paragraph)
+                            @if (trim($paragraph) !== '')<p>{!! nl2br(e(trim($paragraph))) !!}</p>@endif
+                        @empty
+                            <p>No description yet.</p>
+                        @endforelse
+                    </div>
+                @endif
             </div>
             <div id="panel-spec" role="tabpanel" aria-labelledby="tab-spec" class="pt-8" hidden>
                 <h2 class="font-display font-extrabold text-2xl mb-4">Specifications</h2>
@@ -299,7 +320,7 @@
             if (color) label.push('Color: ' + color);
 
             var orig = v && v.price !== null ? Number(v.price) : base.price;
-            var p = base.flash ? Math.round(orig * (1 - base.flash / 100) * 100) / 100 : orig;
+            var p = base.flash ? Math.round(orig * (1 - base.flash / 100)) : orig;
             var ref = base.flash ? Math.max(base.old, orig) : base.old;
             var stock = v ? v.stock : base.stock;
             var available = !base.track || stock > 0;

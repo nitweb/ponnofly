@@ -70,6 +70,15 @@ class ProfileController extends Controller
         return to_route('admin.profile.edit')->with('success', 'Profile updated');
     }
 
+    public function clearActivity(): RedirectResponse
+    {
+        auth('admin')->user()->activities()->delete();
+
+        return to_route('admin.profile.edit')
+            ->with('success', 'Activity log cleared')
+            ->with('tab', 'activity');
+    }
+
     public function updatePassword(ProfilePasswordRequest $request): RedirectResponse
     {
         $admin = $request->user('admin');

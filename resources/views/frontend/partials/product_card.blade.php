@@ -51,9 +51,9 @@
             @endif
         </div>
         @if (! $product->in_stock)
-            <span class="card-cart" style="display:block;text-align:center;opacity:.55;cursor:not-allowed">Out of stock</span>
+            <span class="card-cart" style="opacity:.55;cursor:not-allowed">Out of stock</span>
         @elseif ($product->has_variants)
-            <a href="{{ $product->url }}" class="card-cart" style="display:block;text-align:center">Select options</a>
+            <a href="{{ $product->url }}" class="card-cart" style="text-decoration:none">Select options</a>
         @else
             <button type="button" class="addcart card-cart" data-product-id="{{ $product->id }}" aria-label="Add {{ $pName }} to cart">Add to cart</button>
         @endif

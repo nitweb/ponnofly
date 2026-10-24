@@ -23,7 +23,7 @@
                 <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
                         <a href="{{ route('account.orders.show', $order->number) }}" class="font-display font-extrabold text-lg hover:text-primary">{{ $order->number }}</a>
-                        <p class="text-sm text-ink/60">{{ $order->created_at->format('d M Y, h:i A') }}</p>
+                        <p class="text-sm text-ink/60">{{ $order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, h:i A') }}</p>
                     </div>
                     <span class="acct-badge" data-status="{{ $order->status }}">{{ $order->status_label }}</span>
                 </div>

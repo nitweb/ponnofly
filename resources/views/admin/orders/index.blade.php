@@ -77,7 +77,7 @@
                                 <p class="font-semibold">{{ $order->name }}</p>
                                 <p class="text-xs text-ink/50">{{ $order->district }}</p>
                             </td>
-                            <td class="text-ink/60">{{ $order->created_at->format('d M Y') }}</td>
+                            <td class="text-ink/60">{{ $order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }}</td>
                             <td>{{ $order->item_count }} {{ $order->item_count === 1 ? 'item' : 'items' }}</td>
                             <td><b>৳{{ number_format($order->total) }}</b></td>
                             <td>

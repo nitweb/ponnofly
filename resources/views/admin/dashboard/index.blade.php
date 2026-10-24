@@ -172,7 +172,7 @@
                                     </td>
                                     <td class="font-bold">৳{{ number_format($order->total) }}</td>
                                     <td><span class="badge {{ $orderBadges[$order->status] ?? 'b-muted' }}">{{ $order->status_label }}</span></td>
-                                    <td class="text-ink/60">{{ $order->created_at->format('d M Y') }}</td>
+                                    <td class="text-ink/60">{{ $order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }}</td>
                                 </tr>
                             @empty
                                 <tr>

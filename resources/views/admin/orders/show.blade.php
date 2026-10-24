@@ -11,7 +11,7 @@
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
             <h1 class="font-display font-extrabold text-2xl sm:text-[28px] tracking-tight">Order #{{ $order->number }}</h1>
-            <p class="text-ink/55 mt-1">Placed on {{ $order->created_at->format('d M Y') }} · <span class="badge {{ $badges[$order->status] ?? 'b-muted' }}">{{ $order->status_label }}</span></p>
+            <p class="text-ink/55 mt-1">Placed on {{ $order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }} · <span class="badge {{ $badges[$order->status] ?? 'b-muted' }}">{{ $order->status_label }}</span></p>
         </div>
         <div class="flex flex-wrap gap-3">
             <button class="btn btn-ghost" data-print><svg class="ic ic-sm"><use href="#i-printer" /></svg>Print invoice</button>
@@ -74,7 +74,7 @@
                             @php $isNow = $event->is($lastEvent) && ! in_array($event->status, ['delivered', 'cancelled', 'returned'], true); @endphp
                             <li class="{{ $isNow ? 'now' : 'done' }}">
                                 <p class="font-bold">{{ $event->note ?: \App\Models\Order::STATUSES[$event->status] ?? ucfirst($event->status) }}</p>
-                                <p class="text-xs text-ink/50">{{ $event->created_at->format('d M Y, h:i A') }}</p>
+                                <p class="text-xs text-ink/50">{{ $event->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, h:i A') }}</p>
                             </li>
                         @endforeach
                     </ul>

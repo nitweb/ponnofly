@@ -28,7 +28,7 @@
                 <div class="card-b space-y-4">
                     <div class="bg-bg rounded-2xl p-5">
                         <p class="whitespace-pre-line">{{ $message->message }}</p>
-                        <p class="text-xs text-ink/45 mt-3">{{ $message->created_at->format('d M Y, h:i A') }} · {{ $message->created_at->diffForHumans() }} · via Contact form</p>
+                        <p class="text-xs text-ink/45 mt-3">{{ $message->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, h:i A') }} · {{ $message->created_at->diffForHumans() }} · via Contact form</p>
                     </div>
                 </div>
             </section>

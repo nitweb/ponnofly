@@ -1,7 +1,7 @@
 @php
     $old = session()->hasOldInput();
-    $startsAt = old('starts_at', $deal?->starts_at?->format('Y-m-d\TH:i') ?? now(\App\Models\FlashDeal::TIMEZONE)->startOfDay()->format('Y-m-d\TH:i'));
-    $endsAt = old('ends_at', $deal?->ends_at?->format('Y-m-d\TH:i') ?? now(\App\Models\FlashDeal::TIMEZONE)->setTime(23, 59)->format('Y-m-d\TH:i'));
+    $startsAt = old('starts_at', $deal?->starts_at?->format('Y-m-d\TH:i') ?? now(\App\Models\Setting::tz())->startOfDay()->format('Y-m-d\TH:i'));
+    $endsAt = old('ends_at', $deal?->ends_at?->format('Y-m-d\TH:i') ?? now(\App\Models\Setting::tz())->setTime(23, 59)->format('Y-m-d\TH:i'));
     $repeatDaily = $old ? (bool) old('repeat_daily') : ($deal?->repeat_daily ?? true);
     $showOnHome = $old ? (bool) old('show_on_home') : ($deal?->show_on_home ?? true);
     $showCountdown = $old ? (bool) old('show_countdown') : ($deal?->show_countdown ?? true);
@@ -112,7 +112,7 @@
                                     <td>
                                         <div class="addon w-28">
                                             <span>%</span>
-                                            <input class="input" type="number" min="0" max="95" step="0.01" name="products[{{ $index }}][discount_percent]" value="{{ $row['discount_percent'] }}" data-pct>
+                                            <input class="input" type="number" min="0" max="95" step="any" name="products[{{ $index }}][discount_percent]" value="{{ $row['discount_percent'] }}" data-pct>
                                         </div>
                                     </td>
                                     <td><b class="text-success" data-deal-price></b></td>
@@ -187,7 +187,7 @@
             var best = 0;
             body.querySelectorAll('tr').forEach(function (tr) {
                 var pct = parseFloat(tr.querySelector('[data-pct]').value) || 0;
-                tr.querySelector('[data-deal-price]').textContent = money(Math.round(tr.dataset.price * (1 - pct / 100) * 100) / 100);
+                tr.querySelector('[data-deal-price]').textContent = money(Math.round(tr.dataset.price * (1 - pct / 100)));
                 best = Math.max(best, pct);
             });
             empty.hidden = body.querySelectorAll('tr').length > 0;
@@ -221,7 +221,7 @@
                 '<td><div class="flex items-center gap-3"><img class="thumb" src="' + esc(product.img) + '" alt=""><b class="max-w-[220px] truncate">' + esc(product.name) + '</b>' +
                 '<input type="hidden" name="products[' + i + '][product_id]" value="' + product.id + '"></div></td>' +
                 '<td>' + money(product.price) + '</td>' +
-                '<td><div class="addon w-28"><span>%</span><input class="input" type="number" min="0" max="95" step="0.01" name="products[' + i + '][discount_percent]" value="10" data-pct></div></td>' +
+                '<td><div class="addon w-28"><span>%</span><input class="input" type="number" min="0" max="95" step="any" name="products[' + i + '][discount_percent]" value="10" data-pct></div></td>' +
                 '<td><b class="text-success" data-deal-price></b></td>' +
                 '<td><input class="input !w-24" type="number" min="0" name="products[' + i + '][deal_stock]" placeholder="∞"></td>' +
                 '<td><button type="button" class="icon-btn danger" data-deal-rm><svg class="ic"><use href="#i-trash"/></svg></button></td></tr>');

@@ -24,14 +24,39 @@ class Setting extends Model
         'redx' => 'RedX',
     ];
 
-    public const IMAGE_KEYS = ['logo_header', 'logo_footer', 'favicon'];
+    public const IMAGE_KEYS = ['logo_header', 'logo_footer', 'favicon', 'og_image'];
+
+    public const TIMEZONES = [
+        'Asia/Dhaka' => 'Asia/Dhaka (UTC+6)',
+        'Asia/Kolkata' => 'Asia/Kolkata (UTC+5:30)',
+        'Asia/Karachi' => 'Asia/Karachi (UTC+5)',
+        'Asia/Dubai' => 'Asia/Dubai (UTC+4)',
+        'Asia/Riyadh' => 'Asia/Riyadh (UTC+3)',
+        'Asia/Singapore' => 'Asia/Singapore (UTC+8)',
+        'Asia/Kuala_Lumpur' => 'Asia/Kuala_Lumpur (UTC+8)',
+        'Asia/Tokyo' => 'Asia/Tokyo (UTC+9)',
+        'Europe/London' => 'Europe/London (UTC+0/+1)',
+        'Europe/Paris' => 'Europe/Paris (UTC+1/+2)',
+        'America/New_York' => 'America/New_York (UTC-5/-4)',
+        'America/Los_Angeles' => 'America/Los_Angeles (UTC-8/-7)',
+        'Australia/Sydney' => 'Australia/Sydney (UTC+10/+11)',
+        'UTC' => 'UTC',
+    ];
+
+    /** The store timezone used to show dates and times. Stored timestamps stay in UTC. */
+    public static function tz(): string
+    {
+        $zone = (string) static::get('timezone', 'Asia/Dhaka');
+
+        return in_array($zone, timezone_identifiers_list(), true) ? $zone : 'Asia/Dhaka';
+    }
 
     /**
      * @return array<int, string>
      */
     public static function textKeys(): array
     {
-        $keys = ['store_name', 'tagline', 'currency', 'timezone', 'announcement', 'support_email', 'phone', 'opening_hours', 'address', 'facebook', 'instagram', 'youtube', 'tiktok', 'free_delivery_above', 'min_order', 'return_days', 'refund_time', 'chat_call', 'chat_whatsapp', 'chat_messenger', 'meta_title', 'meta_description', 'canonical_domain', 'ga_id', 'pixel_id', 'gsc_code', 'color_primary', 'color_accent', 'color_text', 'color_background', 'font_heading', 'font_body'];
+        $keys = ['store_name', 'tagline', 'currency', 'timezone', 'announcement', 'support_email', 'phone', 'opening_hours', 'address', 'facebook', 'instagram', 'youtube', 'tiktok', 'free_delivery_above', 'min_order', 'return_days', 'refund_time', 'chat_call', 'chat_whatsapp', 'chat_messenger', 'meta_title', 'meta_description', 'canonical_domain', 'ga_id', 'pixel_id', 'gsc_code', 'custom_header_script', 'custom_footer_script', 'color_primary', 'color_accent', 'color_text', 'color_background', 'font_heading', 'font_body'];
 
         foreach (array_keys(self::ZONES) as $zone) {
             $keys[] = "{$zone}_charge";
@@ -138,6 +163,9 @@ class Setting extends Model
             'ga_id' => '',
             'pixel_id' => '',
             'gsc_code' => '',
+            'custom_header_script' => '',
+            'custom_footer_script' => '',
+            'og_image' => '',
 
             'color_primary' => '#0B3A8C',
             'color_accent' => '#F5A800',

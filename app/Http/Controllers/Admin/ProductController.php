@@ -157,6 +157,7 @@ class ProductController extends Controller
     private function payload(ProductRequest $request, ?int $ignoreId = null): array
     {
         $data = $request->safe()->except(['images', 'remove_images', 'cover_image', 'variants']);
+        $data['description'] = \App\Support\HtmlSanitizer::clean($data['description'] ?? null) ?: null;
         $data['slug'] = $this->resolveSlug($request->input('slug'), $data['name'], $ignoreId);
 
         foreach (['category_id', 'brand_id', 'compare_price', 'cost_price', 'weight', 'sku'] as $nullable) {

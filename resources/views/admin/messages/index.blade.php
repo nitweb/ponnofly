@@ -65,7 +65,7 @@
                             <td class="{{ $item->status === 'unread' ? 'font-bold' : '' }}">{{ $item->topic }}</td>
                             <td class="max-w-xs"><span class="block truncate text-ink/60">{{ $item->message }}</span></td>
                             <td><span class="badge {{ \App\Models\ContactMessage::BADGES[$item->status] ?? 'b-muted' }}">{{ $item->status_label }}</span></td>
-                            <td class="text-ink/60 whitespace-nowrap">{{ $item->created_at->format('d M Y, h:i A') }}</td>
+                            <td class="text-ink/60 whitespace-nowrap">{{ $item->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, h:i A') }}</td>
                             <td>
                                 <div class="flex items-center justify-end gap-1">
                                     <a href="{{ route('admin.messages.show', $item) }}" class="icon-btn" title="View details"><svg class="ic"><use href="#i-eye" /></svg></a>

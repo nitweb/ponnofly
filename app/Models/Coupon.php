@@ -73,7 +73,7 @@ class Coupon extends Model
     /** @return 'active'|'scheduled'|'expired'|'exhausted'|'inactive' */
     public function phase(): string
     {
-        $today = CarbonImmutable::now(FlashDeal::TIMEZONE)->format('Y-m-d');
+        $today = CarbonImmutable::now(Setting::tz())->format('Y-m-d');
 
         if (! $this->is_active) {
             return 'inactive';

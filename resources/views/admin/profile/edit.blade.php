@@ -160,7 +160,7 @@
                                     <p class="font-semibold">{{ $lastLogin?->browserLabel() ?? 'This device' }}</p>
                                     <p class="text-xs text-ink/50">
                                         {{ request()->ip() }}
-                                        @if ($lastLogin) · Signed in {{ $lastLogin->created_at->timezone('Asia/Dhaka')->format('d M Y, g:i A') }} @endif
+                                        @if ($lastLogin) · Signed in {{ $lastLogin->created_at->timezone(\App\Models\Setting::tz())->format('d M Y, g:i A') }} @endif
                                     </p>
                                 </div>
                                 <span class="badge b-success">Active</span>
@@ -171,9 +171,19 @@
 
                 <div class="tab-pane space-y-6" id="activity">
                     <section class="card">
-                        <div class="card-h"><h3>Full activity log</h3></div>
+                        <div class="card-h">
+                            <h3>Full activity log</h3>
+                            @if ($activities->isNotEmpty())
+                                <form method="POST" action="{{ route('admin.profile.activity.clear') }}" data-swal data-swal-title="Clear activity log?" data-swal-text="This cannot be undone." data-swal-confirm="Yes, clear all" data-swal-danger="1">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-ghost btn-sm text-danger"><svg class="ic ic-sm"><use href="#i-trash" /></svg>Clear all</button>
+                                </form>
+                            @endif
+                        </div>
                         <div class="card-b">
                             @include('admin.profile._activity', ['items' => $activities])
+                            <p class="text-xs text-ink/45 mt-5">Activity older than {{ \App\Models\AdminActivity::RETENTION_DAYS }} days is deleted automatically.</p>
                         </div>
                     </section>
                 </div>
@@ -199,5 +209,7 @@
             });
         });
     </script>
+
+@include('admin.partials.swal-confirm')
 
 @endsection

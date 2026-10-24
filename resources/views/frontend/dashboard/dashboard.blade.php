@@ -12,7 +12,8 @@
         $canonicalUrl = $siteBase . request()->getPathInfo();
         $storeName = $setting('store_name');
         $logoUrl = $setting('logo_header') ? asset($setting('logo_header')) : null;
-        $shareImage = trim($__env->yieldContent('frontend_image')) ?: (isset($banners) && $banners->isNotEmpty() ? $banners->first()->image_url : $logoUrl);
+        $ogImageUrl = $setting('og_image') ? asset($setting('og_image')) : null;
+        $shareImage = trim($__env->yieldContent('frontend_image')) ?: ($ogImageUrl ?: (isset($banners) && $banners->isNotEmpty() ? $banners->first()->image_url : $logoUrl));
         $sameAs = array_values(array_filter([$setting('facebook'), $setting('instagram'), $setting('youtube'), $setting('tiktok')]));
         $organization = array_filter([
             '@context' => 'https://schema.org',
@@ -47,9 +48,16 @@
     <meta property="og:url" content="{{ $canonicalUrl }}">
     @if ($shareImage)
         <meta property="og:image" content="{{ $shareImage }}">
+        @if ($ogImageUrl && $shareImage === $ogImageUrl)
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+        @endif
     @endif
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="{{ $setting('color_primary') }}">
+    @hasSection('frontend_keywords')
+        <meta name="keywords" content="{{ trim($__env->yieldContent('frontend_keywords')) }}">
+    @endif
     @if ($setting('gsc_code'))
         <meta name="google-site-verification" content="{{ $setting('gsc_code') }}">
     @endif
@@ -126,6 +134,9 @@
             fbq('init', @json($setting('pixel_id')));
             fbq('track', 'PageView');
         </script>
+    @endif
+    @if (trim((string) $setting('custom_header_script')) !== '')
+        {!! $setting('custom_header_script') !!}
     @endif
 </head>
 
@@ -388,6 +399,9 @@
     <script src="{{ asset('assets/frontend/js/pages/track.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/zoom.js') }}" defer></script>
     @stack('scripts')
+    @if (trim((string) $setting('custom_footer_script')) !== '')
+        {!! $setting('custom_footer_script') !!}
+    @endif
 </body>
 
 </html>

@@ -81,6 +81,7 @@ Route::middleware('auth:admin')
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+        Route::delete('profile/activity', [ProfileController::class, 'clearActivity'])->name('profile.activity.clear');
 
         // Banner Routes
         Route::middleware('permission:banners')->group(function () {
@@ -141,6 +142,7 @@ Route::middleware('auth:admin')
         Route::middleware('permission:customers')->group(function () {
             Route::get('customers', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('customers.index');
             Route::get('customers/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('customers.show');
+            Route::patch('customers/{customer}/restriction', [\App\Http\Controllers\Admin\CustomerController::class, 'restriction'])->name('customers.restriction');
         });
         // Order Routes
         Route::middleware('permission:orders')->group(function () {

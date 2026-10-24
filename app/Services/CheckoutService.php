@@ -126,6 +126,7 @@ class CheckoutService
         $summary = $this->cart->summary();
 
         return match (true) {
+            auth()->user()?->is_restricted => User::restrictedMessage(),
             Setting::get('store_open') !== '1' => 'The store is closed right now. Please try again later.',
             ! $summary['items'] => 'Your cart is empty.',
             ! $summary['meets_min_order'] => 'The minimum order is ৳'.number_format($summary['min_order']).'.',
@@ -144,6 +145,23 @@ class CheckoutService
     {
         if ($blocker = $this->blocker()) {
             throw new DomainException($blocker);
+        }
+
+        $email = Str::lower(trim((string) ($data['email'] ?? '')));
+
+        $blocked = User::query()
+            ->where('is_restricted', true)
+            ->where(function ($query) use ($data, $email) {
+                $query->where('phone', $data['phone']);
+
+                if ($email !== '') {
+                    $query->orWhere('email', $email);
+                }
+            })
+            ->exists();
+
+        if ($blocked) {
+            throw new DomainException(User::restrictedMessage());
         }
 
         // Reading the cart already corrects quantities and drops items that cannot be sold. If it had to,

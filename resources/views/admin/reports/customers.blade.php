@@ -30,7 +30,7 @@
                             <td>{{ $row->phone }}</td>
                             <td>{{ $row->orders }}</td>
                             <td>৳{{ number_format($row->average_order) }}</td>
-                            <td class="text-ink/60">{{ $row->last_order_at->format('d M Y') }}</td>
+                            <td class="text-ink/60">{{ $row->last_order_at->timezone(\App\Models\Setting::tz())->format('d M Y') }}</td>
                             <td class="text-right font-bold">৳{{ number_format($row->spent) }}</td>
                         </tr>
                     @empty

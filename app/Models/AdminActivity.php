@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 #[Fillable(['admin_id', 'type', 'description', 'ip_address', 'user_agent'])]
 class AdminActivity extends Model
 {
+    public const RETENTION_DAYS = 30;
+
     /** type => [icon id, badge classes] */
     public const TYPES = [
         'login' => ['lock', 'bg-ink/10 text-ink'],

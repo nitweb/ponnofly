@@ -38,9 +38,16 @@
                         @error('short_description')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label class="lbl" for="description">Full description</label>
-                        <textarea class="textarea" id="description" name="description" rows="7">{{ $val('description') }}</textarea>
-                        <p class="hint">Blank line = new paragraph.</p>
+                        <label class="lbl" for="description-editor">Full description</label>
+                        @php
+                            $rawDescription = (string) $val('description');
+                            $editorHtml = \App\Support\HtmlSanitizer::looksLikeHtml($rawDescription)
+                                ? \App\Support\HtmlSanitizer::clean($rawDescription)
+                                : collect(preg_split('/\R{2,}/', trim($rawDescription)))->filter(fn ($p) => trim($p) !== '')->map(fn ($p) => '<p>'.nl2br(e(trim($p))).'</p>')->implode('');
+                        @endphp
+                        <textarea id="description" name="description" hidden>{{ $editorHtml }}</textarea>
+                        <div id="description-editor" class="bg-white">{!! $editorHtml !!}</div>
+                        <p class="hint">Format the description your own way: headings, bold, colors, lists, alignment, links and images (by URL).</p>
                         @error('description')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
                 </div>
@@ -190,6 +197,12 @@
                         <textarea class="textarea" id="meta_description" name="meta_description" rows="2">{{ $val('meta_description') }}</textarea>
                         @error('meta_description')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
+                    <div>
+                        <label class="lbl" for="meta_keywords">Meta keywords</label>
+                        <input class="input" id="meta_keywords" name="meta_keywords" type="text" value="{{ $val('meta_keywords') }}" placeholder="panjabi, cotton panjabi, eid collection">
+                        <p class="hint">Separate keywords with commas.</p>
+                        @error('meta_keywords')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
+                    </div>
                 </div>
             </div>
         </section>
@@ -329,5 +342,56 @@
             Array.prototype.forEach.call(input.files, function (f) { files.push(f); });
             sync();
         });
+    })();
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+<style>
+    #description-editor { font-size: 15px; }
+    .ql-container.ql-snow { height: auto; }
+    .ql-editor { min-height: 260px; max-height: 520px; overflow-y: auto; }
+    .ql-toolbar.ql-snow { border-top-left-radius: .75rem; border-top-right-radius: .75rem; }
+    .ql-container.ql-snow { border-bottom-left-radius: .75rem; border-bottom-right-radius: .75rem; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+    (function () {
+        var holder = document.getElementById('description-editor');
+        var field = document.getElementById('description');
+        if (!holder || !field || typeof Quill === 'undefined') { if (field) field.hidden = false; return; }
+
+        var quill = new Quill(holder, {
+            theme: 'snow',
+            placeholder: 'Write the product description…',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{ header: [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ color: [] }, { background: [] }],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ align: [] }],
+                        ['blockquote', 'link', 'image'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        image: function () {
+                            var url = window.prompt('Image URL (https://…)');
+                            if (!url) return;
+                            var range = this.quill.getSelection(true);
+                            this.quill.insertEmbed(range.index, 'image', url, 'user');
+                        }
+                    }
+                }
+            }
+        });
+
+        function sync() {
+            var empty = quill.getText().trim() === '' && !quill.root.querySelector('img');
+            field.value = empty ? '' : quill.getSemanticHTML();
+        }
+
+        quill.on('text-change', sync);
+        field.form.addEventListener('submit', sync);
     })();
 </script>
