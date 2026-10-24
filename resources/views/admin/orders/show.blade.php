@@ -14,7 +14,7 @@
             <p class="text-ink/55 mt-1">Placed on {{ $order->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }} · <span class="badge {{ $badges[$order->status] ?? 'b-muted' }}">{{ $order->status_label }}</span></p>
         </div>
         <div class="flex flex-wrap gap-3">
-            <a href="{{ route('admin.orders.invoice', $order) }}?print=1" target="_blank" rel="noopener" class="btn btn-ghost"><svg class="ic ic-sm"><use href="#i-printer" /></svg>Print invoice</a>
+            <a href="{{ route('admin.orders.invoice', $order) }}" target="_blank" rel="noopener" class="btn btn-ghost"><svg class="ic ic-sm"><use href="#i-eye" /></svg>View invoice</a>
             <a href="{{ route('admin.orders.index') }}" class="btn btn-ghost"><svg class="ic ic-sm"><use href="#i-chev-left" /></svg>Back</a>
         </div>
     </div>
