@@ -89,7 +89,7 @@
                             <td>
                                 <div class="flex justify-end gap-1">
                                     <a href="{{ route('admin.orders.show', $order) }}" class="icon-btn" title="View"><svg class="ic"><use href="#i-eye" /></svg></a>
-                                    <a href="{{ route('admin.orders.invoice', $order) }}" class="icon-btn js-invoice-download" data-number="{{ $order->number }}" title="Download invoice PDF" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></a>
+                                    <a href="{{ route('admin.orders.invoice.pdf', $order) }}" class="icon-btn" title="Download invoice PDF"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></a>
                                 </div>
                             </td>
                         </tr>
@@ -121,44 +121,5 @@
             </div>
         @endif
     </section>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-        document.querySelectorAll('.js-invoice-download').forEach(function (link) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (link.dataset.busy || typeof html2pdf === 'undefined') {
-                    if (typeof html2pdf === 'undefined') { window.open(link.href + '?print=1', '_blank'); }
-                    return;
-                }
-                link.dataset.busy = '1';
-                link.style.opacity = '.45';
-                var frame = document.createElement('iframe');
-                frame.style.cssText = 'position:fixed;left:0;top:0;width:820px;height:1200px;border:0;opacity:0;pointer-events:none;z-index:-1;';
-                var done = function () { frame.remove(); delete link.dataset.busy; link.style.opacity = ''; };
-                frame.onload = function () {
-                    var doc = frame.contentDocument;
-                    var sheet = doc.querySelector('.sheet');
-                    if (!sheet) { done(); return; }
-                    var bar = doc.querySelector('.toolbar');
-                    if (bar) { bar.style.display = 'none'; }
-                    sheet.style.cssText += ';margin:0;box-shadow:none;border-radius:0;width:794px;';
-                    doc.body.style.background = '#fff';
-                    var run = function () {
-                        html2pdf().set({
-                            margin: 0,
-                            filename: 'invoice-' + link.dataset.number + '.pdf',
-                            image: { type: 'jpeg', quality: 0.98 },
-                            html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 794 },
-                            jsPDF: { unit: 'px', format: [794, Math.max(1123, sheet.scrollHeight)], hotfixes: ['px_scaling'] }
-                        }).from(sheet).save().then(done).catch(function () { done(); window.open(link.href + '?print=1', '_blank'); });
-                    };
-                    (doc.fonts && doc.fonts.ready ? doc.fonts.ready : Promise.resolve()).then(function () { setTimeout(run, 300); });
-                };
-                frame.src = link.href;
-                document.body.appendChild(frame);
-            });
-        });
-    </script>
 
 @endsection

@@ -114,7 +114,7 @@
 </head>
 <body>
     <div class="toolbar">
-        <a href="{{ route('admin.orders.show', $order) }}">Back to order</a>
+        <a href="{{ $backUrl ?? route('admin.orders.show', $order) }}">{{ $backLabel ?? 'Back to order' }}</a>
         <button type="button" class="primary" onclick="window.print()">Print / Save as PDF</button>
     </div>
 

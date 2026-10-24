@@ -51,6 +51,23 @@ class CheckoutController extends Controller
 
     public function success(string $number): View
     {
+        return view('frontend.checkout.success', ['order' => $this->ownedOrder($number)]);
+    }
+
+    public function invoice(string $number): View
+    {
+        $order = $this->ownedOrder($number);
+
+        return view('admin.orders.invoice', [
+            'order' => $order,
+            'backUrl' => route('checkout.success', $order->number),
+            'backLabel' => 'Back to order',
+        ]);
+    }
+
+    /** Loads an order only for the signed-in owner or the visitor who just placed it. */
+    private function ownedOrder(string $number): Order
+    {
         $order = Order::query()->with('items')->where('number', $number)->firstOrFail();
 
         $owned = auth()->check() && $order->user_id === auth()->id();
@@ -58,7 +75,7 @@ class CheckoutController extends Controller
 
         abort_unless($owned || $justPlaced, 404);
 
-        return view('frontend.checkout.success', ['order' => $order]);
+        return $order;
     }
 
     /** Sends the customer back where they should be when checkout is not possible. */

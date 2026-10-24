@@ -149,6 +149,7 @@ Route::middleware('auth:admin')
             Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
             Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
             Route::get('orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+            Route::get('orders/{order}/invoice/pdf', [OrderController::class, 'invoicePdf'])->name('orders.invoice.pdf');
             Route::patch('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
             Route::patch('orders/{order}/note', [OrderController::class, 'note'])->name('orders.note');
         });

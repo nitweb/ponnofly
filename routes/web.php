@@ -47,6 +47,7 @@ Route::prefix('cart')->as('cart.')->middleware('throttle:120,1')->group(function
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
 Route::get('/order/success/{number}', [CheckoutController::class, 'success'])->where('number', 'NM-\d+')->name('checkout.success');
+Route::get('/order/invoice/{number}', [CheckoutController::class, 'invoice'])->where('number', 'NM-\d+')->name('checkout.invoice');
 
 Route::get('/about', [AboutController::class, 'show'])->name('about.show');
 
