@@ -147,3 +147,12 @@ h1,h2,h3,h4,.font-display{font-family:var(--font-display)}
 .combo-list li em{font-style:normal;font-weight:800;color:rgb(var(--color-primary));white-space:nowrap}
 .combo-list li.none,.combo-list li.foot{justify-content:center;cursor:default;color:rgb(var(--color-ink)/.5);font-size:12px;font-weight:600}
 .combo-list li.foot{border-top:1px solid rgb(var(--color-line));border-radius:0;margin-top:4px}
+
+/* notification dropdown footer */
+.dropdown-menu .notif-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 2px}
+.dropdown-menu .notif-foot form{flex:none;margin:0}
+.dropdown-menu .notif-foot-link{width:auto;padding:7px 10px;font-size:13px;font-weight:600;white-space:nowrap;color:rgb(var(--color-ink)/.7)}
+.dropdown-menu .notif-foot-btn{width:auto;gap:6px;padding:7px 12px;font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;flex-wrap:nowrap;background:rgb(var(--color-primary)/.1);color:rgb(var(--color-primary));transition:background-color .2s,color .2s}
+.dropdown-menu .notif-foot-btn svg{flex:none}
+.dropdown-menu .notif-foot-btn:hover{background:rgb(var(--color-primary));color:#fff}
+.dropdown-menu .notif-foot-btn:disabled{opacity:.45;cursor:not-allowed;background:rgb(var(--color-primary)/.1);color:rgb(var(--color-primary))}

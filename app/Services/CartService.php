@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\DB;
  */
 class CartService
 {
-    public const MAX_QUANTITY = 10;
+    /** Technical ceiling only; the real limit for a line is its stock (and flash deal allowance). */
+    public const MAX_QUANTITY = 100000;
 
     private const SESSION_KEY = 'cart';
 

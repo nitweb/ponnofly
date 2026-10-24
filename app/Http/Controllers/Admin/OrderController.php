@@ -64,6 +64,13 @@ class OrderController extends Controller
         ]);
     }
 
+    public function invoice(Order $order): View
+    {
+        $order->load('items');
+
+        return view('admin.orders.invoice', ['order' => $order]);
+    }
+
     public function update(Request $request, Order $order, CheckoutService $checkout): RedirectResponse
     {
         $data = $request->validate([

@@ -34,12 +34,14 @@
                     @include('admin.notifications._list', ['items' => $notifyAdmin->notifications()->limit(8)->get()])
                 </div>
                 <div class="h-px bg-line my-1"></div>
-                <div class="flex items-center justify-between gap-2 px-1">
-                    <a href="{{ route('admin.notifications.index') }}" class="!w-auto text-sm font-semibold text-primary">View all</a>
+                <div class="notif-foot">
+                    <a href="{{ route('admin.notifications.index') }}" class="notif-foot-link">View all</a>
                     <form method="POST" action="{{ route('admin.notifications.read-all') }}">
                         @csrf
                         @method('PATCH')
-                        <button class="!w-auto text-sm font-semibold text-primary">Mark all as read</button>
+                        <button type="submit" class="notif-foot-btn" @disabled(! $unreadNotifications)>
+                            <svg class="ic ic-sm"><use href="#i-check" /></svg><span>Mark all as read</span>
+                        </button>
                     </form>
                 </div>
             </div>

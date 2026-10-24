@@ -102,7 +102,7 @@
         var m = document.getElementById('main-img'), ts = document.querySelectorAll('.thumb');
         ts.forEach(function (t, i) { t.onclick = function () { m.src = t.dataset.full; m.alt = (m.dataset.alt || 'Product') + ', view ' + (i + 1); ts.forEach(function (x) { x.classList.replace('border-primary', 'border-line') }); t.classList.replace('border-line', 'border-primary') } });
         var q = document.getElementById('qty');
-        document.getElementById('q-').onclick = function () { q.value = Math.max(1, +q.value - 1) }; document.getElementById('q+').onclick = function () { q.value = Math.min(10, +q.value + 1) };
+        document.getElementById('q-').onclick = function () { q.value = Math.max(1, +q.value - 1) }; document.getElementById('q+').onclick = function () { q.value = Math.max(1, (parseInt(q.value, 10) || 1) + 1) }; q.addEventListener('change', function () { q.value = Math.max(1, parseInt(q.value, 10) || 1) });
         var tabs = [].slice.call(document.querySelectorAll('.tab'));
         function sel(x0) { tabs.forEach(function (x) { var on = x === x0; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; x.classList.toggle('bg-primary', on); x.classList.toggle('text-white', on); x.classList.toggle('bg-white', !on); document.getElementById(x.getAttribute('aria-controls')).hidden = !on }) }
         tabs.forEach(function (x, i) { x.onclick = function () { sel(x) }; x.onkeydown = function (e) { var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (k) { var n = tabs[(i + k + tabs.length) % tabs.length]; sel(n); n.focus() } } });

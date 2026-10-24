@@ -180,7 +180,7 @@
                 <div class="mt-6 flex flex-wrap items-center gap-3">
                     <div class="flex items-center border border-line rounded-xl font-bold">
                         <button type="button" id="q-" class="px-4 py-3" aria-label="Decrease quantity">−</button>
-                        <input id="qty" type="number" value="1" min="1" max="10" class="w-12 text-center bg-transparent focus:outline-none" aria-label="Quantity">
+                        <input id="qty" type="number" value="1" min="1" step="1" inputmode="numeric" class="w-16 text-center bg-transparent focus:outline-none" aria-label="Quantity">
                         <button type="button" id="q+" class="px-4 py-3" aria-label="Increase quantity">+</button>
                     </div>
                     <button type="button" id="add-main" class="addcart flex-1 min-w-[150px] bg-primary hover:bg-primary-dark text-white font-extrabold rounded-xl py-3.5 border border-line shadow-sm"

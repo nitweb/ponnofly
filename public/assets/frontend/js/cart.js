@@ -161,7 +161,7 @@
     return request('POST', cfg.routes.add, {
       product_id: Number(productId),
       variant_id: Number(variantId) || null,
-      quantity: Math.max(1, Math.min(10, parseInt(quantity, 10) || 1))
+      quantity: Math.max(1, parseInt(quantity, 10) || 1)
     }).then(function (result) {
       toast(result.message, result.ok ? 'success' : 'error');
       if (result.ok && fab) { fab.classList.remove('fc-pulse'); void fab.offsetWidth; fab.classList.add('fc-pulse'); }
