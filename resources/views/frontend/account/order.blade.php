@@ -32,9 +32,6 @@
             @endif
             <div class="flex flex-wrap gap-2 mt-5">
                 <a href="{{ route('track.show') }}" class="px-4 py-2 rounded-xl border border-line font-bold text-sm hover:bg-primary-soft">Track this order</a>
-                @if ($order->canRequestReturn())
-                    <a href="{{ route('account.returns.create', $order->number) }}" class="px-4 py-2 rounded-xl border border-line font-bold text-sm hover:bg-primary-soft">{{ $order->status === 'delivered' ? 'Return products' : 'Cancel / return products' }}</a>
-                @endif
                 <form method="POST" action="{{ route('account.orders.reorder', $order->number) }}">
                     @csrf
                     <button type="submit" class="px-4 py-2 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary-dark">Order again</button>
@@ -69,27 +66,6 @@
                 <div class="flex justify-between items-baseline border-t-2 border-line pt-4 mt-1"><dt class="font-display font-extrabold text-xl">Total</dt><dd class="font-display font-extrabold text-2xl text-primary">{{ $tk($order->total) }}</dd></div>
             </dl>
         </section>
-
-        @if ($order->returns->isNotEmpty())
-            <section class="{{ $card }}" aria-labelledby="h-returns">
-                <h2 id="h-returns" class="font-display font-extrabold text-2xl">Return &amp; cancel requests</h2>
-                <ul class="grid gap-4 mt-5">
-                    @foreach ($order->returns as $return)
-                        <li class="rounded-2xl border border-line p-4">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <p class="font-bold">{{ $return->number }} · {{ $return->type_label }}</p>
-                                <span class="acct-badge" data-status="{{ $return->status }}">{{ $return->status_label }}</span>
-                            </div>
-                            <p class="text-sm text-ink/60 mt-1">{{ $return->items->map(fn ($line) => ($line->orderItem?->name ?? 'Item').' × '.$line->quantity)->implode(', ') }}</p>
-                            <p class="text-sm text-ink/60">Reason: {{ $return->reason_label }}</p>
-                            @if ($return->admin_note)
-                                <p class="text-sm mt-2 rounded-xl bg-accent/25 border border-line px-3 py-2">Store note: {{ $return->admin_note }}</p>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-            </section>
-        @endif
 
         <div class="grid md:grid-cols-2 gap-4">
             <section class="{{ $card }} acct-info" aria-labelledby="h-ship">

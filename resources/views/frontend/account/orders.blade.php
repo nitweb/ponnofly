@@ -41,9 +41,6 @@
                     <p class="text-sm text-ink/70">{{ $order->items->sum('quantity') }} item(s) · <b class="text-ink">{{ $tk($order->total) }}</b></p>
                     <div class="flex flex-wrap gap-2">
                         <a href="{{ route('account.orders.show', $order->number) }}" class="px-4 py-2 rounded-xl border border-line font-bold text-sm hover:bg-primary-soft">View details</a>
-                        @if ($order->canRequestReturn())
-                            <a href="{{ route('account.returns.create', $order->number) }}" class="px-4 py-2 rounded-xl border border-line font-bold text-sm hover:bg-primary-soft">{{ $order->status === 'delivered' ? 'Return products' : 'Cancel / return' }}</a>
-                        @endif
                         <form method="POST" action="{{ route('account.orders.reorder', $order->number) }}">
                             @csrf
                             <button type="submit" class="px-4 py-2 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary-dark">Order again</button>

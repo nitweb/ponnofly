@@ -7,7 +7,6 @@
         $nav = [
             ['account.index', 'Overview', 'account.index'],
             ['account.orders', 'My orders', 'account.orders*'],
-            ['account.returns', 'Returns', 'account.returns*'],
             ['account.wishlist', 'Wishlist', 'account.wishlist'],
             ['account.addresses', 'Saved addresses', 'account.addresses'],
             ['account.profile', 'Profile & password', 'account.profile'],

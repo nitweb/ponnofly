@@ -6,7 +6,6 @@
         $badges = ['pending' => 'b-warn', 'processing' => 'b-info', 'shipped' => 'b-purple', 'out_for_delivery' => 'b-info', 'delivered' => 'b-success', 'cancelled' => 'b-danger', 'returned' => 'b-muted'];
         $events = $order->events;
         $lastEvent = $events->last();
-        $returnFormOpen = $errors->has('items') || $errors->has('reason') || $errors->has('details');
     @endphp
 
     <div class="flex flex-wrap items-end justify-between gap-4">
@@ -66,75 +65,6 @@
                     </div>
                 </div>
             </section>
-
-            @if ($order->canRequestReturn())
-                <section class="card" id="return-card" @if (! $returnFormOpen) hidden @endif>
-                    <div class="card-h"><h3>{{ $order->status === 'delivered' ? 'Return products' : 'Cancel / return products' }}</h3></div>
-                    <form method="POST" action="{{ route('admin.orders.returns.manual', $order) }}">
-                        @csrf
-                        <div class="overflow-x-auto">
-                            <table class="tbl">
-                                <thead>
-                                    <tr>
-                                        <th class="w-10"><input type="checkbox" id="return-all" class="w-4 h-4 accent-primary" aria-label="Select all"></th>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th class="w-36">Return qty</th>
-                                        <th class="text-right">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($order->items as $item)
-                                        @php $available = $item->returnable_quantity; @endphp
-                                        @if ($available > 0)
-                                            <tr>
-                                                <td><input type="checkbox" class="return-pick w-4 h-4 accent-primary" name="items[]" value="{{ $item->id }}" id="ri-{{ $item->id }}" @checked(in_array($item->id, array_map('intval', old('items', [])), true))></td>
-                                                <td>
-                                                    <label for="ri-{{ $item->id }}" class="flex items-center gap-3 cursor-pointer">
-                                                        <img class="thumb" src="{{ $item->image ?: asset('assets/admin/img/no-image.svg') }}" alt="">
-                                                        <span>
-                                                            <span class="block font-bold">{{ $item->name }}</span>
-                                                            <span class="block text-xs text-ink/50">{{ collect([$item->variant_label, $item->sku ? 'SKU '.$item->sku : null])->filter()->implode(' · ') }}</span>
-                                                        </span>
-                                                    </label>
-                                                </td>
-                                                <td>৳{{ number_format($item->unit_price) }}</td>
-                                                <td>
-                                                    <select class="select" name="qty[{{ $item->id }}]" aria-label="Quantity">
-                                                        @for ($i = 1; $i <= $available; $i++)
-                                                            <option value="{{ $i }}" @selected((int) old("qty.{$item->id}", $available) === $i)>{{ $i }} of {{ $item->quantity }}</option>
-                                                        @endfor
-                                                    </select>
-                                                </td>
-                                                <td class="text-right font-bold">৳{{ number_format($item->unit_price * $available) }}</td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="card-b space-y-5 border-t border-line">
-                            <p class="text-sm text-ink/60">Tick the products the customer is handing back. Stock goes back instantly and the order is closed once everything is returned.</p>
-                            @error('items')<p class="text-danger text-xs">{{ $message }}</p>@enderror
-                            <div>
-                                <label class="lbl" for="rr">Reason</label>
-                                <select class="select" id="rr" name="reason" required>
-                                    <option value="">Select a reason</option>
-                                    @foreach (\App\Models\OrderReturn::REASONS as $key => $label)
-                                        <option value="{{ $key }}" @selected(old('reason') === $key)>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                                @error('reason')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
-                            </div>
-                            <div>
-                                <label class="lbl" for="rd">Details (optional)</label>
-                                <textarea class="textarea w-full" id="rd" name="details" rows="3" maxlength="500">{{ old('details') }}</textarea>
-                            </div>
-                            <button class="btn btn-primary w-full" type="submit">Record &amp; restock</button>
-                        </div>
-                    </form>
-                </section>
-            @endif
 
             <section class="card">
                 <div class="card-h"><h3>Order timeline</h3></div>
@@ -209,11 +139,8 @@
                                 <label class="lbl" for="st">Order status</label>
                                 <select class="select" id="st" name="status">
                                     @foreach (\Illuminate\Support\Arr::except(\App\Models\Order::STATUSES, ['returned']) as $key => $label)
-                                        <option value="{{ $key }}" @selected(! $returnFormOpen && old('status', $order->status) === $key)>{{ $label }}</option>
+                                        <option value="{{ $key }}" @selected(old('status', $order->status) === $key)>{{ $label }}</option>
                                     @endforeach
-                                    @if ($order->canRequestReturn())
-                                        <option value="__return" @selected($returnFormOpen)>{{ $order->status === 'delivered' ? 'Return products' : 'Cancel / return products' }}</option>
-                                    @endif
                                 </select>
                                 @error('status')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
@@ -281,26 +208,5 @@
         </div>
     </div>
 
-@if ($order->canRequestReturn())
-    <script>
-        (function () {
-            var status = document.getElementById('st');
-            var card = document.getElementById('return-card');
-            var button = document.getElementById('update-order-btn');
-            if (! status || ! card || ! button) { return; }
-            function sync() {
-                var returning = status.value === '__return';
-                card.hidden = ! returning;
-                button.disabled = returning;
-                if (returning) { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-            }
-            status.addEventListener('change', sync);
-            var all = document.getElementById('return-all');
-            if (all) { all.addEventListener('change', function () { document.querySelectorAll('.return-pick').forEach(function (box) { box.checked = all.checked; }); }); }
-            card.hidden = status.value !== '__return';
-            button.disabled = status.value === '__return';
-        })();
-    </script>
-    @endif
 
 @endsection

@@ -13,6 +13,7 @@
             <h1 class="font-display font-extrabold text-2xl sm:text-[28px] tracking-tight">Returns</h1>
             <p class="text-ink/55 mt-1">Review customer return and cancellation requests.</p>
         </div>
+        <button type="button" class="btn btn-primary" id="rt-add"><svg class="ic ic-sm"><use href="#i-plus" /></svg>Add return product</button>
     </div>
 
     <section class="card">
@@ -100,5 +101,128 @@
             </div>
         @endif
     </section>
+
+    <div id="rt-modal" class="modal">
+        <div class="!max-w-2xl">
+            <form method="POST" action="{{ route('admin.return-requests.store') }}" id="rt-form">
+                @csrf
+                <input type="hidden" name="order_id" id="rt-order-id" value="{{ old('order_id') }}">
+                <div class="flex items-center justify-between px-6 py-5 border-b border-line">
+                    <h3 class="font-display font-extrabold text-xl">Add return product</h3>
+                    <button type="button" class="icon-btn" data-close aria-label="Close"><svg class="ic"><use href="#i-x" /></svg></button>
+                </div>
+                <div class="p-6 space-y-5">
+                    @if ($errors->any())
+                        <p class="text-danger text-sm">{{ $errors->first() }}</p>
+                    @endif
+                    <div>
+                        <label class="lbl" for="rt-q">Order number, name or phone</label>
+                        <div class="input-group"><svg class="ic"><use href="#i-search" /></svg><input class="input" id="rt-q" type="text" autocomplete="off" placeholder="e.g. NM-10025 or 01700000000"></div>
+                        <ul id="rt-results" class="mt-2 space-y-1"></ul>
+                    </div>
+                    <div id="rt-picked" hidden>
+                        <div class="flex items-center justify-between rounded-xl bg-bg px-4 py-3">
+                            <p class="font-semibold" id="rt-picked-label"></p>
+                            <button type="button" class="btn btn-ghost btn-sm" id="rt-change">Change</button>
+                        </div>
+                        <div class="overflow-x-auto mt-4">
+                            <table class="tbl">
+                                <thead><tr><th class="w-10"><input type="checkbox" id="rt-all" class="w-4 h-4 accent-primary" aria-label="Select all"></th><th>Product</th><th>Price</th><th class="w-36">Return qty</th></tr></thead>
+                                <tbody id="rt-items"></tbody>
+                            </table>
+                        </div>
+                        <div class="space-y-5 mt-5">
+                            <div>
+                                <label class="lbl" for="rt-reason">Reason</label>
+                                <select class="select" id="rt-reason" name="reason" required>
+                                    <option value="">Select a reason</option>
+                                    @foreach (\App\Models\OrderReturn::REASONS as $key => $label)
+                                        <option value="{{ $key }}" @selected(old('reason') === $key)>{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="lbl" for="rt-details">Details (optional)</label>
+                                <textarea class="textarea w-full" id="rt-details" name="details" rows="3" maxlength="500">{{ old('details') }}</textarea>
+                            </div>
+                            <p class="text-sm text-ink/60">Stock and sold count are restored as soon as you save.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-3 px-6 pb-6">
+                    <button type="button" class="btn btn-ghost flex-1 !h-12" data-close>Cancel</button>
+                    <button class="btn btn-primary flex-1 !h-12" type="submit" id="rt-submit" disabled>Return &amp; restock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var modal = document.getElementById('rt-modal');
+            var q = document.getElementById('rt-q');
+            var results = document.getElementById('rt-results');
+            var picked = document.getElementById('rt-picked');
+            var itemsBody = document.getElementById('rt-items');
+            var orderId = document.getElementById('rt-order-id');
+            var submit = document.getElementById('rt-submit');
+            var all = document.getElementById('rt-all');
+            var searchUrl = @json(route('admin.return-requests.search-orders'));
+            var timer = null;
+
+            function esc(value) { var d = document.createElement('div'); d.textContent = value == null ? '' : value; return d.innerHTML; }
+            function money(value) { return '৳' + Math.round(value).toLocaleString('en-US'); }
+            function syncSubmit() { submit.disabled = ! orderId.value || ! itemsBody.querySelector('.rt-pick:checked'); }
+            function reset() {
+                orderId.value = ''; picked.hidden = true; itemsBody.innerHTML = ''; results.innerHTML = ''; all.checked = false; syncSubmit();
+            }
+
+            function pick(order) {
+                orderId.value = order.id;
+                results.innerHTML = '';
+                q.value = '';
+                document.getElementById('rt-picked-label').textContent = '#' + order.number + ' · ' + order.name + ' · ' + order.phone + ' · ' + order.status;
+                itemsBody.innerHTML = order.items.map(function (item) {
+                    var opts = '';
+                    for (var i = 1; i <= item.available; i++) { opts += '<option value="' + i + '"' + (i === item.available ? ' selected' : '') + '>' + i + ' of ' + item.quantity + '</option>'; }
+                    return '<tr><td><input type="checkbox" class="rt-pick w-4 h-4 accent-primary" name="items[]" value="' + item.id + '" id="rt-i' + item.id + '"></td>'
+                        + '<td><label for="rt-i' + item.id + '" class="flex items-center gap-3 cursor-pointer"><img class="thumb" src="' + esc(item.image) + '" alt=""><span><span class="block font-bold">' + esc(item.name) + '</span><span class="block text-xs text-ink/50">' + esc(item.meta) + '</span></span></label></td>'
+                        + '<td>' + money(item.price) + '</td>'
+                        + '<td><select class="select" name="qty[' + item.id + ']" aria-label="Quantity">' + opts + '</select></td></tr>';
+                }).join('');
+                picked.hidden = false;
+                all.checked = false;
+                syncSubmit();
+            }
+
+            q.addEventListener('input', function () {
+                clearTimeout(timer);
+                var term = q.value.trim();
+                if (term.length < 2) { results.innerHTML = ''; return; }
+                timer = setTimeout(function () {
+                    fetch(searchUrl + '?q=' + encodeURIComponent(term), { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' })
+                        .then(function (r) { return r.json(); })
+                        .then(function (data) {
+                            results.innerHTML = '';
+                            if (! data.orders.length) { results.innerHTML = '<li class="text-sm text-ink/55 px-1">No order with returnable products found.</li>'; return; }
+                            data.orders.forEach(function (order) {
+                                var li = document.createElement('li');
+                                li.innerHTML = '<button type="button" class="w-full text-left rounded-xl border border-line px-4 py-2.5 hover:bg-bg"><b>#' + esc(order.number) + '</b> · ' + esc(order.name) + ' · ' + esc(order.phone) + ' <span class="text-xs text-ink/50">(' + esc(order.status) + ', ' + order.items.length + ' product' + (order.items.length === 1 ? '' : 's') + ')</span></button>';
+                                li.firstChild.addEventListener('click', function () { pick(order); });
+                                results.appendChild(li);
+                            });
+                        });
+                }, 250);
+            });
+
+            all.addEventListener('change', function () { [].forEach.call(itemsBody.querySelectorAll('.rt-pick'), function (b) { b.checked = all.checked; }); syncSubmit(); });
+            itemsBody.addEventListener('change', syncSubmit);
+            document.getElementById('rt-change').addEventListener('click', function () { reset(); q.focus(); });
+            document.getElementById('rt-add').addEventListener('click', function () { modal.classList.add('open'); q.focus(); });
+            [].forEach.call(modal.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', function () { modal.classList.remove('open'); }); });
+            modal.addEventListener('click', function (e) { if (e.target === modal) { modal.classList.remove('open'); } });
+            syncSubmit();
+        })();
+    </script>
 
 @endsection
