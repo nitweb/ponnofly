@@ -33,6 +33,8 @@
 
         <ul class="px-4 pb-6 divide-y-2 divide-line font-bold">
 
+            <li><a href="{{ route('shop') }}" class="block py-3.5">All Products</a></li>
+
             @foreach ($menuCategories as $category)
                 @if ($category->children->isEmpty())
                     <li><a href="{{ $category->url }}" class="block py-3.5">{{ $category->name }}</a></li>

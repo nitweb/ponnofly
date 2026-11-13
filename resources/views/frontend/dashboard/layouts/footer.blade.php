@@ -15,7 +15,7 @@
 
                 <a href="{{ url('/') }}" class="flex items-center gap-2 mb-4">
                     @if ($setting('logo_footer'))
-                        <img src="{{ asset($setting('logo_footer')) }}" alt="{{ $storeName }}" class="h-11 w-auto">
+                        <img src="{{ asset($setting('logo_footer')) }}" alt="{{ $storeName }}" class="h-14 w-auto">
                     @else
                         <span class="relative grid place-items-center w-11 h-11 rounded-xl bg-primary -rotate-6">
                             <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent border border-line"></span>
