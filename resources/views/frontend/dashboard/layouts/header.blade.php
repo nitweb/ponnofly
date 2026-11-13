@@ -148,23 +148,34 @@
 
         <div class="max-w-7xl mx-auto px-6">
 
+            @php
+                $currentCategory = request()->route('category');
+                $activeCategoryIds = [];
+                for ($node = $currentCategory instanceof \App\Models\Category ? $currentCategory : null; $node; $node = $node->parent) {
+                    $activeCategoryIds[] = $node->id;
+                }
+            @endphp
+
             <ul class="flex items-center gap-1 py-2">
 
                 <li>
-                    <a href="{{ route('shop') }}" class="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors hover:bg-primary-soft">All Products</a>
+                    <a href="{{ route('shop') }}" @class(['active' => request()->routeIs('shop'), 'flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors hover:bg-primary-soft', 'bg-primary-soft text-primary' => request()->routeIs('shop')]) @if (request()->routeIs('shop')) aria-current="page" @endif>All Products</a>
                 </li>
 
                 @foreach ($menuCategories as $category)
+                    @php
+                        $isCategoryActive = in_array($category->id, $activeCategoryIds, true);
+                    @endphp
                     @if ($category->children->isEmpty())
                         <li>
-                            <a href="{{ $category->url }}" class="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors hover:bg-primary-soft">{{ $category->name }}</a>
+                            <a href="{{ $category->url }}" @class(['active' => $isCategoryActive, 'flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors hover:bg-primary-soft', 'bg-primary-soft text-primary' => $isCategoryActive]) @if ($isCategoryActive) aria-current="page" @endif>{{ $category->name }}</a>
                         </li>
                     @else
                         @php
                             $promos = collect($category->promos ?? [])->filter(fn ($promo) => filled($promo['title'] ?? null))->values();
                         @endphp
                         <li class="mega-item static">
-                            <button class="mega-trigger flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors" aria-haspopup="true">
+                            <button @class(['mega-trigger', 'active' => $isCategoryActive, 'flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors', 'bg-primary-soft text-primary' => $isCategoryActive]) aria-haspopup="true">
                                 {{ $category->name }}
                                 <svg class="chev w-4 h-4 transition-transform">
                                     <use href="#i-chev" />
@@ -211,7 +222,7 @@
                 @endforeach
 
                 <li class="ml-auto">
-                    <a href="{{ route('track.show') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-[15px] border-2 border-line hover:border-primary hover:text-primary hover:bg-primary-soft transition-colors">
+                    <a href="{{ route('track.show') }}" @class(['active' => request()->routeIs('track.*'), 'flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-[15px] border-2 hover:border-primary hover:text-primary hover:bg-primary-soft transition-colors', 'border-primary text-primary bg-primary-soft' => request()->routeIs('track.*'), 'border-line' => ! request()->routeIs('track.*')])>
                         <svg viewBox="0 0 24 24" class="w-5 h-5" aria-hidden="true">
                             <path fill="currentColor" d="M3 7h11v8H3zM14 10h4l3 3v2h-7z" />
                             <circle cx="7" cy="17" r="2" fill="currentColor" />
@@ -222,7 +233,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('flash-deals') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-[15px] bg-primary text-white hover:brightness-95">
+                    <a href="{{ route('flash-deals') }}" @class(['active' => request()->routeIs('flash-deals'), 'flex items-center gap-2 px-4 py-2.5 rounded-xl font-extrabold text-[15px] bg-primary text-white hover:brightness-95', 'ring-2 ring-offset-2 ring-primary' => request()->routeIs('flash-deals')])>
                         Flash deals <span class="bg-accent text-ink text-[11px] px-1.5 py-0.5 rounded-md">HOT</span>
                     </a>
                 </li>
