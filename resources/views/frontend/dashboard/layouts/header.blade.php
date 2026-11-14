@@ -119,7 +119,6 @@
                             </svg>
                             <span class="absolute -top-2 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-accent text-ink text-[10px] font-extrabold grid place-items-center" data-cart-badge>{{ $cartSummary['count'] }}</span>
                         </span>
-                        <span class="hidden md:block" data-cart-total>৳{{ number_format($cartSummary['subtotal'], floor($cartSummary['subtotal']) == $cartSummary['subtotal'] ? 0 : 2) }}</span>
                     </button>
 
                 </div>
