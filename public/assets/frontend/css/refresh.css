@@ -740,3 +740,11 @@ main section a.font-bold.underline.underline-offset-4:hover::after { transform: 
   #shop-grid.is-list article.group > .p-4 h3 { font-size: 14px; }
   #shop-grid.is-list article.group > .card-cart { max-width: none; margin: 8px 0 2px; }
 }
+
+/* Product card: Add to cart + Buy now side by side */
+.card-cta { display: flex; gap: 8px; width: 100%; padding: 0 10px 10px; }
+.card-cta .card-cart { flex: 1 1 0; width: auto; min-width: 0; padding: 0 .5rem; white-space: nowrap; }
+.card-cta .card-buy { background: rgb(var(--color-primary)); color: #fff; }
+.card-cta .card-buy::before { display: none; }
+.card-cta .card-buy:hover, .card-cta .card-buy:focus-visible { background: rgb(var(--color-primary-dark)); }
+@media (max-width: 420px) { .card-cta .card-cart:not(.card-buy)::before { display: none; } }

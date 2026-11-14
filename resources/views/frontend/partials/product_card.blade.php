@@ -55,7 +55,10 @@
         @elseif ($product->has_variants)
             <a href="{{ $product->url }}" class="card-cart" style="text-decoration:none">Select options</a>
         @else
-            <button type="button" class="addcart card-cart" data-product-id="{{ $product->id }}" aria-label="Add {{ $pName }} to cart">Add to cart</button>
+            <div class="card-cta" style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:8px;width:100%;padding:0 10px 10px">
+                <button type="button" class="addcart card-cart" style="flex:1 1 0;width:auto;min-width:0;margin:0;padding:0 .5rem;white-space:nowrap" data-product-id="{{ $product->id }}" aria-label="Add {{ $pName }} to cart">Add to cart</button>
+                <button type="button" class="buynow card-cart card-buy" style="flex:1 1 0;width:auto;min-width:0;margin:0;padding:0 .5rem;white-space:nowrap" data-product-id="{{ $product->id }}" data-checkout="{{ route('checkout.show') }}" aria-label="Buy {{ $pName }} now">Buy now</button>
+            </div>
         @endif
     </article>
 </li>

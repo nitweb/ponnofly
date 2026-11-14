@@ -98,7 +98,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/track.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/404.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/frontend/css/refresh.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/css/refresh.css') }}?v={{ filemtime(public_path('assets/frontend/css/refresh.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/extras.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/extras.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/customer.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/customer.css')) }}">
     @if ($setting('ga_id'))
@@ -269,6 +269,7 @@
     <!-- ============================= MAIN (page content goes here) ============================= -->
     <main id="main">
         @yield('frontend_contents')
+        <div class="pb-14"></div>
     </main>
 
     <!-- ============================= FOOTER ============================= -->

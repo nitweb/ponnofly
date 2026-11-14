@@ -199,6 +199,17 @@
       return;
     }
 
+    b = e.target.closest('.buynow');
+    if (b) {
+      if (b.dataset.busy || !b.dataset.productId) return;
+      b.dataset.busy = '1';
+      add(b.dataset.productId, null, 1).then(function (r) {
+        delete b.dataset.busy;
+        if (r.ok) location.href = b.dataset.checkout;
+      });
+      return;
+    }
+
     b = e.target.closest('[data-cart-remove]');
     if (b) { request('DELETE', cfg.routes.item + '/' + b.dataset.cartRemove).then(function (r) { toast(r.message, r.ok === false ? 'error' : 'success'); }); return; }
 
