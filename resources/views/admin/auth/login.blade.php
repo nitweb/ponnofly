@@ -7,12 +7,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
 
-    <title>Login · Nebula Mart Admin</title>
+    <title>Login · {{ $setting('store_name') }} Admin</title>
 
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/admin/img/favicon.svg') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/admin/img/favicon-32.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('assets/admin/img/apple-touch-icon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/admin/img/favicon.ico') }}">
+    @include('admin.dashboard.layouts.favicon')
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/tailwind.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin.css') }}">
@@ -31,11 +28,7 @@
         <section class="relative z-10 w-full flex flex-col items-center">
 
             <div class="flex items-center gap-3 mb-8">
-                <span class="w-12 h-12 rounded-2xl bg-gradient-to-br from-accent to-amber-300 grid place-items-center text-[#1b1300] font-display font-extrabold text-xl tracking-tighter">NM</span>
-                <div>
-                    <p class="font-display font-extrabold text-xl">Nebula Mart</p>
-                    <p class="text-xs tracking-[.2em] uppercase text-white/50 font-bold">Admin Console</p>
-                </div>
+                @include('admin.dashboard.layouts.brand', ['large' => true])
             </div>
 
             <div class="w-full max-w-md bg-white text-ink rounded-[28px] p-8 sm:p-10 shadow-2xl">

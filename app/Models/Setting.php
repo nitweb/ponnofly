@@ -24,7 +24,7 @@ class Setting extends Model
         'redx' => 'RedX',
     ];
 
-    public const IMAGE_KEYS = ['logo_header', 'logo_footer', 'favicon', 'og_image'];
+    public const IMAGE_KEYS = ['logo_header', 'logo_footer', 'favicon', 'admin_logo', 'admin_favicon', 'og_image'];
 
     public const TIMEZONES = [
         'Asia/Dhaka' => 'Asia/Dhaka (UTC+6)',
@@ -166,6 +166,8 @@ class Setting extends Model
             'custom_header_script' => '',
             'custom_footer_script' => '',
             'og_image' => '',
+            'admin_logo' => '',
+            'admin_favicon' => '',
 
             'color_primary' => '#0B3A8C',
             'color_accent' => '#F5A800',

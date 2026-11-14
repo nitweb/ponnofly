@@ -7,12 +7,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
 
-    <title>@yield('admin_title')</title>
+    <title>{{ str_replace('Nebula Mart', $setting('store_name'), $__env->yieldContent('admin_title')) }}</title>
 
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/admin/img/favicon.svg') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/admin/img/favicon-32.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('assets/admin/img/apple-touch-icon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/admin/img/favicon.ico') }}">
+    @include('admin.dashboard.layouts.favicon')
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/tailwind.css') }}">

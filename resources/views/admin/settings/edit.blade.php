@@ -76,6 +76,7 @@
                             @foreach ([
                                 ['logo_header', 'lg-h', 'Header logo', 'Shown in the site header · PNG / SVG', 'w-24 h-16'],
                                 ['logo_footer', 'lg-f', 'Footer logo', 'Shown in the site footer · light version recommended', 'w-24 h-16'],
+                                ['admin_logo', 'lg-a', 'Admin logo', 'Shown in the admin sidebar and login pages · light logo for dark background · falls back to footer logo', 'w-24 h-16'],
                             ] as [$key, $id, $label, $hint, $size])
                                 <div>
                                     <label class="lbl">{{ $label }}</label>
@@ -112,6 +113,25 @@
                                             <button type="button" class="btn btn-ghost btn-sm" data-reset-img="#fv">Remove</button>
                                         </div>
                                         <input type="hidden" name="remove_favicon" value="0" data-remove>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label class="lbl">Admin favicon</label>
+                                <div class="drop !p-5 flex flex-col sm:flex-row items-center gap-5 text-left">
+                                    <img id="fva" src="{{ $imageSrc('admin_favicon') }}" class="w-16 h-16 rounded-xl object-contain bg-white border border-line shrink-0" alt="">
+                                    <div class="text-center sm:text-left">
+                                        <p class="font-bold">Admin favicon</p>
+                                        <p class="text-xs text-ink/50 mt-1 mb-3">Admin panel tab icon · falls back to site favicon</p>
+                                        <div class="flex gap-2 justify-center sm:justify-start">
+                                            <label class="btn btn-primary btn-sm cursor-pointer">
+                                                <svg class="ic ic-sm"><use href="#i-upload" /></svg>Upload
+                                                <input type="file" name="admin_favicon" class="hidden" accept="image/*,.ico" data-preview="#fva">
+                                            </label>
+                                            <button type="button" class="btn btn-ghost btn-sm" data-reset-img="#fva">Remove</button>
+                                        </div>
+                                        <input type="hidden" name="remove_admin_favicon" value="0" data-remove>
                                     </div>
                                 </div>
                             </div>

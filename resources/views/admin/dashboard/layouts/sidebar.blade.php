@@ -2,12 +2,7 @@
 
     <div class="px-6 h-20 flex items-center gap-3 shrink-0">
 
-        <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-amber-300 grid place-items-center text-[#1b1300] font-display font-extrabold text-base tracking-tighter shadow-lg">NM</span>
-
-        <div class="leading-tight">
-            <p class="font-display font-extrabold text-lg tracking-tight">Nebula Mart</p>
-            <p class="text-[11px] tracking-[.18em] uppercase text-white/45 font-bold">Admin Console</p>
-        </div>
+        @include('admin.dashboard.layouts.brand')
 
         <button class="lg:hidden ml-auto icon-btn !text-white/70" data-sidebar-toggle aria-label="Close menu">
             <svg class="ic ">

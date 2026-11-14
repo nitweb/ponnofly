@@ -62,6 +62,8 @@ class SettingRequest extends FormRequest
             'logo_header' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:2048'],
             'logo_footer' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:2048'],
             'favicon' => ['nullable', 'file', 'mimes:png,ico,svg,webp', 'max:1024'],
+            'admin_logo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:2048'],
+            'admin_favicon' => ['nullable', 'file', 'mimes:png,ico,svg,webp', 'max:1024'],
             'og_image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048', 'dimensions:width=1200,height=630'],
         ];
 
