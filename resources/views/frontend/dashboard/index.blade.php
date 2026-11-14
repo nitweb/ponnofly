@@ -19,4 +19,6 @@
 
     @include('frontend.home.04_top_brands')
 
+    <div class="pb-14"></div>
+
 @endsection

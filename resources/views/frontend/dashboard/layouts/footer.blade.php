@@ -44,54 +44,45 @@
 
             </div>
 
-            <nav class="lg:col-span-2" aria-label="Shop">
-                <h3 class="font-display font-extrabold text-lg text-accent mb-4">Shop</h3>
-                <ul class="grid gap-2.5 text-white/75">
-                    @foreach ($menuCategories as $category)
-                        <li><a href="{{ $category->url }}" class="hover:text-white">{{ $category->name }}</a></li>
-                    @endforeach
-                    <li><a href="shop.html" class="hover:text-white">Flash deals</a></li>
-                </ul>
-            </nav>
-
-            <nav class="lg:col-span-2" aria-label="Help">
-                <h3 class="font-display font-extrabold text-lg text-accent mb-4">Help</h3>
+            <nav class="lg:col-span-2" aria-label="Useful Links">
+                <h3 class="font-display font-extrabold text-lg text-accent mb-4">Useful Links</h3>
                 <ul class="grid gap-2.5 text-white/75">
                     <li><a href="{{ route('track.show') }}" class="hover:text-white">Track order</a></li>
-                    <li><a href="{{ route('shipping.show') }}" class="hover:text-white">Shipping info</a></li>
-                    <li><a href="{{ route('returns.show') }}" class="hover:text-white">Returns &amp; refunds</a></li>
-                    <li><a href="{{ route('faq.index') }}" class="hover:text-white">FAQ</a></li>
-                    <li><a href="{{ route('contact.show') }}" class="hover:text-white">Contact us</a></li>
+                    <li><a href="{{ route('faq.index') }}" class="hover:text-white">Frequently Asked Questions</a></li>
+                    <li><a href="{{ route('about.show') }}" class="hover:text-white">About {{ $setting('store_name') }}</a></li>
+                    <li><a href="{{ route('contact.show') }}" class="hover:text-white">Contact Store</a></li>
+                    <li><a href="{{ route('account.wishlist') }}" class="hover:text-white">My Wishlist</a></li>
                 </ul>
             </nav>
 
-            <nav class="lg:col-span-2" aria-label="Company">
-                <h3 class="font-display font-extrabold text-lg text-accent mb-4">Company</h3>
+            <nav class="lg:col-span-2" aria-label="Policy & Security">
+                <h3 class="font-display font-extrabold text-lg text-accent mb-4">Policy &amp; Security</h3>
                 <ul class="grid gap-2.5 text-white/75">
-                    <li><a href="{{ route('about.show') }}" class="hover:text-white">About us</a></li>
                     <li><a href="{{ route('privacy.show') }}" class="hover:text-white">Privacy policy</a></li>
-                    <li><a href="{{ route('terms.show') }}" class="hover:text-white">Terms of service</a></li>
+                    <li><a href="{{ route('returns.show') }}" class="hover:text-white">Refunds &amp; Return</a></li>
+                    <li><a href="{{ route('terms.show') }}" class="hover:text-white">Terms &amp; conditions</a></li>
+                    <li><a href="{{ route('shipping.show') }}" class="hover:text-white">Shipping</a></li>
                 </ul>
             </nav>
 
-            <div class="col-span-2 md:col-span-2 lg:col-span-2">
+            <div class="col-span-2 md:col-span-2 lg:col-span-4">
                 <h3 class="font-display font-extrabold text-lg text-accent mb-4">Contact</h3>
                 @php
                     $phoneDigits = preg_replace('/\D+/', '', (string) $setting('phone'));
                     $phoneLink = $phoneDigits === '' ? '' : (str_starts_with($phoneDigits, '0') ? '+88' . $phoneDigits : '+' . $phoneDigits);
                 @endphp
-                <ul class="grid gap-2.5 text-white/75 text-[15px]">
+                <ul class="grid gap-3.5 text-white/75 text-[15px]">
+                    @if ($setting('address'))
+                        <li class="flex gap-3"><svg class="w-5 h-5 shrink-0 mt-0.5 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>{{ $setting('address') }}</span></li>
+                    @endif
                     @if ($setting('phone'))
-                        <li>Hotline: <a href="tel:{{ $phoneLink }}" class="text-white font-bold">{{ $setting('phone') }}</a></li>
+                        <li class="flex gap-3"><svg class="w-5 h-5 shrink-0 mt-0.5 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><a href="tel:{{ $phoneLink }}" class="hover:text-white">{{ $setting('phone') }}</a></li>
                     @endif
                     @if ($setting('support_email'))
-                        <li><a href="mailto:{{ $setting('support_email') }}" class="hover:text-white">{{ $setting('support_email') }}</a></li>
-                    @endif
-                    @if ($setting('address'))
-                        <li>{{ $setting('address') }}</li>
+                        <li class="flex gap-3"><svg class="w-5 h-5 shrink-0 mt-0.5 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><a href="mailto:{{ $setting('support_email') }}" class="hover:text-white break-all">{{ $setting('support_email') }}</a></li>
                     @endif
                     @if ($setting('opening_hours'))
-                        <li>{{ $setting('opening_hours') }}</li>
+                        <li class="flex gap-3"><svg class="w-5 h-5 shrink-0 mt-0.5 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>{{ $setting('opening_hours') }}</span></li>
                     @endif
                 </ul>
             </div>

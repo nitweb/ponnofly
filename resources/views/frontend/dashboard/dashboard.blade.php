@@ -269,7 +269,6 @@
     <!-- ============================= MAIN (page content goes here) ============================= -->
     <main id="main">
         @yield('frontend_contents')
-        <div class="pb-14"></div>
     </main>
 
     <!-- ============================= FOOTER ============================= -->
