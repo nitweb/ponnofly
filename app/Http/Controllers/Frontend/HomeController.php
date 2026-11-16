@@ -23,10 +23,15 @@ class HomeController extends Controller
         }
 
         $categorySections = $homeCategories
-            ->map(fn (Category $category) => [
-                'category' => $category,
-                'products' => Product::active()->inCategory($category->id)->with(self::RELATIONS)->latest('id')->limit(8)->get(),
-            ])
+            ->map(function (Category $category) {
+                $products = Product::active()->inCategory($category->id)->with(self::RELATIONS)->latest('id')->limit(16)->get();
+
+                return [
+                    'category' => $category,
+                    'products' => $products->take(15),
+                    'next' => $products->count() > 15 ? $category->url.'?page=2' : null,
+                ];
+            })
             ->filter(fn (array $section) => $section['products']->isNotEmpty())
             ->take(4)
             ->values();

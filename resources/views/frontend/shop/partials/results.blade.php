@@ -11,9 +11,11 @@
         @include('frontend.shop.partials.items', ['products' => $products])
     </ul>
 
-    <div id="shop-more" class="flex justify-center mt-10" @if ($products->hasMorePages()) data-next="{{ $products->nextPageUrl() }}" @else hidden @endif>
-        <button type="button" class="px-8 py-2.5 rounded-xl font-bold text-[15px] border-2 border-primary text-primary bg-primary-soft hover:bg-primary hover:text-white transition-colors">Read more</button>
+    @if ($products->hasMorePages())
+    <div id="shop-more" data-more data-target="#shop-grid" data-next="{{ $products->nextPageUrl() }}" class="flex justify-center mt-10">
+        <button type="button" class="px-8 py-2.5 rounded-xl font-bold text-[15px] border-2 border-line bg-white hover:border-primary hover:bg-primary hover:text-white transition-colors">Read more</button>
     </div>
+    @endif
 @else
     <div class="mt-8 rounded-3xl border border-line bg-white p-10 text-center">
         <p class="font-display font-extrabold text-2xl">Nothing matches your filters</p>

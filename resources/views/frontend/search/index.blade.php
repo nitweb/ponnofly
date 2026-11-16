@@ -34,24 +34,14 @@
 
 <section aria-label="Search results" class="max-w-7xl mx-auto px-4 lg:px-6 mt-8">
     @if ($products->isNotEmpty())
-        <ul class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-            @foreach ($products as $product)
-                @include('frontend.partials.product_card', ['product' => $product])
-            @endforeach
+        <ul id="search-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            @include('frontend.shop.partials.items', ['products' => $products])
         </ul>
 
-        @if ($products->hasPages())
-            <nav class="flex flex-wrap items-center justify-center gap-2 mt-10" aria-label="Pagination">
-                @if (! $products->onFirstPage())
-                    <a href="{{ $products->previousPageUrl() }}" class="px-4 py-2 rounded-xl border border-line bg-white font-bold hover:bg-accent">‹ Prev</a>
-                @endif
-                @foreach ($products->getUrlRange(max(1, $products->currentPage() - 2), min($products->lastPage(), $products->currentPage() + 2)) as $page => $url)
-                    <a href="{{ $url }}" class="px-4 py-2 rounded-xl border border-line font-bold {{ $page === $products->currentPage() ? 'bg-primary text-white' : 'bg-white hover:bg-accent' }}" @if ($page === $products->currentPage()) aria-current="page" @endif>{{ $page }}</a>
-                @endforeach
-                @if ($products->hasMorePages())
-                    <a href="{{ $products->nextPageUrl() }}" class="px-4 py-2 rounded-xl border border-line bg-white font-bold hover:bg-accent">Next ›</a>
-                @endif
-            </nav>
+        @if ($products->hasMorePages())
+        <div data-more data-target="#search-grid" data-next="{{ $products->nextPageUrl() }}" class="flex justify-center mt-10">
+            <button type="button" class="px-8 py-2.5 rounded-xl font-bold text-[15px] border-2 border-line bg-white hover:border-primary hover:bg-primary hover:text-white transition-colors">Read more</button>
+        </div>
         @endif
     @else
         <div class="rounded-3xl border border-line bg-white p-10 text-center">

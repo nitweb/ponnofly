@@ -15,10 +15,10 @@ class SearchController extends Controller
 
     private const LIMIT = 8;
 
-    private const PER_PAGE = 12;
+    private const PER_PAGE = 15;
 
     /** Full search results page, reached from the header search. */
-    public function index(Request $request): View|RedirectResponse
+    public function index(Request $request): View|RedirectResponse|JsonResponse
     {
         $term = trim((string) preg_replace('/\s+/u', ' ', (string) $request->query('q', '')));
 
@@ -34,6 +34,13 @@ class SearchController extends Controller
             ->orderByDesc('id')
             ->paginate(self::PER_PAGE)
             ->withQueryString();
+
+        if ($request->expectsJson() && $request->boolean('append')) {
+            return response()->json([
+                'html' => view('frontend.shop.partials.items', ['products' => $products])->render(),
+                'next' => $products->nextPageUrl(),
+            ]);
+        }
 
         return view('frontend.search.index', ['term' => $term, 'products' => $products]);
     }
