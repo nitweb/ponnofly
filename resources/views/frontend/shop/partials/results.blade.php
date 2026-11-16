@@ -12,7 +12,7 @@
     </ul>
 
     <div id="shop-more" class="flex justify-center mt-10" @if ($products->hasMorePages()) data-next="{{ $products->nextPageUrl() }}" @else hidden @endif>
-        <button type="button" class="px-8 py-3 rounded-xl border border-line bg-white font-extrabold hover:bg-accent">Read more</button>
+        <button type="button" class="px-8 py-2.5 rounded-xl font-bold text-[15px] border-2 border-primary text-primary bg-primary-soft hover:bg-primary hover:text-white transition-colors">Read more</button>
     </div>
 @else
     <div class="mt-8 rounded-3xl border border-line bg-white p-10 text-center">
