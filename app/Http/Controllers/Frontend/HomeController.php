@@ -36,6 +36,7 @@ class HomeController extends Controller
         return view('frontend.dashboard.index', [
             'banners' => Banner::active()->get(),
             'homeCategories' => $homeCategories,
+            'shopCategories' => Category::shopByCategoryList(),
             'homeBrands' => Brand::active()->featured()->get(),
             'flashDeal' => $flashDeal,
             'flashProducts' => $flashDeal?->activeProducts(8) ?? collect(),

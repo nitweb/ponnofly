@@ -35,7 +35,7 @@
 
             <li><a href="{{ route('shop') }}" class="block py-3.5">All Products</a></li>
 
-            @foreach ($menuCategories as $category)
+            @foreach ($navCategories as $category)
                 @if ($category->children->isEmpty())
                     <li><a href="{{ $category->url }}" class="block py-3.5">{{ $category->name }}</a></li>
                 @else

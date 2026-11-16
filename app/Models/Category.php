@@ -14,6 +14,8 @@ use Illuminate\Support\Collection;
 ])]
 class Category extends Model
 {
+    public const NAV_SLUGS = ['medical', 'fashion', 'electronics', 'home-living', 'beauty', 'grocery', 'sports'];
+
     private static ?Collection $menuTreeMemo = null;
 
     protected function casts(): array
@@ -93,6 +95,31 @@ class Category extends Model
 
             return $build(0, []);
         })();
+    }
+
+    /**
+     * Root categories pinned to the header navigation (in NAV_SLUGS order).
+     *
+     * @return Collection<int, self>
+     */
+    public static function navTree(): Collection
+    {
+        return static::menuTree()
+            ->filter(fn (self $category) => in_array($category->slug, self::NAV_SLUGS, true))
+            ->sortBy(fn (self $category) => array_search($category->slug, self::NAV_SLUGS, true))
+            ->values();
+    }
+
+    /**
+     * Root categories not pinned to the header, shown in "Shop by category".
+     *
+     * @return Collection<int, self>
+     */
+    public static function shopByCategoryList(): Collection
+    {
+        return static::menuTree()
+            ->reject(fn (self $category) => in_array($category->slug, self::NAV_SLUGS, true))
+            ->values();
     }
 
     /**

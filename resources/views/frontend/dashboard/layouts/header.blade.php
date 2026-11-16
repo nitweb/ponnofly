@@ -161,7 +161,7 @@
                     <a href="{{ route('shop') }}" @class(['active' => request()->routeIs('shop'), 'flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors hover:bg-primary-soft', 'bg-primary-soft text-primary' => request()->routeIs('shop')]) @if (request()->routeIs('shop')) aria-current="page" @endif>All Products</a>
                 </li>
 
-                @foreach ($menuCategories as $category)
+                @foreach ($navCategories as $category)
                     @php
                         $isCategoryActive = in_array($category->id, $activeCategoryIds, true);
                     @endphp

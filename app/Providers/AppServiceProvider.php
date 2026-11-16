@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('frontend.*', function ($view) {
             $view->with('menuCategories', Category::menuTree());
+            $view->with('navCategories', Category::navTree());
             $view->with('cartSummary', app(CartService::class)->summary());
             $view->with('wishlistIds', auth()->check() ? auth()->user()->wishlistProductIds() : []);
         });
