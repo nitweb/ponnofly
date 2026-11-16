@@ -57,6 +57,10 @@
                                 <label class="lbl" for="tagline">Tagline</label>
                                 <input class="input" id="tagline" name="tagline" type="text" value="{{ $value('tagline') }}">
                             </div>
+                            <div class="sm:col-span-2">
+                                <label class="lbl" for="footer_description">Footer description</label>
+                                <textarea class="textarea" id="footer_description" name="footer_description" rows="3">{{ $value('footer_description') }}</textarea>
+                            </div>
                             <div>
                                 <label class="lbl" for="currency">Currency</label>
                                 <select class="select" id="currency" name="currency">

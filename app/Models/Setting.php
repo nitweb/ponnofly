@@ -56,7 +56,7 @@ class Setting extends Model
      */
     public static function textKeys(): array
     {
-        $keys = ['store_name', 'tagline', 'currency', 'timezone', 'announcement', 'support_email', 'phone', 'opening_hours', 'address', 'facebook', 'instagram', 'youtube', 'tiktok', 'free_delivery_above', 'min_order', 'return_days', 'refund_time', 'chat_call', 'chat_whatsapp', 'chat_messenger', 'meta_title', 'meta_description', 'canonical_domain', 'ga_id', 'pixel_id', 'gsc_code', 'custom_header_script', 'custom_footer_script', 'color_primary', 'color_accent', 'color_text', 'color_background', 'font_heading', 'font_body'];
+        $keys = ['store_name', 'tagline', 'footer_description', 'currency', 'timezone', 'announcement', 'support_email', 'phone', 'opening_hours', 'address', 'facebook', 'instagram', 'youtube', 'tiktok', 'free_delivery_above', 'min_order', 'return_days', 'refund_time', 'chat_call', 'chat_whatsapp', 'chat_messenger', 'meta_title', 'meta_description', 'canonical_domain', 'ga_id', 'pixel_id', 'gsc_code', 'custom_header_script', 'custom_footer_script', 'color_primary', 'color_accent', 'color_text', 'color_background', 'font_heading', 'font_body'];
 
         foreach (array_keys(self::ZONES) as $zone) {
             $keys[] = "{$zone}_charge";
@@ -111,7 +111,8 @@ class Setting extends Model
     {
         return [
             'store_name' => 'NEBULA MART',
-            'tagline' => 'Fashion, gadgets, home, beauty and groceries from trusted brands, delivered across Bangladesh.',
+            'tagline' => 'Your choice, your lifestyle',
+            'footer_description' => 'Fashion, gadgets, home, beauty and groceries from trusted brands, delivered across Bangladesh.',
             'currency' => 'BDT',
             'timezone' => 'Asia/Dhaka',
             'announcement' => "Pay with cash on delivery\n7-day easy returns on everything",

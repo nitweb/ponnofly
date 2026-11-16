@@ -21,6 +21,7 @@ class SettingRequest extends FormRequest
         $rules = [
             'store_name' => ['required', 'string', 'max:120'],
             'tagline' => ['nullable', 'string', 'max:255'],
+            'footer_description' => ['nullable', 'string', 'max:500'],
             'currency' => ['required', Rule::in(['BDT', 'USD'])],
             'timezone' => ['required', Rule::in(array_keys(Setting::TIMEZONES))],
             'announcement' => ['nullable', 'string', 'max:500'],

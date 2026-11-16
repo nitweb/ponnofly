@@ -26,8 +26,8 @@
                     @endif
                 </a>
 
-                @if ($setting('tagline'))
-                    <p class="text-white/70 max-w-sm leading-relaxed">{{ $setting('tagline') }}</p>
+                @if ($setting('footer_description'))
+                    <p class="text-white/70 max-w-sm leading-relaxed" style="text-align: justify;">{{ $setting('footer_description') }}</p>
                 @endif
 
                 <div class="flex gap-2.5 mt-6">
