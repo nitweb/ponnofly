@@ -39,8 +39,7 @@
         </ul>
 
         @if ($products->hasMorePages())
-        <div data-more data-target="#search-grid" data-next="{{ $products->nextPageUrl() }}" class="flex justify-center mt-10">
-            <button type="button" class="px-8 py-2.5 rounded-xl font-bold text-[15px] border-2 border-line bg-white hover:border-primary hover:bg-primary hover:text-white transition-colors">Read more</button>
+        <div data-more data-target="#search-grid" data-next="{{ $products->nextPageUrl() }}" class="flex justify-center mt-10 min-h-10 font-bold text-ink/60">
         </div>
         @endif
     @else

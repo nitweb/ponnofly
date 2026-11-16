@@ -237,21 +237,30 @@
     });
   }
 
-  /* "Read more": appends the next 15 products (shop + search), button hides when nothing is left */
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-more] button'); if (!btn) return;
-    var m = btn.parentNode, g = document.querySelector(m.getAttribute('data-target')), u = m.getAttribute('data-next');
+  /* Infinite scroll: appends the next 15 products (shop + search + home sections) when the [data-more] marker nears the viewport */
+  function loadMore(m) {
+    var g = document.querySelector(m.getAttribute('data-target')), u = m.getAttribute('data-next');
     if (!g || !u || m.getAttribute('aria-busy')) return;
-    m.setAttribute('aria-busy', 'true'); btn.textContent = 'Loading…';
+    m.setAttribute('aria-busy', 'true'); m.textContent = 'Loading…';
     fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'append=1', { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
       .then(function (d) {
         g.insertAdjacentHTML('beforeend', d.html);
-        if (d.next) { m.setAttribute('data-next', d.next); btn.textContent = 'Read more' } else { m.remove(); return }
+        if (d.next) { m.setAttribute('data-next', d.next); m.textContent = '' } else { m.remove(); return }
       })
-      .catch(function () { btn.textContent = 'Read more' })
-      .then(function () { m.removeAttribute('aria-busy') });
-  });
+      .catch(function () { m.textContent = '' })
+      .then(function () { m.removeAttribute('aria-busy'); checkMore() });
+  }
+  var moreTick = false;
+  function checkMore() {
+    document.querySelectorAll('[data-more]').forEach(function (m) {
+      if (m.getBoundingClientRect().top < window.innerHeight + 400) loadMore(m);
+    });
+  }
+  function queueMore() { if (moreTick) return; moreTick = true; requestAnimationFrame(function () { moreTick = false; checkMore() }) }
+  window.addEventListener('scroll', queueMore, { passive: true });
+  window.addEventListener('resize', queueMore);
+  window.addEventListener('load', queueMore);
 
   /* shop page: AJAX name search (grid + count + pagination), separate from the header search */
   if (PAGE === 'catalog') run('shop-search', function () {
