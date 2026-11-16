@@ -63,8 +63,15 @@ class ShopController extends Controller
             ->when($sort === 'hi', fn (Builder $q) => $q->orderByDesc('price')->orderByDesc('id'))
             ->when($sort === 'pop', fn (Builder $q) => $q->orderByDesc('sold_count')->orderByDesc('id'))
             ->when($sort === 'new', fn (Builder $q) => $q->orderByDesc('id'))
-            ->paginate(12)
+            ->paginate(15)
             ->withQueryString();
+
+        if ($request->expectsJson() && $request->boolean('append')) {
+            return response()->json([
+                'html' => view('frontend.shop.partials.items', ['products' => $products])->render(),
+                'next' => $products->nextPageUrl(),
+            ]);
+        }
 
         if ($request->expectsJson()) {
             return response()->json([

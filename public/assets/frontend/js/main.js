@@ -256,10 +256,25 @@
     function search(scroll) { load((form.getAttribute('action') || location.pathname) + '?' + new URLSearchParams(new FormData(form)).toString(), scroll) }
     q.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(search, 250) });
     q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(tm); search() } });
-    box.addEventListener('click', function (e) {
-      var a = e.target.closest('nav[aria-label=Pagination] a'); if (!a) return;
-      e.preventDefault(); load(a.href, true);
-    });
+    var busy = false;
+    function more() {
+      var m = document.getElementById('shop-more'), g = document.getElementById('shop-grid');
+      if (!m || !g || busy || !m.getAttribute('data-next')) return;
+      busy = true;
+      var u = m.getAttribute('data-next'); u += (u.indexOf('?') < 0 ? '?' : '&') + 'append=1';
+      m.firstElementChild.textContent = 'Loading…';
+      fetch(u, { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
+        .then(function (d) {
+          g.insertAdjacentHTML('beforeend', d.html);
+          if (d.next) { m.setAttribute('data-next', d.next); m.firstElementChild.textContent = 'Read more' }
+          else { m.removeAttribute('data-next'); m.hidden = true }
+          busy = false;
+        })
+        .catch(function () { m.firstElementChild.textContent = 'Read more'; busy = false });
+    }
+    box.addEventListener('click', function (e) { if (e.target.closest('#shop-more button')) more() });
+    new MutationObserver(function () { busy = false }).observe(box, { childList: true });
   });
 
   /* live search (AJAX: asks /search/suggest as you type) */

@@ -1,31 +1,19 @@
 <p class="mt-4 font-bold text-ink/70" aria-live="polite">
     @if ($products->total())
-        Showing {{ $products->firstItem() }}–{{ $products->lastItem() }} of {{ $products->total() }} products
+        {{ $products->total() }} {{ \Illuminate\Support\Str::plural('product', $products->total()) }}
     @else
         No products found
     @endif
 </p>
 
 @if ($products->isNotEmpty())
-    <ul class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 mt-5">
-        @foreach ($products as $product)
-            @include('frontend.partials.product_card', ['product' => $product])
-        @endforeach
+    <ul id="shop-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 mt-5">
+        @include('frontend.shop.partials.items', ['products' => $products])
     </ul>
 
-    @if ($products->hasPages())
-        <nav class="flex flex-wrap items-center justify-center gap-2 mt-10" aria-label="Pagination">
-            @if (! $products->onFirstPage())
-                <a href="{{ $products->previousPageUrl() }}" class="px-4 py-2 rounded-xl border border-line bg-white font-bold hover:bg-accent">‹ Prev</a>
-            @endif
-            @foreach ($products->getUrlRange(max(1, $products->currentPage() - 2), min($products->lastPage(), $products->currentPage() + 2)) as $page => $url)
-                <a href="{{ $url }}" class="px-4 py-2 rounded-xl border border-line font-bold {{ $page === $products->currentPage() ? 'bg-primary text-white' : 'bg-white hover:bg-accent' }}" @if ($page === $products->currentPage()) aria-current="page" @endif>{{ $page }}</a>
-            @endforeach
-            @if ($products->hasMorePages())
-                <a href="{{ $products->nextPageUrl() }}" class="px-4 py-2 rounded-xl border border-line bg-white font-bold hover:bg-accent">Next ›</a>
-            @endif
-        </nav>
-    @endif
+    <div id="shop-more" class="flex justify-center mt-10" @if ($products->hasMorePages()) data-next="{{ $products->nextPageUrl() }}" @else hidden @endif>
+        <button type="button" class="px-8 py-3 rounded-xl border border-line bg-white font-extrabold hover:bg-accent">Read more</button>
+    </div>
 @else
     <div class="mt-8 rounded-3xl border border-line bg-white p-10 text-center">
         <p class="font-display font-extrabold text-2xl">Nothing matches your filters</p>
