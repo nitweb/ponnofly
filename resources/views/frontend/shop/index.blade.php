@@ -6,6 +6,7 @@
     $pageTitle = ($brand?->meta_title ?: $category?->meta_title) ?: ($heading.' | '.$setting('store_name'));
     $pageDescription = ($brand?->meta_description ?: $category?->meta_description) ?: $intro;
     $baseUrl = $brand ? $brand->url : ($category ? $category->url : url('/shop'));
+    $filterCount = count($filters['brands']) + count($filters['colors']) + count($filters['sizes']) + ($filters['min'] !== null ? 1 : 0) + ($filters['max'] !== null ? 1 : 0);
     $activeFilters = $filters['search'] !== '' || $filters['brands'] || $filters['colors'] || $filters['sizes'] || $filters['min'] !== null || $filters['max'] !== null;
 @endphp
 
@@ -44,13 +45,20 @@
 
 <form method="GET" action="{{ $baseUrl }}" id="shop-form" data-live class="max-w-7xl mx-auto px-4 lg:px-6 mt-8 grid lg:grid-cols-[280px_1fr] gap-8">
 
-    <aside aria-label="Product filters" class="bg-white border border-line rounded-3xl p-5 shadow-sm lg:self-start">
-        <div class="flex items-center justify-between">
+    <div class="shop-filters-backdrop" data-filters-close aria-hidden="true"></div>
+
+    <aside id="shop-filters" aria-label="Product filters" class="shop-filters bg-white border border-line rounded-3xl p-5 shadow-sm lg:self-start">
+        <div class="flex items-center justify-between gap-3">
             <h2 class="font-display font-extrabold text-2xl">Filters</h2>
-            @if ($activeFilters)
-                <a href="{{ $baseUrl }}" class="text-sm font-bold underline underline-offset-4 text-primary">Clear all</a>
-            @endif
+            <div class="flex items-center gap-3">
+                @if ($activeFilters)
+                    <a href="{{ $baseUrl }}" class="text-sm font-bold underline underline-offset-4 text-primary">Clear all</a>
+                @endif
+                <button type="button" class="shop-filters__close" data-filters-close aria-label="Close filters"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+            </div>
         </div>
+
+        <div id="shop-drawer-search" class="shop-drawer-search"></div>
 
         @if ($category || $brand === null)
             <details class="border-b-2 border-line py-4" open>
@@ -152,17 +160,27 @@
             </details>
         @endif
 
-        <button type="submit" class="mt-4 w-full bg-primary hover:bg-primary-dark text-white font-extrabold rounded-xl py-3 border border-line shadow-sm">Apply filters</button>
+        <div class="shop-apply-bar mt-4">
+            <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white font-extrabold rounded-xl py-3 border border-line shadow-sm">Apply filters</button>
+        </div>
     </aside>
 
     <section aria-label="Products">
         <div class="flex flex-wrap items-center gap-3">
-            <div class="relative flex-1" style="min-width:14rem">
+            <button type="button" class="shop-filter-btn" data-filters-open aria-controls="shop-filters" aria-expanded="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+                <span>Filters</span>
+                @if ($filterCount)
+                    <span class="shop-filter-btn__count">{{ $filterCount }}</span>
+                @endif
+            </button>
+            <span id="shop-q-home" hidden></span>
+            <div id="shop-q-wrap" class="relative flex-1" style="min-width:14rem">
                 <label for="shop-q" class="sr-only">Search products</label>
                 <input type="text" id="shop-q" name="q" value="{{ $filters['search'] }}" placeholder="Search products by name" autocomplete="off" enterkeyhint="search" class="w-full rounded-xl border border-line bg-white px-4 py-3 font-semibold focus:outline-none focus:shadow-md">
             </div>
             <label for="sort" class="sr-only">Sort by</label>
-            <select id="sort" name="sort" onchange="this.form.requestSubmit()" class="rounded-xl border border-line bg-white px-4 py-3 font-bold">
+            <select id="sort" name="sort" onchange="this.form.requestSubmit()" class="shop-sort rounded-xl border border-line bg-white px-4 py-3 font-bold">
                 <option value="new" @selected($filters['sort'] === 'new')>Newest</option>
                 <option value="pop" @selected($filters['sort'] === 'pop')>Most popular</option>
                 <option value="lo" @selected($filters['sort'] === 'lo')>Price: low to high</option>

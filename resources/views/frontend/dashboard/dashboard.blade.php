@@ -397,6 +397,7 @@
     <script src="{{ asset('assets/frontend/js/pages/faq.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/info.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/success.js') }}" defer></script>
+    <script src="{{ asset('assets/frontend/js/pages/shop-filters.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/track.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/zoom.js') }}" defer></script>
     @stack('scripts')

@@ -605,3 +605,110 @@ h1, h2, h3, h4 {
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
+
+/* Shop: mobile filters drawer (desktop keeps the sidebar) */
+.shop-filter-btn,
+.shop-filters__close,
+.shop-filters-backdrop {
+  display: none
+}
+
+@media (max-width: 1023.98px) {
+  .shop-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: 100%;
+    padding: .8rem 1rem;
+    background: #fff;
+    color: rgb(var(--color-primary));
+    border: 1px solid rgb(var(--color-primary));
+    border-radius: .75rem;
+    font-weight: 800
+  }
+
+  .shop-filter-btn__count {
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 .35rem;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgb(var(--color-primary));
+    color: #fff;
+    font-size: .75rem
+  }
+
+  .shop-sort {
+    width: 100%
+  }
+
+  .shop-filters-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    background: rgba(0, 0, 0, .45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s
+  }
+
+  .shop-filters {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 120;
+    width: min(86vw, 340px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 0 1.5rem 1.5rem 0 !important;
+    transform: translateX(-102%);
+    visibility: hidden;
+    transition: transform .28s ease, visibility .28s
+  }
+
+  .shop-filters__close {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: .75rem;
+    border: 1px solid rgb(var(--color-line))
+  }
+
+  .is-filters-open .shop-filters-backdrop {
+    opacity: 1;
+    visibility: visible
+  }
+
+  .is-filters-open .shop-filters {
+    transform: none;
+    visibility: visible
+  }
+
+  .shop-drawer-search {
+    margin-top: 1rem
+  }
+
+  .shop-drawer-search #shop-q-wrap {
+    min-width: 0 !important;
+    width: 100%
+  }
+
+  .shop-apply-bar {
+    position: sticky;
+    bottom: -1.25rem;
+    margin: 1rem -1.25rem -1.25rem;
+    padding: .75rem 1.25rem;
+    background: #fff;
+    border-top: 1px solid rgb(var(--color-line))
+  }
+
+  html.shop-filters-open,
+  html.shop-filters-open body {
+    overflow: hidden
+  }
+}
