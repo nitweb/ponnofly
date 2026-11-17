@@ -191,7 +191,7 @@
       var modal = b.closest('#qv');
       var id = b.dataset.productId || (modal && modal.dataset.productId);
       if (!id) return;
-      if (modal && modal.dataset.hasVariants === '1') { location.href = $('qv-link').href; return; }
+      if (modal && modal.dataset.hasVariants === '1') { var qh = $('qv-link').href; window.spaGo ? window.spaGo(qh) : (location.href = qh); return; }
       if (b.dataset.busy) return;
       b.dataset.busy = '1';
       var qty = b.id === 'add-main' && $('qty') ? $('qty').value : 1;
@@ -205,7 +205,7 @@
       b.dataset.busy = '1';
       add(b.dataset.productId, null, 1).then(function (r) {
         delete b.dataset.busy;
-        if (r.ok) location.href = b.dataset.checkout;
+        if (r.ok) { window.spaGo ? window.spaGo(b.dataset.checkout) : (location.href = b.dataset.checkout); }
       });
       return;
     }

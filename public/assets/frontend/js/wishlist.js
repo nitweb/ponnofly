@@ -41,7 +41,7 @@
 
     if (cfg.guest) {
       toast('Please sign in to save items to your wishlist.', 'error');
-      setTimeout(function () { window.location.href = cfg.login; }, 900);
+      setTimeout(function () { window.spaGo ? window.spaGo(cfg.login) : (window.location.href = cfg.login); }, 900);
       return;
     }
 
@@ -54,7 +54,7 @@
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token, 'X-Requested-With': 'XMLHttpRequest' },
       body: JSON.stringify({ product_id: Number(productId) })
     }).then(function (res) {
-      if (res.status === 401) { window.location.href = cfg.login; return null; }
+      if (res.status === 401) { window.spaGo ? window.spaGo(cfg.login) : (window.location.href = cfg.login); return null; }
       return res.json().catch(function () { return {}; }).then(function (data) {
         if (!res.ok) { toast(data.message || 'Something went wrong. Please try again.', 'error'); return; }
         syncOthers(productId, data.wished);

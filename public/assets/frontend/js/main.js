@@ -299,7 +299,7 @@
       function shopUrl(q) { return shop + (shop.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q) }
       function show(h) { pop.innerHTML = h; pop.hidden = false; act = -1; input.setAttribute('aria-expanded', 'true') }
       function hide() { pop.hidden = true; act = -1; input.setAttribute('aria-expanded', 'false') }
-      function go(q) { location.href = shopUrl(q) }
+      function go(q) { var u = shopUrl(q); window.spaGo ? window.spaGo(u) : (location.href = u) }
       function fetchHits(q) {
         if (cache[q]) return Promise.resolve(cache[q]);
         if (ctl) ctl.abort();
@@ -337,7 +337,7 @@
       });
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var on = pop.querySelector('.s-item.on'); if (on) { location.href = on.getAttribute('href'); return }
+        var on = pop.querySelector('.s-item.on'); if (on) { var h = on.getAttribute('href'); window.spaGo ? window.spaGo(h) : (location.href = h); return }
         var q = input.value.trim(); if (q) go(q);
       });
       document.addEventListener('click', function (e) { if (!form.contains(e.target)) hide() });

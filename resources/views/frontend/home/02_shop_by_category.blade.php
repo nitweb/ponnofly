@@ -37,7 +37,7 @@
                         @if ($category->image)
                             <img src="{{ $category->image_url }}" alt="" class="w-full h-full object-cover" loading="lazy">
                         @else
-                            {{ mb_strtoupper(mb_substr($category->name, 0, 1)) }}
+                            <span class="cat-home-ic">@include('frontend.shop.partials.cat_icon', ['name' => $category->name])</span>
                         @endif
                     </span>
                     <span class="font-bold text-sm text-center">{{ $category->name }}</span>

@@ -42,7 +42,7 @@
     </div>
 </section>
 
-<form method="GET" action="{{ $baseUrl }}" id="shop-form" class="max-w-7xl mx-auto px-4 lg:px-6 mt-8 grid lg:grid-cols-[280px_1fr] gap-8">
+<form method="GET" action="{{ $baseUrl }}" id="shop-form" data-live class="max-w-7xl mx-auto px-4 lg:px-6 mt-8 grid lg:grid-cols-[280px_1fr] gap-8">
 
     <aside aria-label="Product filters" class="bg-white border border-line rounded-3xl p-5 shadow-sm lg:self-start">
         <div class="flex items-center justify-between">
@@ -55,20 +55,33 @@
         @if ($category || $brand === null)
             <details class="border-b-2 border-line py-4" open>
                 <summary class="flex justify-between items-center cursor-pointer font-display font-extrabold text-lg">Category</summary>
-                <ul class="mt-3 text-[15px]">
-                    <li><a href="{{ url('/shop') }}" class="block py-1.5 {{ ! $category ? 'font-bold text-primary' : 'hover:text-primary' }}">All products</a></li>
+                <ul class="cat-list mt-3">
+                    <li>
+                        <a href="{{ url('/shop') }}" class="cat-link {{ ! $category ? 'is-active' : '' }}">
+                            <span class="cat-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+                            <span class="cat-name">All products</span>
+                        </a>
+                    </li>
                     @foreach ($menuCategories as $top)
+                        @php $topOpen = in_array($top->id, $trailIds, true); @endphp
                         <li>
-                            <a href="{{ $top->url }}" class="block py-1.5 {{ in_array($top->id, $trailIds, true) ? 'font-bold text-primary' : 'hover:text-primary' }}">{{ $top->name }}</a>
-                            @if (in_array($top->id, $trailIds, true) && $top->children->isNotEmpty())
-                                <ul class="ml-4 border-l-2 border-line pl-3">
+                            <a href="{{ $top->url }}" class="cat-link {{ $topOpen ? 'is-active' : '' }}">
+                                <span class="cat-ic">@include('frontend.shop.partials.cat_icon', ['name' => $top->name])</span>
+                                <span class="cat-name">{{ $top->name }}</span>
+                                @if ($top->children->isNotEmpty())
+                                    <svg class="cat-chev {{ $topOpen ? 'is-open' : '' }}" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                @endif
+                            </a>
+                            @if ($topOpen && $top->children->isNotEmpty())
+                                <ul class="cat-sub">
                                     @foreach ($top->children as $child)
+                                        @php $childOpen = in_array($child->id, $trailIds, true); @endphp
                                         <li>
-                                            <a href="{{ $child->url }}" class="block py-1 {{ in_array($child->id, $trailIds, true) ? 'font-bold text-primary' : 'hover:text-primary' }}">{{ $child->name }}</a>
-                                            @if (in_array($child->id, $trailIds, true) && $child->children->isNotEmpty())
-                                                <ul class="ml-4 border-l-2 border-line pl-3">
+                                            <a href="{{ $child->url }}" class="cat-link cat-link--sm {{ $childOpen ? 'is-active' : '' }}"><span class="cat-name">{{ $child->name }}</span></a>
+                                            @if ($childOpen && $child->children->isNotEmpty())
+                                                <ul class="cat-sub">
                                                     @foreach ($child->children as $grand)
-                                                        <li><a href="{{ $grand->url }}" class="block py-1 {{ in_array($grand->id, $trailIds, true) ? 'font-bold text-primary' : 'hover:text-primary' }}">{{ $grand->name }}</a></li>
+                                                        <li><a href="{{ $grand->url }}" class="cat-link cat-link--sm {{ in_array($grand->id, $trailIds, true) ? 'is-active' : '' }}"><span class="cat-name">{{ $grand->name }}</span></a></li>
                                                     @endforeach
                                                 </ul>
                                             @endif
@@ -149,7 +162,7 @@
                 <input type="text" id="shop-q" name="q" value="{{ $filters['search'] }}" placeholder="Search products by name" autocomplete="off" enterkeyhint="search" class="w-full rounded-xl border border-line bg-white px-4 py-3 font-semibold focus:outline-none focus:shadow-md">
             </div>
             <label for="sort" class="sr-only">Sort by</label>
-            <select id="sort" name="sort" onchange="this.form.submit()" class="rounded-xl border border-line bg-white px-4 py-3 font-bold">
+            <select id="sort" name="sort" onchange="this.form.requestSubmit()" class="rounded-xl border border-line bg-white px-4 py-3 font-bold">
                 <option value="new" @selected($filters['sort'] === 'new')>Newest</option>
                 <option value="pop" @selected($filters['sort'] === 'pop')>Most popular</option>
                 <option value="lo" @selected($filters['sort'] === 'lo')>Price: low to high</option>

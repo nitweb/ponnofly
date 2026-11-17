@@ -343,7 +343,7 @@
         buy.addEventListener('click', function () {
             if (!window.NebulaCart) return;
             window.NebulaCart.add(add.dataset.productId, add.dataset.variantId, document.getElementById('qty').value).then(function (result) {
-                if (result.ok) location.href = '{{ \Illuminate\Support\Facades\Route::has('checkout') ? route('checkout') : route('cart.index') }}';
+                if (result.ok) { var u = '{{ \Illuminate\Support\Facades\Route::has('checkout') ? route('checkout') : route('cart.index') }}'; window.spaGo ? window.spaGo(u) : (location.href = u); }
             });
         });
         update();
