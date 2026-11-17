@@ -250,7 +250,9 @@
   }
 
   /* ---------- floating cart button ---------- */
-  if (['cart', 'checkout', 'success'].indexOf(PAGE) < 0) {
+  var staleFab = document.getElementById('float-cart');
+  if (staleFab) staleFab.remove(); /* left over from the previous page after an AJAX swap */
+  {
     fab = document.createElement('button');
     fab.type = 'button';
     fab.id = 'float-cart';
@@ -261,4 +263,12 @@
   }
 
   render(state);
+
+  /* After an AJAX page swap the inline cart snapshot can be stale (e.g. right after placing an order), so re-sync from the server. */
+  if (staleFab || PAGE === 'success') {
+    fetch(cfg.routes.summary, { credentials: 'same-origin', headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.cart) render(data.cart); })
+      .catch(function () { });
+  }
 })();

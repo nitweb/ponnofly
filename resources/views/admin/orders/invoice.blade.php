@@ -103,7 +103,41 @@
         .qr small { display: block; }
         .bar { height: 6px; background: linear-gradient(90deg, var(--accent), var(--gold)); }
         .stamp { position: absolute; top: 340px; left: 50%; transform: translateX(-50%) rotate(-18deg); font-size: 64px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: rgba(200, 40, 40, .12); border: 8px solid rgba(200, 40, 40, .12); padding: 4px 28px; border-radius: 14px; pointer-events: none; z-index: 3; }
-        @media screen and (max-width: 640px) { .hero { padding: 28px 20px 70px; } .meta { margin: -40px 16px 0; grid-template-columns: 1fr 1fr; } .meta div:nth-child(2) { border-right: 0; } .meta div:nth-child(-n+2) { border-bottom: 1px solid var(--line); } .body { padding: 22px 20px; } header.top, .lower, footer.foot { display: block; } .doc { text-align: left; margin-top: 18px; } .info { grid-template-columns: 1fr; } .totals { margin-top: 18px; } .qr { margin-top: 16px; text-align: left; } }
+        @media screen and (max-width: 640px) {
+            .toolbar { margin-top: 12px; padding: 0 12px; flex-wrap: wrap; }
+            .toolbar button, .toolbar a { padding: 8px 14px; font-size: 12.5px; }
+            .sheet { margin: 12px auto 20px; border-radius: 16px; }
+            .hero { padding: 24px 18px 64px; }
+            .brand img { max-height: 38px; max-width: 160px; }
+            .brand p { max-width: none; }
+            header.top, .lower, footer.foot { display: block; }
+            .doc { text-align: left; margin-top: 16px; }
+            .doc h1 { font-size: 28px; }
+            .meta { margin: -40px 12px 0; grid-template-columns: 1fr 1fr; }
+            .meta div { padding: 12px 14px; }
+            .meta div:nth-child(2) { border-right: 0; }
+            .meta div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+            .body { padding: 20px 14px 24px; }
+            .info { grid-template-columns: 1fr; gap: 10px; }
+            .card p { overflow-wrap: anywhere; }
+            table.items, table.items tbody, table.items tr, table.items td { display: block; width: 100%; }
+            table.items thead { display: none; }
+            table.items tbody tr { position: relative; padding: 12px 12px 12px 44px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; background: #fff; }
+            table.items tbody tr:nth-child(even) td { background: transparent; }
+            table.items td { padding: 0; border: 0; text-align: left !important; }
+            table.items td:nth-child(1) { position: absolute; left: 12px; top: 12px; width: auto; }
+            table.items td:nth-child(2) { margin-bottom: 8px; overflow-wrap: anywhere; }
+            table.items td:nth-child(3), table.items td:nth-child(4), table.items td:nth-child(5) { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; }
+            table.items td:nth-child(3)::before { content: "Unit price"; color: var(--muted); font-size: 11.5px; }
+            table.items td:nth-child(4)::before { content: "Qty"; color: var(--muted); font-size: 11.5px; }
+            table.items td:nth-child(5) { margin-top: 4px; padding-top: 8px; border-top: 1px dashed var(--line); }
+            table.items td:nth-child(5)::before { content: "Amount"; color: var(--muted); font-size: 11.5px; }
+            .lower { margin-top: 8px; }
+            .totals { margin-top: 14px; }
+            .stamp { top: 260px; font-size: 40px; border-width: 5px; }
+            footer.foot { margin-top: 24px; }
+            .qr { margin-top: 14px; text-align: left; }
+        }
         @page { size: A4; margin: 8mm; }
         @media print {
             html, body { width: 210mm; background: #fff; }

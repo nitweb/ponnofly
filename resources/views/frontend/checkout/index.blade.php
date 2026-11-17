@@ -108,11 +108,6 @@
                     </div>
                     <div data-pay-panel="cod" class="mt-4 rounded-2xl border border-line bg-accent/25 p-5 text-sm">Pay <b class="pay-amt">{{ $tk($cartSummary['total']) }}</b> in cash to our delivery person. Please keep the exact amount ready.</div>
                 </section>
-
-                <div>
-                    <label class="flex items-start gap-3 cursor-pointer"><input id="terms" name="terms" value="1" type="checkbox" required @checked(old('terms')) class="w-5 h-5 mt-0.5 accent-primary"><span class="text-sm">I agree to the <a href="{{ url('/terms') }}" class="underline font-bold">terms of service</a>, the <a href="{{ url('/returns') }}" class="underline font-bold">return policy</a> and the <a href="{{ url('/privacy') }}" class="underline font-bold">privacy policy</a>.</span></label>
-                    @error('terms')<p class="text-sm font-bold text-danger mt-1.5">{{ $message }}</p>@enderror
-                </div>
             </div>
 
             <aside aria-label="Order summary" class="lg:sticky lg:top-48 bg-white border border-line rounded-3xl p-6 shadow-sm">
@@ -155,7 +150,11 @@
                         <dd id="t-total" class="font-display font-extrabold text-3xl text-primary">{{ $tk($cartSummary['total']) }}</dd>
                     </div>
                 </dl>
-                <button type="submit" id="place-order" class="w-full mt-6 bg-primary hover:bg-primary-dark text-white font-extrabold rounded-xl py-4 border border-line shadow-sm hover:shadow-md transition-all">Place order</button>
+                <div class="mt-6">
+                    <label class="flex items-start gap-3 cursor-pointer"><input id="terms" name="terms" value="1" type="checkbox" required @checked(old('terms')) class="w-5 h-5 mt-0.5 accent-primary"><span class="text-sm">I agree to the <a href="{{ url('/terms') }}" class="underline font-bold">terms of service</a>, the <a href="{{ url('/returns') }}" class="underline font-bold">return policy</a> and the <a href="{{ url('/privacy') }}" class="underline font-bold">privacy policy</a>.</span></label>
+                    @error('terms')<p class="text-sm font-bold text-danger mt-1.5">{{ $message }}</p>@enderror
+                </div>
+                <button type="submit" id="place-order" class="w-full mt-4 bg-primary hover:bg-primary-dark text-white font-extrabold rounded-xl py-4 border border-line shadow-sm hover:shadow-md transition-all">Place order</button>
                 <div class="mt-5 flex items-center gap-3"><svg class="w-5 h-5 shrink-0"><use href="#i-shield" /></svg>
                     <p class="text-xs text-ink/70">Your details are encrypted and used only to deliver your order.</p>
                 </div>

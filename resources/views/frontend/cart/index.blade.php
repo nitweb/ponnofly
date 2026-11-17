@@ -103,15 +103,6 @@
 
                 <a id="checkout-btn" href="{{ $cartSummary['checkout_url'] }}" class="block text-center mt-6 bg-primary hover:bg-primary-dark text-white font-extrabold rounded-xl py-4 border border-line shadow-sm hover:shadow-md transition-all">Proceed to checkout</a>
 
-                <div class="mt-5 flex items-center gap-3">
-                    <svg class="w-5 h-5 shrink-0"><use href="#i-shield" /></svg>
-                    <p class="text-xs text-ink/70">Secure checkout. Pay with cash on delivery.</p>
-                </div>
-                <div class="mt-3">
-                    <ul class="flex flex-wrap gap-1.5 text-[11px] font-extrabold" aria-label="Accepted payments">
-                        <li class="px-2.5 py-1 rounded-md bg-accent text-ink">COD</li>
-                    </ul>
-                </div>
             </aside>
         </div>
 
