@@ -241,20 +241,26 @@
   function loadMore(m) {
     var g = document.querySelector(m.getAttribute('data-target')), u = m.getAttribute('data-next');
     if (!g || !u || m.getAttribute('aria-busy')) return;
-    m.setAttribute('aria-busy', 'true'); m.textContent = 'Loading…';
+    m.setAttribute('aria-busy', 'true');
+    m.innerHTML = '<span class="more-loader" role="status"><span class="more-spin" aria-hidden="true"></span>Loading more products…</span>';
+    var started = Date.now();
     fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'append=1', { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
       .then(function (d) {
-        g.insertAdjacentHTML('beforeend', d.html);
-        if (d.next) { m.setAttribute('data-next', d.next); m.textContent = '' } else { m.remove(); return }
+        /* keep the loader visible for a moment so the batch never pops in abruptly */
+        return new Promise(function (ok) { setTimeout(function () { ok(d) }, Math.max(0, 700 - (Date.now() - started))) });
       })
-      .catch(function () { m.textContent = '' })
-      .then(function () { m.removeAttribute('aria-busy'); checkMore() });
+      .then(function (d) {
+        g.insertAdjacentHTML('beforeend', d.html);
+        if (d.next) { m.setAttribute('data-next', d.next); m.innerHTML = '' } else { m.remove(); return }
+      })
+      .catch(function () { m.innerHTML = '' })
+      .then(function () { m.removeAttribute('aria-busy'); queueMore() });
   }
   var moreTick = false;
   function checkMore() {
     document.querySelectorAll('[data-more]').forEach(function (m) {
-      if (m.getBoundingClientRect().top < window.innerHeight + 400) loadMore(m);
+      if (m.getBoundingClientRect().top < window.innerHeight + 120) loadMore(m);
     });
   }
   function queueMore() { if (moreTick) return; moreTick = true; requestAnimationFrame(function () { moreTick = false; checkMore() }) }

@@ -107,3 +107,9 @@
 .fdeal__stock { margin-left: auto; font-size: .85rem; opacity: .75; }
 .fdeal__stock b { font-weight: 800; color: rgb(var(--color-primary)); }
 @media (max-width: 480px) { .fdeal__unit b { font-size: 1.65rem; } .fdeal__stock { margin-left: 0; } }
+
+/* infinite scroll loader */
+.more-loader { display: inline-flex; align-items: center; gap: .6rem; padding: .6rem 1.1rem; border-radius: 999px; background: #fff; border: 1px solid rgb(var(--color-line)); font-size: .9rem; font-weight: 700; color: rgb(var(--color-ink) / .7); }
+.more-spin { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgb(var(--color-primary) / .25); border-top-color: rgb(var(--color-primary)); animation: more-spin .7s linear infinite; }
+@keyframes more-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .more-spin { animation-duration: 1.6s; } }
