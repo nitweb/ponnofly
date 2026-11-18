@@ -389,6 +389,7 @@
         };
     </script>
     <script src="{{ asset('assets/frontend/js/chat.js') }}" defer></script>
+    <script src="{{ asset('assets/frontend/js/back-to-top.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/countdown.js') }}?v={{ filemtime(public_path('assets/frontend/js/pages/countdown.js')) }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/about.js') }}" defer></script>
     <script src="{{ asset('assets/frontend/js/pages/auth.js') }}" defer></script>

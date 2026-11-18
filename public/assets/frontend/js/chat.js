@@ -49,5 +49,5 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && wrap.classList.contains('is-open')) { set(false); btn.focus(); } });
 
   /* lift the stack above any sticky mobile bar on the product page */
-  if (document.querySelector('[data-sticky-bar], #sticky-cta')) document.documentElement.style.setProperty('--chat-bottom', '5.5rem');
+  if (document.querySelector('[data-sticky-bar], #sticky-cta')) document.documentElement.style.setProperty('--btt-bottom', '4.5rem');
 })();
