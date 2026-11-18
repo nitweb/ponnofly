@@ -113,3 +113,7 @@
 .more-spin { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgb(var(--color-primary) / .25); border-top-color: rgb(var(--color-primary)); animation: more-spin .7s linear infinite; }
 @keyframes more-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .more-spin { animation-duration: 1.6s; } }
+
+/* footer contact: more breathing room between points */
+footer .footer-contact { gap: 1rem; }
+footer .footer-contact li { line-height: 1.6; }

@@ -71,7 +71,7 @@
                     $phoneDigits = preg_replace('/\D+/', '', (string) $setting('phone'));
                     $phoneLink = $phoneDigits === '' ? '' : (str_starts_with($phoneDigits, '0') ? '+88' . $phoneDigits : '+' . $phoneDigits);
                 @endphp
-                <ul class="grid gap-3.5 text-white/75 text-[15px]">
+                <ul class="footer-contact grid gap-3.5 text-white/75 text-[15px]">
                     @if ($setting('address'))
                         <li class="flex gap-3"><svg class="w-5 h-5 shrink-0 mt-0.5 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>{{ $setting('address') }}</span></li>
                     @endif
