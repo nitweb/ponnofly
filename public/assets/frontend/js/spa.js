@@ -104,9 +104,8 @@
     runInline(document.querySelector('#main'));
     reexecute(function () {
       var hash = finalUrl.hash && document.getElementById(decodeURIComponent(finalUrl.hash.slice(1)));
-      if (hash) hash.scrollIntoView();
-      else if (opts.keepScroll) window.scrollTo(0, opts.y || 0);
-      else window.scrollTo(0, opts.y || 0);
+      if (hash) hash.scrollIntoView({ behavior: 'instant' });
+      else window.scrollTo({ top: opts.y || 0, left: 0, behavior: 'instant' });
       window.dispatchEvent(new Event('scroll'));
       window.dispatchEvent(new CustomEvent('spa:load', { detail: { url: finalUrl.href } }));
     });
