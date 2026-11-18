@@ -426,9 +426,9 @@ form[role=search] input[type=search] {
   background: rgb(var(--color-paper));
   /* border: 1px solid rgb(var(--color-line)); */
   border-right: 0;
-  box-shadow: 0 8px 24px rgb(var(--color-ink) / .18);
+  box-shadow: none;
   font-family: inherit;
-  transition: width .2s ease, box-shadow .2s ease;
+  transition: width .2s ease;
 }
 
 #float-cart:hover .fc-top {
@@ -437,7 +437,6 @@ form[role=search] input[type=search] {
 
 #float-cart:hover {
   width: 92px;
-  box-shadow: 0 10px 28px rgb(var(--color-ink) / .28);
 }
 
 #float-cart:focus-visible {
