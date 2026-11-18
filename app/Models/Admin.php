@@ -78,7 +78,7 @@ class Admin extends Authenticatable
     {
         $candidates = [
             'products' => 'admin.products.index', 'orders' => 'admin.orders.index', 'customers' => 'admin.customers.index',
-            'categories' => 'admin.categories.index', 'brands' => 'admin.brands.index', 'coupons' => 'admin.coupons.index',
+            'categories' => 'admin.categories.index', 'brands' => 'admin.brands.index', 'suppliers' => 'admin.suppliers.index', 'coupons' => 'admin.coupons.index',
             'flash' => 'admin.flash-deals.index', 'banners' => 'admin.banners.index', 'pages' => 'admin.about.edit',
             'faqs' => 'admin.faqs.index', 'messages' => 'admin.messages.index', 'settings' => 'admin.settings.edit',
             'reports' => 'admin.reports.index', 'expenses' => 'admin.expenses.index', 'roles' => 'admin.roles.index', 'staff' => 'admin.staff.index',

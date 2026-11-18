@@ -40,6 +40,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="w-56">
+                <select class="select" name="supplier" onchange="this.form.submit()">
+                    <option value="">All suppliers</option>
+                    @foreach ($suppliers as $supplier)
+                        <option value="{{ $supplier->id }}" @selected($filters['supplierId'] === $supplier->id)>{{ $supplier->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="w-48">
                 <select class="select" name="sort" onchange="this.form.submit()">
                     <option value="new" @selected($filters['sort'] === 'new')>Newest first</option>
@@ -58,6 +66,7 @@
                         <th>Product</th>
                         <th>Category</th>
                         <th>Brand</th>
+                        <th>Supplier</th>
                         <th>Price</th>
                         <th>Stock</th>
                         <th>Active</th>
@@ -78,6 +87,7 @@
                             </td>
                             <td>{{ $product->category?->name ?? '—' }}</td>
                             <td>{{ $product->brand?->name ?? '—' }}</td>
+                            <td>{{ $product->supplier?->name ?? '—' }}</td>
                             <td>
                                 <b>৳{{ number_format($product->price) }}</b>
                                 @if ($product->discount_percent)<p class="text-xs text-ink/40 line-through">৳{{ number_format($product->compare_price) }}</p>@endif
@@ -112,7 +122,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="text-ink/55">No products found.</td></tr>
+                        <tr><td colspan="8" class="text-ink/55">No products found.</td></tr>
                     @endforelse
                 </tbody>
             </table>

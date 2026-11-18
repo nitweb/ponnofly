@@ -18,6 +18,7 @@ return [
         'products' => ['label' => 'Products', 'icon' => 'box', 'actions' => ['view', 'create', 'edit', 'delete', 'export']],
         'categories' => ['label' => 'Categories', 'icon' => 'layers', 'actions' => ['view', 'create', 'edit', 'delete']],
         'brands' => ['label' => 'Brands', 'icon' => 'award', 'actions' => ['view', 'create', 'edit', 'delete']],
+        'suppliers' => ['label' => 'Suppliers', 'icon' => 'truck', 'actions' => ['view', 'create', 'edit', 'delete']],
         'orders' => ['label' => 'Orders', 'icon' => 'cart', 'actions' => ['view', 'create', 'edit', 'delete', 'export']],
         'customers' => ['label' => 'Customers', 'icon' => 'users', 'actions' => ['view', 'create', 'edit', 'delete', 'export']],
         'coupons' => ['label' => 'Coupons', 'icon' => 'ticket', 'actions' => ['view', 'create', 'edit', 'delete']],

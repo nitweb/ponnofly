@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -28,9 +29,10 @@ class ProductController extends Controller
         $status = $request->query('status', 'all');
         $search = trim((string) $request->query('q', ''));
         $categoryId = (int) $request->query('category');
+        $supplierId = (int) $request->query('supplier');
         $sort = $request->query('sort', 'new');
 
-        $query = Product::query()->with(['category', 'brand', 'images', 'variants']);
+        $query = Product::query()->with(['category', 'brand', 'supplier', 'images', 'variants']);
 
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
@@ -40,6 +42,10 @@ class ProductController extends Controller
 
         if ($categoryId) {
             $query->inCategory($categoryId);
+        }
+
+        if ($supplierId) {
+            $query->where('supplier_id', $supplierId);
         }
 
         match ($status) {
@@ -65,12 +71,13 @@ class ProductController extends Controller
         return view('admin.products.index', [
             'products' => $query->paginate(10)->withQueryString(),
             'categories' => Category::flatTree(),
+            'suppliers' => Supplier::orderBy('name')->get(['id', 'name']),
             'counts' => [
                 'all' => Product::count(),
                 'active' => Product::where('status', 'active')->count(),
                 'draft' => Product::where('status', 'draft')->count(),
             ],
-            'filters' => compact('status', 'search', 'categoryId', 'sort'),
+            'filters' => compact('status', 'search', 'categoryId', 'supplierId', 'sort'),
         ]);
     }
 
@@ -148,6 +155,7 @@ class ProductController extends Controller
         return [
             'categories' => Category::flatTree(),
             'brands' => Brand::orderBy('name')->get(['id', 'name']),
+            'suppliers' => Supplier::orderBy('name')->get(['id', 'name']),
         ];
     }
 
@@ -160,7 +168,7 @@ class ProductController extends Controller
         $data['description'] = \App\Support\HtmlSanitizer::clean($data['description'] ?? null) ?: null;
         $data['slug'] = $this->resolveSlug($request->input('slug'), $data['name'], $ignoreId);
 
-        foreach (['category_id', 'brand_id', 'compare_price', 'cost_price', 'weight', 'sku'] as $nullable) {
+        foreach (['category_id', 'brand_id', 'supplier_id', 'compare_price', 'cost_price', 'weight', 'sku'] as $nullable) {
             if (($data[$nullable] ?? null) === '') {
                 $data[$nullable] = null;
             }

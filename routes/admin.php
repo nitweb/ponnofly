@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:admin')
@@ -102,6 +103,11 @@ Route::middleware('auth:admin')
         Route::middleware('permission:brands')->group(function () {
             Route::patch('brands/{brand}/toggle', [BrandController::class, 'toggle'])->name('brands.toggle');
             Route::resource('brands', BrandController::class)->except('show');
+        });
+        // Supplier Routes (internal: admin panel only)
+        Route::middleware('permission:suppliers')->group(function () {
+            Route::patch('suppliers/{supplier}/toggle', [SupplierController::class, 'toggle'])->name('suppliers.toggle');
+            Route::resource('suppliers', SupplierController::class)->except('show');
         });
         // Flash Deal Routes
         Route::middleware('permission:flash')->group(function () {

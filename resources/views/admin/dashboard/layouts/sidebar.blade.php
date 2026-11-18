@@ -55,6 +55,15 @@
         </a>
         @endif
 
+        @if ($navAdmin->hasPermission('suppliers:view'))
+        <a href="{{ route('admin.suppliers.index') }}" class="nav-link {{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
+            <svg class="ic ">
+                <use href="#i-truck" />
+            </svg>
+            <span>Suppliers</span>
+        </a>
+        @endif
+
         <p class="nav-label">Sales</p>
 
         @php($pendingOrders = \App\Models\Order::where('status', 'pending')->count())

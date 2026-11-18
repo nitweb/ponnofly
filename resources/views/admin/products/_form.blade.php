@@ -259,6 +259,16 @@
                         @error('brand_id')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
                     <div>
+                        <label class="lbl" for="supplier_id">Supplier <span class="text-ink/40 font-normal">(internal, not shown to customers)</span></label>
+                        <select class="select" id="supplier_id" name="supplier_id">
+                            <option value="">— None —</option>
+                            @foreach ($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}" @selected((string) $val('supplier_id') === (string) $supplier->id)>{{ $supplier->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('supplier_id')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
                         <label class="lbl" for="tags">Tags</label>
                         <input class="input" id="tags" name="tags" type="text" value="{{ $val('tags') }}" placeholder="eid, cotton, premium">
                         <p class="hint">Comma separated</p>

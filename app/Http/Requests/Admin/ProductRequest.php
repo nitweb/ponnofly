@@ -44,6 +44,7 @@ class ProductRequest extends FormRequest
             'model' => ['nullable', 'string', 'max:120'],
             'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')],
             'brand_id' => ['nullable', 'integer', Rule::exists('brands', 'id')],
+            'supplier_id' => ['nullable', 'integer', Rule::exists('suppliers', 'id')],
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string', 'max:60000'],
             'price' => ['required', 'numeric', 'min:0', 'max:99999999'],
