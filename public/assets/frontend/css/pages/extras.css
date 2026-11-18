@@ -2,7 +2,7 @@
 :root { --chat-bottom: 1.25rem; }
 
 /* Floating contact launcher (one button -> Call / WhatsApp / Messenger / Hide) */
-:root { --chat-color: 155 61 240; --cart-gap: 4.5rem; }
+:root { --chat-color: var(--color-primary); --cart-gap: 4.5rem; }
 .chat-fab { position: fixed; right: 1rem; bottom: var(--chat-bottom); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: .75rem; padding-bottom: env(safe-area-inset-bottom, 0px); }
 .chat-fab__list { display: flex; flex-direction: column; align-items: center; gap: .75rem; }
 .chat-fab__item, .chat-fab__toggle { position: relative; width: 3.5rem; height: 3.5rem; border-radius: 9999px; border: 0; padding: 0; display: grid; place-items: center; color: #fff; cursor: pointer; box-shadow: 0 8px 22px rgb(0 0 0 / .3); transition: transform .2s ease, box-shadow .2s ease; }
@@ -30,7 +30,7 @@
 .chat-fab.is-open .chat-fab__item:nth-child(2) { animation-delay: .05s; }
 .chat-fab.is-open .chat-fab__item:nth-child(1) { animation-delay: .1s; }
 @keyframes chat-pop { from { opacity: 0; transform: translateY(12px) scale(.7); } }
-.chat-fab.is-open .chat-fab__toggle { background: #e11d2e; }
+.chat-fab.is-open .chat-fab__toggle { background: rgb(var(--color-primary-dark)); }
 .chat-fab.is-open .chat-fab__toggle::before, .chat-fab.is-open .chat-fab__toggle .chat-fab__dot { display: none; }
 .chat-fab.is-open .chat-fab__ic--open { opacity: 0; transform: rotate(90deg) scale(.6); }
 .chat-fab.is-open .chat-fab__ic--close { opacity: 1; transform: none; }

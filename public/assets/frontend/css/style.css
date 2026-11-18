@@ -424,7 +424,7 @@ form[role=search] input[type=search] {
   overflow: hidden;
   cursor: pointer;
   background: rgb(var(--color-paper));
-  /* border: 1px solid rgb(var(--color-line)); */
+  border: 2px solid rgb(var(--color-accent));
   border-right: 0;
   box-shadow: none;
   font-family: inherit;
@@ -582,7 +582,7 @@ form[role=search] input[type=search] {
     transform: none;
     width: 58px;
     border-radius: 14px;
-    border-right: 1px solid rgb(var(--color-line));
+    border-right: 2px solid rgb(var(--color-accent));
   }
   #float-cart:hover { width: 58px; }
   #float-cart .fc-top { padding: 8px 4px 6px; }

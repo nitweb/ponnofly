@@ -8,7 +8,6 @@
   var WHATSAPP_NUMBER = CFG.whatsapp || '';           // country code + number, no + or spaces
   var WHATSAPP_TEXT = 'Hello ' + (CFG.name || 'NEBULA MART') + ', I need help with an order.';
   var MESSENGER_PAGE = CFG.messenger || '';           // facebook page username or ID (m.me/<this>)
-  if (document.querySelector('.chat-fab')) return;
 
   var ICON = {
     chat: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',
@@ -23,9 +22,11 @@
       '<span class="chat-fab__tip">' + label + '</span>' + svg(icon) + (dot ? '<i class="chat-fab__dot" aria-hidden="true"></i>' : '') + '</a>';
   }
 
-  var wrap = document.createElement('div');
-  wrap.className = 'chat-fab';
-  wrap.innerHTML =
+  /* after an AJAX page swap this script runs again: reuse the existing launcher and only re-attach its listeners */
+  var wrap = document.querySelector('.chat-fab');
+  var fresh = !wrap;
+  if (fresh) { wrap = document.createElement('div'); wrap.className = 'chat-fab'; }
+  if (fresh) wrap.innerHTML =
     '<div class="chat-fab__list" id="chat-fab-list" role="group" aria-label="Contact options">' +
     (PHONE_NUMBER ? item('chat-fab__call', 'tel:' + PHONE_NUMBER, 'Call us', 'call', false, false) : '') +
     (WHATSAPP_NUMBER ? item('chat-fab__wa', 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(WHATSAPP_TEXT), 'WhatsApp', 'wa', false, true) : '') +
@@ -36,7 +37,7 @@
     '<span class="chat-fab__ic chat-fab__ic--open">' + svg('chat') + '</span>' +
     '<span class="chat-fab__ic chat-fab__ic--close">' + svg('close') + '</span>' +
     '<i class="chat-fab__dot" aria-hidden="true"></i></button>';
-  document.body.appendChild(wrap);
+  if (fresh) document.body.appendChild(wrap);
 
   var btn = wrap.querySelector('.chat-fab__toggle');
   function set(open) {
