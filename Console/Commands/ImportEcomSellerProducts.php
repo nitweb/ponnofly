@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Supplier;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -28,6 +29,20 @@ class ImportEcomSellerProducts extends Command
         $page = max(1, (int) $this->option('page'));
         $dry = (bool) $this->option('dry-run');
         $force = (bool) $this->option('force');
+
+        $supplierId = null;
+        if (! $dry) {
+            $supplier = Supplier::firstOrCreate(
+                ['name' => 'EcomSeller'],
+                [
+                    'address' => 'ecomsellerbd.com',
+                    'notes' => 'Products imported from ecomsellerbd.com reseller catalog.',
+                    'is_active' => true,
+                ]
+            );
+            $supplierId = $supplier->id;
+            $this->info("Supplier: EcomSeller (ID {$supplierId})");
+        }
 
         $this->info('Fetching categories from ecomsellerbd.com ...');
         $categoryMap = $this->syncCategories($dry);
@@ -98,6 +113,7 @@ class ImportEcomSellerProducts extends Command
 
                 $data = [
                     'category_id' => $categoryId,
+                    'supplier_id' => $supplierId,
                     'name' => $name,
                     'slug' => $slug,
                     'short_description' => $item['short_description'] ?? null,

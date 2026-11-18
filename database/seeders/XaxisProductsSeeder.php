@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,15 @@ class XaxisProductsSeeder extends Seeder
 {
     public function run(): void
     {
+        $supplier = Supplier::firstOrCreate(
+            ['name' => 'Xaxis'],
+            [
+                'address' => 'xaxisdigitalllc.com',
+                'notes' => 'Products imported from xaxisdigitalllc.com.',
+                'is_active' => true,
+            ]
+        );
+
         $products = [
             [
                 'name' => 'UGREEN 30W Robot USB-C Fast Charger',
@@ -244,6 +254,7 @@ class XaxisProductsSeeder extends Seeder
                 [
                     'category_id' => $category->id,
                     'brand_id' => $brandId,
+                    'supplier_id' => $supplier->id,
                     'name' => $item['name'],
                     'slug' => $slug,
                     'short_description' => $item['short_description'],
