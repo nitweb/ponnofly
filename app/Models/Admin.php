@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use MeShaon\RequestAnalytics\Contracts\CanAccessAnalyticsDashboard;
 
 #[Fillable(['name', 'email', 'phone', 'bio', 'avatar', 'password', 'role_id', 'is_active'])]
 #[Hidden(['password', 'remember_token'])]
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements CanAccessAnalyticsDashboard
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -69,6 +70,11 @@ class Admin extends Authenticatable
     public function hasPermission(string $permission): bool
     {
         return $this->isSuperAdmin() || (bool) $this->role?->allows($permission);
+    }
+
+    public function canAccessAnalyticsDashboard(): bool
+    {
+        return $this->hasPermission('reports:view');
     }
 
     /**
