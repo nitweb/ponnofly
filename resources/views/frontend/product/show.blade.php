@@ -65,23 +65,31 @@
         </nav>
 
         <article class="mt-6 grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <div>
-                <figure id="zoom-fig" class="relative rounded-3xl overflow-hidden border border-line bg-primary-soft shadow-sm" data-zoom>
+            <div class="pgal" data-gallery>
+                <figure id="zoom-fig" class="pgal__main relative rounded-3xl overflow-hidden border border-line bg-primary-soft shadow-sm" data-zoom>
                     <img id="main-img" src="{{ $product->cover_url }}" alt="{{ $product->name }}" data-alt="{{ $product->name }}" width="900" height="900" fetchpriority="high" class="w-full aspect-square object-cover">
                     @if ($badgePercent)
                         <span id="p-badge" class="absolute top-4 left-4 {{ $flashItem ? 'bg-accent text-ink' : 'bg-primary text-white' }} font-extrabold px-3 py-1.5 rounded-xl">-{{ $badgePercent }}%</span>
                     @endif
+                    @if ($images->count() > 1)
+                        <button type="button" class="pgal__arrow pgal__arrow--prev" data-gal-prev aria-label="Previous image">&#8249;</button>
+                        <button type="button" class="pgal__arrow pgal__arrow--next" data-gal-next aria-label="Next image">&#8250;</button>
+                    @endif
                 </figure>
                 @if ($images->count() > 1)
-                    <ul class="grid grid-cols-5 gap-3 mt-5">
-                        @foreach ($images as $image)
-                            <li>
-                                <button type="button" class="thumb block w-full aspect-square rounded-xl overflow-hidden border {{ $loop->first ? 'border-primary' : 'border-line' }} hover:border-primary" data-full="{{ $image->url }}" aria-label="View image {{ $loop->iteration }}">
-                                    <img src="{{ $image->url }}" alt="{{ $product->name }}, view {{ $loop->iteration }}" width="200" height="200" loading="lazy" class="w-full h-full object-cover">
-                                </button>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <div class="pgal__strip">
+                        <button type="button" class="pgal__nav" data-strip-prev aria-label="Scroll thumbnails left">&#8249;</button>
+                        <ul class="pgal__thumbs" data-thumbs>
+                            @foreach ($images as $image)
+                                <li>
+                                    <button type="button" class="thumb block rounded-xl overflow-hidden border {{ $loop->first ? 'border-primary' : 'border-line' }} hover:border-primary" data-full="{{ $image->url }}" aria-label="View image {{ $loop->iteration }}">
+                                        <img src="{{ $image->url }}" alt="{{ $product->name }}, view {{ $loop->iteration }}" width="200" height="200" loading="lazy" class="w-full h-full object-cover">
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="pgal__nav" data-strip-next aria-label="Scroll thumbnails right">&#8250;</button>
+                    </div>
                 @endif
             </div>
 
@@ -294,6 +302,10 @@
     </div>
 </main>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/frontend/js/pages/gallery.js') }}" defer></script>
+@endpush
 
 @push('scripts')
 <script>
