@@ -10,6 +10,12 @@
         <a href="{{ route('returns.show') }}" target="_blank" class="btn btn-ghost">View page</a>
     </div>
 
+    <style>
+        .pol-row{display:grid;gap:.75rem;align-items:end}
+        @media (min-width:640px){.pol-row{grid-template-columns:var(--cols)}}
+        @media (max-width:639px){.pol-row [data-up],.pol-row [data-down],.pol-row [data-remove]{justify-self:start}}
+    </style>
+
     <form method="POST" action="{{ route('admin.returns.update') }}" class="space-y-6">
         @csrf
         @method('PUT')
@@ -20,7 +26,8 @@
         </div>
 
         <section class="card">
-            <div class="card-h"><h3>Header</h3></div>
+            <div class="card-h"><h3>1 · Page header</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Top banner of the page.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="hero_title">Heading</label>
@@ -36,7 +43,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Return window</h3></div>
+            <div class="card-h"><h3>2 · Return window (heading &amp; days)</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Heading and number of days customers can return items.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="win_caption">Caption under the number</label>
@@ -57,7 +65,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Item conditions</h3></div>
+            <div class="card-h"><h3>2 · Return window (conditions list)</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Conditions listed inside the return window block.</p>
             <div class="card-b space-y-3" data-repeat="win_needs">
                 @foreach (old('win_needs', $page->win_needs ?? []) as $i => $row)
                     <div class="flex gap-3 items-end" data-item>
@@ -76,7 +85,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>How to return an item</h3></div>
+            <div class="card-h"><h3>3 · Return steps (heading)</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Heading and intro for the steps block.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="steps_title">Section heading</label>
@@ -92,10 +102,11 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Return steps</h3></div>
+            <div class="card-h"><h3>3 · Return steps (list)</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Numbered steps customers follow.</p>
             <div class="card-b space-y-3" data-repeat="steps">
                 @foreach (old('steps', $page->steps ?? []) as $i => $row)
-                    <div class="grid sm:grid-cols-[1fr_2fr_auto_auto_auto] gap-3 items-end" data-item>
+                    <div class="pol-row gap-3 items-end" style="--cols:1fr 2fr auto auto auto" data-item>
                         <div><label class="lbl">Step title</label><input class="input" name="steps[{{ $i }}][title]" value="{{ $row['title'] ?? '' }}"></div>
                         <div><label class="lbl">Text</label><input class="input" name="steps[{{ $i }}][text]" value="{{ $row['text'] ?? '' }}"></div>
                         <button type="button" class="icon-btn" data-up title="Move up">↑</button>
@@ -106,7 +117,7 @@
                 <button type="button" class="btn btn-ghost" data-add="steps"><svg class="ic ic-sm"><use href="#i-plus" /></svg>Add step</button>
             </div>
             <template id="tpl-steps">
-                <div class="grid sm:grid-cols-[1fr_2fr_auto_auto_auto] gap-3 items-end" data-item>
+                <div class="pol-row gap-3 items-end" style="--cols:1fr 2fr auto auto auto" data-item>
                     <div><label class="lbl">Step title</label><input class="input" name="steps[__i__][title]"></div>
                     <div><label class="lbl">Text</label><input class="input" name="steps[__i__][text]"></div>
                     <button type="button" class="icon-btn" data-up title="Move up">↑</button>
@@ -117,7 +128,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Not returnable</h3></div>
+            <div class="card-h"><h3>4 · Not returnable (heading)</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Heading and intro for the non-returnable block.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="nope_title">Heading</label>
@@ -133,7 +145,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Not returnable items</h3></div>
+            <div class="card-h"><h3>4 · Not returnable (list)</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Items that cannot be returned.</p>
             <div class="card-b space-y-3" data-repeat="nope_items">
                 @foreach (old('nope_items', $page->nope_items ?? []) as $i => $row)
                     <div class="flex gap-3 items-end" data-item>
@@ -152,7 +165,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Help box</h3></div>
+            <div class="card-h"><h3>5 · Help box</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Contact box at the bottom of the page.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="help_title">Heading</label>

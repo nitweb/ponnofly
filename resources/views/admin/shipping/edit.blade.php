@@ -17,12 +17,19 @@
         <a href="{{ route('shipping.show') }}" target="_blank" class="btn btn-ghost">View page</a>
     </div>
 
+    <style>
+        .pol-row{display:grid;gap:.75rem;align-items:end}
+        @media (min-width:640px){.pol-row{grid-template-columns:var(--cols)}}
+        @media (max-width:639px){.pol-row [data-up],.pol-row [data-down],.pol-row [data-remove]{justify-self:start}}
+    </style>
+
     <form method="POST" action="{{ route('admin.shipping.update') }}" class="space-y-6">
         @csrf
         @method('PUT')
 
         <section class="card">
-            <div class="card-h"><h3>Header</h3></div>
+            <div class="card-h"><h3>1 · Page header</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Top banner of the page.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="hero_title">Heading</label>
@@ -38,7 +45,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Delivery zones</h3></div>
+            <div class="card-h"><h3>2 · Delivery zones</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Zone list with charges and times.</p>
             <div class="card-b space-y-5">
                 <p class="text-xs text-ink/50">Charges, delivery times and on/off are managed in <a href="{{ route('admin.settings.edit') }}" class="text-primary font-semibold">Settings → Delivery zones</a>, so the page, cart and checkout always agree.</p>
                 <div class="grid sm:grid-cols-2 gap-5">
@@ -55,7 +63,7 @@
                 </div>
                 @foreach (\App\Models\Setting::ZONES as $zone => $label)
                     @php $area = $page->zoneArea($zone); @endphp
-                    <div class="grid sm:grid-cols-[150px_minmax(0,1.2fr)_minmax(0,2fr)] gap-3 items-end rounded-2xl border border-line p-4">
+                    <div class="pol-row gap-3 items-end rounded-2xl border border-line p-4" style="--cols:150px minmax(0,1.2fr) minmax(0,2fr)">
                         <div><label class="lbl">Icon</label>
                             <select class="select" name="zone_areas[{{ $zone }}][icon]">
                                 @foreach ($icons as $key => $iconLabel)
@@ -80,7 +88,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Good to know</h3></div>
+            <div class="card-h"><h3>3 · Good to know cards</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Icon cards shown below the zones.</p>
             <div class="card-b space-y-3" data-repeat="know_items">
                 <div class="max-w-md">
                     <label class="lbl" for="know_title">Section heading</label>
@@ -88,7 +97,7 @@
                     @error('know_title')<p class="text-danger text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 @foreach ($know as $i => $row)
-                    <div class="grid sm:grid-cols-[150px_1fr_2fr_auto] gap-3 items-end" data-item>
+                    <div class="pol-row gap-3 items-end" style="--cols:150px 1fr 2fr auto" data-item>
                         <div><label class="lbl">Icon</label>
                             <select class="select" name="know_items[{{ $i }}][icon]">
                                 @foreach ($icons as $key => $label)
@@ -103,7 +112,7 @@
                 <button type="button" class="btn btn-ghost" data-add="know_items"><svg class="ic ic-sm"><use href="#i-plus" /></svg>Add card</button>
             </div>
             <template id="tpl-know_items">
-                <div class="grid sm:grid-cols-[150px_1fr_2fr_auto] gap-3 items-end" data-item>
+                <div class="pol-row gap-3 items-end" style="--cols:150px 1fr 2fr auto" data-item>
                     <div><label class="lbl">Icon</label>
                         <select class="select" name="know_items[__i__][icon]">
                             @foreach ($icons as $key => $label)
@@ -118,7 +127,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>From checkout to your door</h3></div>
+            <div class="card-h"><h3>4 · Delivery steps</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Numbered steps from checkout to delivery.</p>
             <div class="card-b space-y-3" data-repeat="flow_steps">
                 <div class="grid sm:grid-cols-2 gap-5">
                     <div>
@@ -133,7 +143,7 @@
                     </div>
                 </div>
                 @foreach ($steps as $i => $row)
-                    <div class="grid sm:grid-cols-[1fr_2fr_auto_auto_auto] gap-3 items-end" data-item>
+                    <div class="pol-row gap-3 items-end" style="--cols:1fr 2fr auto auto auto" data-item>
                         <div><label class="lbl">Step title</label><input class="input" name="flow_steps[{{ $i }}][title]" value="{{ $row['title'] ?? '' }}"></div>
                         <div><label class="lbl">Text</label><input class="input" name="flow_steps[{{ $i }}][text]" value="{{ $row['text'] ?? '' }}"></div>
                         <button type="button" class="icon-btn" data-up title="Move up">↑</button>
@@ -144,7 +154,7 @@
                 <button type="button" class="btn btn-ghost" data-add="flow_steps"><svg class="ic ic-sm"><use href="#i-plus" /></svg>Add step</button>
             </div>
             <template id="tpl-flow_steps">
-                <div class="grid sm:grid-cols-[1fr_2fr_auto_auto_auto] gap-3 items-end" data-item>
+                <div class="pol-row gap-3 items-end" style="--cols:1fr 2fr auto auto auto" data-item>
                     <div><label class="lbl">Step title</label><input class="input" name="flow_steps[__i__][title]"></div>
                     <div><label class="lbl">Text</label><input class="input" name="flow_steps[__i__][text]"></div>
                     <button type="button" class="icon-btn" data-up title="Move up">↑</button>
@@ -155,7 +165,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Bottom banner</h3></div>
+            <div class="card-h"><h3>5 · Bottom banner</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Contact box at the very bottom of the page.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="cta_title">Heading</label>

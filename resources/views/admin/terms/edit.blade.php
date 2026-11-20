@@ -16,12 +16,19 @@
         <a href="{{ route('terms.show') }}" target="_blank" class="btn btn-ghost">View page</a>
     </div>
 
+    <style>
+        .pol-row{display:grid;gap:.75rem;align-items:end}
+        @media (min-width:640px){.pol-row{grid-template-columns:var(--cols)}}
+        @media (max-width:639px){.pol-row [data-up],.pol-row [data-down],.pol-row [data-remove]{justify-self:start}}
+    </style>
+
     <form method="POST" action="{{ route('admin.terms.update') }}" class="space-y-6">
         @csrf
         @method('PUT')
 
         <section class="card">
-            <div class="card-h"><h3>Header</h3></div>
+            <div class="card-h"><h3>1 · Page header</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Top banner of the page: heading, sub heading and "Last updated" date.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="hero_title">Heading</label>
@@ -42,10 +49,11 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Key points</h3></div>
+            <div class="card-h"><h3>2 · Key point cards</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">The icon cards shown right under the header (not the policy text).</p>
             <div class="card-b space-y-3" data-repeat="keys">
                 @foreach ($keys as $i => $row)
-                    <div class="grid sm:grid-cols-[150px_1fr_2fr_auto] gap-3 items-end" data-item>
+                    <div class="pol-row gap-3 items-end" style="--cols:150px 1fr 2fr auto" data-item>
                         <div><label class="lbl">Icon</label>
                             <select class="select" name="keys[{{ $i }}][icon]">
                                 @foreach ($icons as $key => $label)
@@ -60,7 +68,7 @@
                 <button type="button" class="btn btn-ghost" data-add="keys"><svg class="ic ic-sm"><use href="#i-plus" /></svg>Add key point</button>
             </div>
             <template id="tpl-keys">
-                <div class="grid sm:grid-cols-[150px_1fr_2fr_auto] gap-3 items-end" data-item>
+                <div class="pol-row gap-3 items-end" style="--cols:150px 1fr 2fr auto" data-item>
                     <div><label class="lbl">Icon</label>
                         <select class="select" name="keys[__i__][icon]">
                             @foreach ($icons as $key => $label)
@@ -75,7 +83,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Sections</h3></div>
+            <div class="card-h"><h3>3 · Policy sections</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Main content. Each section appears in the page body and in the "On this page" menu.</p>
             <div class="card-b space-y-4" data-repeat="clauses">
                 <p class="text-xs text-ink/50">Leave a blank line between paragraphs. Start a line with "- " for a bullet list. Use [link text](/page) for links.</p>
                 @error('clauses')<p class="text-danger text-sm">{{ $message }}</p>@enderror
@@ -106,7 +115,8 @@
         </section>
 
         <section class="card">
-            <div class="card-h"><h3>Bottom banner</h3></div>
+            <div class="card-h"><h3>4 · Bottom banner</h3></div>
+            <p class="px-6 pt-4 text-xs text-ink/50">Contact box at the very bottom of the page.</p>
             <div class="card-b grid sm:grid-cols-2 gap-5">
                 <div>
                     <label class="lbl" for="cta_title">Heading</label>
