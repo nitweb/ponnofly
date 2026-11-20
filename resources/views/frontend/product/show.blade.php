@@ -248,9 +248,9 @@
                         .product-rich .ql-align-right { text-align: right; }
                         .product-rich .ql-align-justify { text-align: justify; }
                     </style>
-                    <div class="product-rich max-w-3xl text-ink/80 leading-relaxed">{!! \App\Support\HtmlSanitizer::clean($product->description) !!}</div>
+                    <div class="product-rich max-w-3xl min-w-0 text-ink/80 leading-relaxed">{!! \App\Support\HtmlSanitizer::clean($product->description) !!}</div>
                 @else
-                    <div class="max-w-3xl text-ink/80 leading-relaxed grid gap-3">
+                    <div class="max-w-3xl min-w-0 text-ink/80 leading-relaxed grid gap-3">
                         @forelse (preg_split('/\R{2,}/', trim((string) ($product->description ?: $product->short_description))) as $paragraph)
                             @if (trim($paragraph) !== '')<p>{!! nl2br(e(trim($paragraph))) !!}</p>@endif
                         @empty
@@ -304,7 +304,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/frontend/js/pages/gallery.js') }}" defer></script>
+    <script src="{{ asset('assets/frontend/js/pages/gallery.js') }}?v={{ filemtime(public_path('assets/frontend/js/pages/gallery.js')) }}" defer></script>
 @endpush
 
 @push('scripts')

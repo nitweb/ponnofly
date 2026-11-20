@@ -20,37 +20,3 @@
 .u-f162d0 {
     width: 1%
 }
-/* Product gallery: compact main image + thumbnail slider */
-.pgal { width: 100%; max-width: 440px; margin-inline: auto; }
-@media (min-width: 1024px) { .pgal { margin-inline: 0; } }
-.pgal__main img { transition: opacity .2s ease; }
-.pgal__arrow {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
-    width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 0; cursor: pointer;
-    display: grid; place-items: center; font-size: 1.5rem; line-height: 1;
-    background: rgb(255 255 255 / .92); color: rgb(var(--color-ink));
-    box-shadow: 0 4px 14px rgb(0 0 0 / .18); opacity: 0; transition: opacity .2s, background .15s, color .15s;
-}
-.pgal__main:hover .pgal__arrow, .pgal__arrow:focus-visible { opacity: 1; }
-@media (hover: none) { .pgal__arrow { opacity: 1; } }
-.pgal__arrow:hover { background: rgb(var(--color-primary)); color: #fff; }
-.pgal__arrow--prev { left: .6rem; }
-.pgal__arrow--next { right: .6rem; }
-.pgal__strip { display: flex; align-items: center; gap: .4rem; margin-top: .75rem; }
-.pgal__thumbs {
-    display: flex; gap: .5rem; flex: 1; min-width: 0; margin: 0; padding: .15rem; list-style: none;
-    overflow-x: auto; scroll-snap-type: x proximity; scroll-behavior: smooth; scrollbar-width: none;
-}
-.pgal__thumbs::-webkit-scrollbar { display: none; }
-.pgal__thumbs li { flex: none; width: 4.25rem; scroll-snap-align: start; }
-.pgal__thumbs .thumb { width: 100%; aspect-ratio: 1; background: #fff; }
-.pgal__thumbs .thumb.border-primary { box-shadow: 0 0 0 2px rgb(var(--color-primary) / .25); }
-.pgal__nav, .pgal__arrow { user-select: none; -webkit-user-select: none; }
-.pgal__nav {
-    flex: none; width: 1.9rem; height: 1.9rem; border-radius: 50%; cursor: pointer;
-    display: grid; place-items: center; font-size: 1.25rem; line-height: 1;
-    border: 1px solid rgb(var(--color-line)); background: #fff; color: rgb(var(--color-ink));
-    transition: background .15s, color .15s, border-color .15s;
-}
-.pgal__nav:hover { background: rgb(var(--color-primary)); border-color: rgb(var(--color-primary)); color: #fff; }
-.pgal__nav[disabled] { opacity: .35; cursor: default; pointer-events: none; }

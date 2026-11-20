@@ -93,7 +93,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/contact.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/faq.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/info.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/product.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/product.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/returns.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/shipping.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/shop.css') }}">
