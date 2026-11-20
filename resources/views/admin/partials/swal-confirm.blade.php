@@ -11,7 +11,7 @@
             showCancelButton: true,
             confirmButtonText: form.dataset.swalConfirm || 'Yes',
             cancelButtonText: 'Cancel',
-            confirmButtonColor: form.dataset.swalDanger === '1' ? '#DC2626' : '#0B3A8C',
+            confirmButtonColor: form.dataset.swalDanger === '1' ? '#DC2626' : getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim().split(' ').reduce(function (h, n) { return h + ('0' + parseInt(n).toString(16)).slice(-2); }, '#'),
             reverseButtons: true,
             focusCancel: true
         }).then(function (result) {

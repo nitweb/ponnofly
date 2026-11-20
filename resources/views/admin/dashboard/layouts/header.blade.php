@@ -70,7 +70,7 @@
                 @if (auth('admin')->user()->avatarUrl())
                     <img src="{{ auth('admin')->user()->avatarUrl() }}" alt="" class="w-10 h-10 rounded-xl object-cover">
                 @else
-                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-[#1d5fd1] text-white grid place-items-center font-display font-extrabold">{{ auth('admin')->user()->initial() }}</span>
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark text-white grid place-items-center font-display font-extrabold">{{ auth('admin')->user()->initial() }}</span>
                 @endif
                 <span class="hidden sm:block text-left leading-tight">
                     <b class="block text-sm">{{ auth('admin')->user()->name }}</b>

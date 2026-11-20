@@ -36,7 +36,7 @@
                     'chartId' => 'pl-chart',
                     'timeline' => $timeline,
                     'series' => [array_column($timeline, 'revenue'), array_column($timeline, 'profit')],
-                    'colors' => ['#0B3A8C', '#0A8F6B'],
+                    'colors' => [$setting('color_primary'), '#0A8F6B'],
                     'names' => ['Net revenue', 'Net profit'],
                 ])
             </div>

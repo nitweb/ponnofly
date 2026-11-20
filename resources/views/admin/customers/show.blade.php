@@ -13,7 +13,7 @@
 
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div class="flex items-center gap-4">
-            <span class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-[#1d5fd1] text-white grid place-items-center font-display font-extrabold text-xl">{{ mb_strtoupper(mb_substr($customer->name, 0, 1)) }}</span>
+            <span class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white grid place-items-center font-display font-extrabold text-xl">{{ mb_strtoupper(mb_substr($customer->name, 0, 1)) }}</span>
             <div>
                 <h1 class="font-display font-extrabold text-2xl sm:text-[28px] tracking-tight">{{ $customer->name }}</h1>
                 <p class="text-ink/55 mt-1">{{ $customer->email }}{{ $customer->phone ? ' · '.$customer->phone : '' }} · Joined {{ $customer->created_at->timezone(\App\Models\Setting::tz())->format('d M Y') }}</p>
@@ -55,7 +55,7 @@
     <div class="grid xl:grid-cols-3 gap-6 items-start">
         <section class="card xl:col-span-2">
             <div class="card-h"><h3>Spend, last 12 months</h3></div>
-            <div class="card-b"><div data-bars='@json(['labels' => $profile['months']['labels'], 'values' => $profile['months']['values'], 'color' => '#0B3A8C'])'></div></div>
+            <div class="card-b"><div data-bars='@json(['labels' => $profile['months']['labels'], 'values' => $profile['months']['values'], 'color' => $setting('color_primary')])'></div></div>
         </section>
 
         <section class="card">

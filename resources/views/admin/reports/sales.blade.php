@@ -21,7 +21,7 @@
         <section class="card xl:col-span-2">
             <div class="card-h"><h3>Net revenue</h3></div>
             <div class="card-b">
-                @include('admin.reports._timeline-chart', ['chartId' => 'sales-chart', 'timeline' => $timeline, 'series' => [array_column($timeline, 'revenue')], 'colors' => ['#0B3A8C'], 'names' => ['Net revenue']])
+                @include('admin.reports._timeline-chart', ['chartId' => 'sales-chart', 'timeline' => $timeline, 'series' => [array_column($timeline, 'revenue')], 'colors' => [$setting('color_primary')], 'names' => ['Net revenue']])
             </div>
         </section>
 
@@ -67,7 +67,7 @@
                     @forelse ($categories->take(8) as $row)
                         <div>
                             <div class="flex justify-between mb-1.5"><b>{{ $row->name }}</b><span class="text-ink/55">{{ $row->units }} units · ৳{{ number_format($row->revenue) }}</span></div>
-                            <div class="bar-track"><i style="width: {{ round($row->revenue / $catTotal * 100) }}%; background: #0B3A8C"></i></div>
+                            <div class="bar-track"><i style="width: {{ round($row->revenue / $catTotal * 100) }}%; background: {{ $setting('color_primary') }}"></i></div>
                         </div>
                     @empty
                         <p class="text-ink/55">No sales in this period.</p>
@@ -80,7 +80,7 @@
     <div class="grid xl:grid-cols-3 gap-6">
         <section class="card">
             <div class="card-h"><h3>Orders by weekday</h3></div>
-            <div class="card-b"><div data-bars='@json(['labels' => $weekdays['labels'], 'values' => $weekdays['orders'], 'color' => '#F5A800'])'></div></div>
+            <div class="card-b"><div data-bars='@json(['labels' => $weekdays['labels'], 'values' => $weekdays['orders'], 'color' => $setting('color_accent')])'></div></div>
         </section>
 
         <section class="card">

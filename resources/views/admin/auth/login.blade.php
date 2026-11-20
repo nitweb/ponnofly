@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/css/tailwind.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/inline.css') }}">
+    @include('admin.dashboard.layouts.theme')
 
 </head>
 
@@ -31,7 +32,7 @@
                 @include('admin.dashboard.layouts.brand', ['large' => true])
             </div>
 
-            <div class="w-full max-w-md bg-white text-ink rounded-[28px] p-8 sm:p-10 shadow-2xl">
+            <div class="auth-card w-full max-w-md bg-white text-ink rounded-[28px] p-8 sm:p-10 shadow-2xl">
 
                 <h1 class="font-display font-extrabold text-3xl tracking-tight">Welcome back 👋</h1>
 

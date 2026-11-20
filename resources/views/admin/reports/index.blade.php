@@ -19,7 +19,7 @@
                     'chartId' => 'ov-chart',
                     'timeline' => $timeline,
                     'series' => [array_column($timeline, 'revenue'), array_column($timeline, 'profit'), array_column($timeline, 'expenses')],
-                    'colors' => ['#0B3A8C', '#0A8F6B', '#F5A800'],
+                    'colors' => [$setting('color_primary'), '#0A8F6B', $setting('color_accent')],
                     'names' => ['Net revenue', 'Net profit', 'Expenses'],
                 ])
             </div>
@@ -33,7 +33,7 @@
                     @forelse ($categories->take(6) as $row)
                         <div>
                             <div class="flex justify-between mb-1.5"><b>{{ $row->name }}</b><span class="text-ink/55">৳{{ number_format($row->revenue) }}</span></div>
-                            <div class="bar-track"><i style="width: {{ round($row->revenue / $catTotal * 100) }}%; background: #0B3A8C"></i></div>
+                            <div class="bar-track"><i style="width: {{ round($row->revenue / $catTotal * 100) }}%; background: {{ $setting('color_primary') }}"></i></div>
                         </div>
                     @empty
                         <p class="text-ink/55">No sales in this period.</p>
@@ -46,7 +46,7 @@
     <div class="grid xl:grid-cols-2 gap-6">
         <section class="card">
             <div class="card-h"><h3>Orders by weekday</h3></div>
-            <div class="card-b"><div data-bars='@json(['labels' => $weekdays['labels'], 'values' => $weekdays['orders'], 'color' => '#F5A800'])'></div></div>
+            <div class="card-b"><div data-bars='@json(['labels' => $weekdays['labels'], 'values' => $weekdays['orders'], 'color' => $setting('color_accent')])'></div></div>
         </section>
 
         <section class="card">

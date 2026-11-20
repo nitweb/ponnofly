@@ -6,8 +6,8 @@
         $dashAdmin = auth('admin')->user();
         $orderBadges = ['pending' => 'b-warn', 'processing' => 'b-info', 'shipped' => 'b-purple', 'out_for_delivery' => 'b-info', 'delivered' => 'b-success', 'cancelled' => 'b-danger', 'returned' => 'b-muted'];
         $statCards = [
-            ['key' => 'revenue', 'label' => 'Total Revenue', 'icon' => 'dollar', 'tone' => 'is-5', 'color' => '#0B3A8C', 'prefix' => '৳'],
-            ['key' => 'orders', 'label' => 'Total Orders', 'icon' => 'cart', 'tone' => 'is-11', 'color' => '#F5A800', 'prefix' => ''],
+            ['key' => 'revenue', 'label' => 'Total Revenue', 'icon' => 'dollar', 'tone' => 'is-5', 'color' => $setting('color_primary'), 'prefix' => '৳'],
+            ['key' => 'orders', 'label' => 'Total Orders', 'icon' => 'cart', 'tone' => 'is-11', 'color' => $setting('color_accent'), 'prefix' => ''],
             ['key' => 'customers', 'label' => 'Customers', 'icon' => 'users', 'tone' => 'is-9', 'color' => '#0A8F6B', 'prefix' => ''],
             ['key' => 'products', 'label' => 'Products', 'icon' => 'box', 'tone' => 'is-7', 'color' => '#7C3AED', 'prefix' => ''],
         ];

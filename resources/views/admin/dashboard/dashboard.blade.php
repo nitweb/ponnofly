@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/tailwind.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/inline.css') }}">
+    @include('admin.dashboard.layouts.theme')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
 
 </head>

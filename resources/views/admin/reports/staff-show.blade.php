@@ -3,7 +3,7 @@
 @section('admin_contents')
 
     @php
-        $activityChart = ['labels' => array_column($profile['timeline'], 'label'), 'values' => array_column($profile['timeline'], 'orders'), 'color' => '#0B3A8C'];
+        $activityChart = ['labels' => array_column($profile['timeline'], 'label'), 'values' => array_column($profile['timeline'], 'orders'), 'color' => $setting('color_primary')];
         $subtitle = $member->displayTitle().' · sales performance';
         $badges = ['pending' => 'b-warn', 'processing' => 'b-info', 'shipped' => 'b-purple', 'out_for_delivery' => 'b-info', 'delivered' => 'b-success', 'cancelled' => 'b-danger', 'returned' => 'b-muted'];
     @endphp
