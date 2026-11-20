@@ -19,10 +19,12 @@ use App\Http\Controllers\Frontend\PrivacyController;
 use App\Http\Controllers\Frontend\TermsController;
 use App\Http\Controllers\Frontend\TrackController;
 use App\Http\Controllers\Frontend\WishlistController;
+use App\Http\Controllers\Frontend\SitemapController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
