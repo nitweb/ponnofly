@@ -88,7 +88,7 @@
         t.addEventListener('transitionend', function (e) { if (e.target === t) fix() });
         function stop() { clearInterval(tm) }
         function play() { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; stop(); tm = setInterval(function () { go(i + 1) }, 5000) }
-        h.querySelector('[data-prev]').onclick = function () { go(i - 1) }; h.querySelector('[data-next]').onclick = function () { go(i + 1) };
+        var pv = h.querySelector('[data-prev]'), nx = h.querySelector('[data-next]'); if (pv) pv.onclick = function () { go(i - 1) }; if (nx) nx.onclick = function () { go(i + 1) };
         dots.forEach(function (d, j) { d.onclick = function () { fix(); go(j) } });
         h.addEventListener('mouseenter', stop); h.addEventListener('mouseleave', play); h.addEventListener('focusin', stop); h.addEventListener('focusout', play); jump(0); play()
       })();

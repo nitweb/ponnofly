@@ -82,11 +82,6 @@ nav[aria-label="Main"] { border-bottom: 1px solid var(--soft-line); }
 
 /* ---------- Hero ---------- */
 #hero { border-bottom: 0; }
-#hero [data-prev], #hero [data-next] {
-  box-shadow: var(--shadow-1);
-  border-color: transparent;
-  opacity: .92;
-}
 #hero [data-dot] { width: .5rem; height: .5rem; border: 0; opacity: .7; }
 
 /* ---------- Round arrow buttons ---------- */
