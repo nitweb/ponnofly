@@ -39,7 +39,7 @@
                 <!-- Logo -->
                 <a href="{{ url('/') }}" class="flex items-center gap-2 shrink-0" aria-label="{{ $storeName }} home">
                     @if ($setting('logo_header'))
-                        <img src="{{ asset($setting('logo_header')) }}" alt="{{ $storeName }}" class="h-12 lg:h-[3.75rem] w-auto">
+                        <img src="{{ asset($setting('logo_header')) }}" alt="{{ $storeName }}" class="site-logo h-12 lg:h-[3.75rem] w-auto">
                     @else
                         <span class="relative grid place-items-center w-10 h-10 lg:w-11 lg:h-11 rounded-xl bg-primary -rotate-6">
                             <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent border border-white"></span>

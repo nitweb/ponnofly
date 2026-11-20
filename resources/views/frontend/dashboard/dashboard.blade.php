@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
         $siteTitle = trim($__env->yieldContent('frontend_title')) ?: $setting('meta_title');
@@ -54,7 +55,8 @@
         @endif
     @endif
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="theme-color" content="{{ $setting('color_primary') }}">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ $setting('color_primary') }}">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B111C">
     @hasSection('frontend_keywords')
         <meta name="keywords" content="{{ trim($__env->yieldContent('frontend_keywords')) }}">
     @endif
@@ -101,6 +103,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/refresh.css') }}?v={{ filemtime(public_path('assets/frontend/css/refresh.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/extras.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/extras.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/customer.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/customer.css')) }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/css/dark.css') }}?v={{ filemtime(public_path('assets/frontend/css/dark.css')) }}">
     @if ($setting('ga_id'))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $setting('ga_id') }}"></script>
         <script>

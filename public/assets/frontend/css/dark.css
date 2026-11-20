@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Dark mode — applied automatically when the visitor's device/browser is
+   set to dark. Palette variables live in layouts/theme.blade.php.
+   Loaded after every other stylesheet.
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+
+  :root {
+    color-scheme: dark;
+    --soft-line: rgb(var(--color-line));
+    --shadow-1: 0 1px 2px rgb(0 0 0 / .35), 0 2px 8px rgb(0 0 0 / .25);
+    --shadow-2: 0 8px 24px rgb(0 0 0 / .45);
+  }
+
+  html,
+  body,
+  body[data-page="success"] {
+    background: rgb(var(--color-paper));
+    color: rgb(var(--color-ink) / .92);
+  }
+
+  /* ---------- Logo: show white on dark ---------- */
+  .site-logo {
+    filter: brightness(0) invert(1);
+  }
+
+  /* ---------- Tailwind utilities ---------- */
+  .bg-white { background-color: rgb(var(--color-surface)); }
+  .bg-ink,
+  .peer:checked ~ .peer-checked\:bg-ink { background-color: rgb(var(--color-ink-deep)); }
+  .bg-ink\/60 { background-color: rgb(0 0 0 / .6); }
+  .bg-ink\/20 { background-color: rgb(0 0 0 / .35); }
+  .border-white { border-color: rgb(var(--color-surface)); }
+
+  /* dark text on amber stays dark */
+  .bg-accent.text-ink,
+  .bg-accent .text-ink,
+  .hover\:bg-accent.hover\:text-ink:hover,
+  .mv__card--m > .ic { color: rgb(var(--color-ink-deep)); }
+
+  /* ---------- Dark sections keep a deep background ---------- */
+  .mega-item:hover > .mega-trigger,
+  .mega-item:focus-within > .mega-trigger,
+  .u-1126c2,
+  .shop-bar__filters,
+  .sec--dark,
+  .faq-aside .dark,
+  .trk-how,
+  .mv__card--m { background: rgb(var(--color-ink-deep)); }
+
+  .ph,
+  .abt-hero { background: linear-gradient(115deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
+  .auth__side { background: linear-gradient(160deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
+  .cta { background: linear-gradient(115deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
+  .win__big { background: linear-gradient(150deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
+
+  /* ---------- Surfaces that were hard-coded white ---------- */
+  .s-pop, .s-all,
+  .card-actions .qv,
+  .shop-filter-btn, .shop-apply-bar,
+  main article.group,
+  #panel-spec table,
+  main section a.font-bold.underline.underline-offset-4,
+  .nf-card,
+  .abt-photo figcaption, .stats,
+  .tile, .auth__card, .seg a[aria-current=page], .soc__btn,
+  #district-list, #area-list,
+  .btn--ghost, .btn--light, .card, .chip,
+  .cmap__bar, .ap-list, .more-loader,
+  .qa, .key, .toc, .clause, .perk, .job,
+  .sec:not(.sec--dark) .step,
+  .win, .steps3 li,
+  .u-e84188,
+  .shop-search, .shop-bar, .sort__btn, .sort__menu,
+  .trk-node {
+    background: rgb(var(--color-surface));
+  }
+
+  .nf-tag::before { background: rgb(var(--color-surface)); }
+  #panel-spec th { background: rgb(var(--color-surface-2)); }
+
+  /* product image wells stay light so product photos read correctly */
+  main article.group > div:first-child,
+  .s-item img,
+  #qv-img { background: #eceae4; }
+
+  /* ---------- Header search ---------- */
+  #site-header form[role="search"] > div { background: rgb(var(--color-surface-2)); }
+  #site-header form[role="search"] > div:focus-within { background: rgb(var(--color-surface)); }
+
+  /* ---------- Form controls ---------- */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea,
+  .fld__box input,
+  .fld__box select,
+  .fld__box textarea {
+    background-color: rgb(var(--color-surface));
+    color: rgb(var(--color-ink));
+    border-color: rgb(var(--color-line));
+  }
+
+  input::placeholder,
+  textarea::placeholder { color: rgb(var(--color-ink) / .45); }
+
+  /* ---------- Floating cart / misc ---------- */
+  #float-cart .fc-total { background: rgb(var(--color-surface)); }
+
+  /* ---------- Account status badges ---------- */
+  .acct-badge { background: rgb(var(--color-surface-2)); color: rgb(var(--color-ink)); }
+  .acct-badge[data-status="pending"] { background: rgb(133 77 14 / .3); color: #fcd34d; }
+  .acct-badge[data-status="processing"],
+  .acct-badge[data-status="shipped"],
+  .acct-badge[data-status="out_for_delivery"] { background: rgb(30 64 175 / .3); color: #93c5fd; }
+  .acct-badge[data-status="delivered"],
+  .acct-badge[data-status="approved"] { background: rgb(6 95 70 / .35); color: #6ee7b7; }
+  .acct-badge[data-status="rejected"],
+  .acct-badge[data-status="cancelled"],
+  .acct-badge[data-status="returned"] { background: rgb(153 27 27 / .35); color: #fca5a5; }
+
+  /* ---------- Third-party toasts ---------- */
+  .toastify { box-shadow: 0 10px 30px rgb(0 0 0 / .5); }
+}
