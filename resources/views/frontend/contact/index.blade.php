@@ -120,22 +120,24 @@
             </div>
         </section>
     </div>
+@endsection
 
-    @if (session('contact_success'))
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    @if (session('contact_success') || $errors->any())
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            window.addEventListener('load', function () {
                 if (typeof Swal === 'undefined') return;
 
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Message sent!',
-                    text: @json(session('contact_success')),
-                    confirmButtonText: 'Okay',
-                    confirmButtonColor: '#0B3A8C',
-                    customClass: { popup: 'swal-contact' },
+                    icon: '{{ session('contact_success') ? 'success' : 'error' }}',
+                    title: '{{ session('contact_success') ? 'Message sent!' : 'Message not sent' }}',
+                    text: @json(session('contact_success') ?: 'Please check the highlighted fields and try again.'),
+                    confirmButtonText: '{{ session('contact_success') ? 'Continue shopping' : 'Fix and retry' }}',
+                    buttonsStyling: false,
+                    customClass: { popup: 'swal-nm swal-nm--{{ session('contact_success') ? 'ok' : 'err' }}' },
                 });
             });
         </script>
     @endif
-@endsection
+@endpush

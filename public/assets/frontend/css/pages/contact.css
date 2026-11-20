@@ -193,3 +193,175 @@ a.cinfo__item:hover {
     margin-left: auto;
     color: rgb(var(--color-ink)/.4)
 }
+/* Contact alert (SweetAlert2) — follows the site theme */
+.swal2-popup.swal-nm {
+    width: 27rem;
+    max-width: 92vw;
+    padding: 2.25rem 0 1.75rem;
+    overflow: hidden;
+    border-top: 6px solid rgb(var(--color-accent));
+    border-radius: 1.5rem;
+    background: rgb(var(--color-paper));
+    color: rgb(var(--color-ink));
+    font-family: var(--font-body);
+    box-shadow: 0 30px 70px rgb(var(--color-primary) / .3)
+}
+
+.swal-nm .swal2-icon {
+    width: 5.5rem;
+    height: 5.5rem;
+    margin: 0 auto 1.1rem;
+    border-width: 4px;
+    background: transparent;
+    box-shadow: none
+}
+
+.swal-nm .swal2-success-fix,
+.swal-nm [class^=swal2-success-circular-line] {
+    background: rgb(var(--color-paper)) !important
+}
+
+.swal-nm--err {
+    border-top-color: rgb(var(--color-danger))
+}
+
+.swal-nm--ok {
+    border-top-color: rgb(var(--color-success))
+}
+
+.swal-nm .swal2-title {
+    padding: 0 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.55rem;
+    color: rgb(var(--color-ink))
+}
+
+.swal-nm .swal2-html-container,
+.swal-nm .nm-body {
+    margin: .6rem 1.75rem 0;
+    padding: 0;
+    color: rgb(var(--color-ink) / .75);
+    font-size: .95rem;
+    line-height: 1.55
+}
+
+.swal-nm .nm-intro {
+    margin: 0 0 .85rem
+}
+
+.swal-nm .nm-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: .5rem;
+    text-align: left
+}
+
+.swal-nm .nm-list li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .6rem .85rem;
+    border-radius: .75rem;
+    border-left: 4px solid rgb(var(--color-danger));
+    background: rgb(var(--color-danger) / .08);
+    color: rgb(var(--color-ink));
+    font-weight: 600;
+    font-size: .9rem
+}
+
+.swal-nm .nm-list li::before {
+    content: "!";
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    background: rgb(var(--color-danger));
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 800
+}
+
+.swal-nm .nm-note {
+    display: inline-block;
+    padding: .45rem .9rem;
+    border-radius: 999px;
+    background: rgb(var(--color-accent-soft));
+    color: rgb(var(--color-accent-dark));
+    font-weight: 700;
+    font-size: .85rem
+}
+
+.swal-nm .swal2-icon.swal2-success {
+    border-color: rgb(var(--color-success));
+    color: rgb(var(--color-success))
+}
+
+.swal-nm .swal2-icon.swal2-success [class^=swal2-success-line] {
+    background-color: rgb(var(--color-success))
+}
+
+.swal-nm .swal2-icon.swal2-success .swal2-success-ring {
+    border-color: rgb(var(--color-success) / .25)
+}
+
+.swal-nm .swal2-icon.swal2-error {
+    border-color: rgb(var(--color-danger));
+    color: rgb(var(--color-danger))
+}
+
+.swal-nm .swal2-icon.swal2-error [class^=swal2-x-mark-line] {
+    background-color: rgb(var(--color-danger))
+}
+
+.swal-nm .swal2-close {
+    top: .6rem;
+    right: .6rem;
+    color: rgb(var(--color-ink) / .5);
+    border-radius: 50%
+}
+
+.swal-nm .swal2-close:hover {
+    background: rgb(var(--color-ink) / .08);
+    color: rgb(var(--color-ink))
+}
+
+.swal-nm .swal2-timer-progress-bar {
+    background: rgb(var(--color-accent))
+}
+
+.swal-nm .swal2-actions {
+    margin: 1.4rem 0 0
+}
+
+.swal-nm .swal2-confirm {
+    padding: .75rem 2rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-ink));
+    font-weight: 800;
+    font-size: .95rem;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgb(var(--color-accent) / .4);
+    transition: background .15s, transform .15s
+}
+
+.swal-nm .swal2-confirm:hover {
+    background: rgb(var(--color-accent-dark));
+    transform: translateY(-1px)
+}
+
+.swal-nm .swal2-confirm:focus-visible {
+    outline: 3px solid rgb(var(--color-primary) / .4);
+    outline-offset: 2px
+}
+
+.cform .fld__box.is-invalid {
+    border-color: rgb(var(--color-danger));
+    box-shadow: 0 0 0 3px rgb(var(--color-danger) / .15)
+}
