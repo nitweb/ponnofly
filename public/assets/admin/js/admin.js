@@ -82,7 +82,7 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $$('.modal.open').forEach(function (m) { m.classList.remove('open') }) });
     /* delete confirm */
     var cm = document.getElementById('confirm-modal'), target = null, targetForm = null;
-    $$('[data-delete]').forEach(function (b) { b.onclick = function () { target = b.closest('tr,li,article,[data-row]'); targetForm = b.closest('form'); if (cm) { cm.querySelector('[data-name]').textContent = b.dataset.delete || 'this item'; cm.classList.add('open') } } });
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-delete]'); if (!b) return; target = b.closest('tr,li,article,[data-row]'); targetForm = b.closest('form'); if (cm) { cm.querySelector('[data-name]').textContent = b.dataset.delete || 'this item'; cm.classList.add('open') } });
     if (cm) cm.querySelector('[data-confirm]').onclick = function () { cm.classList.remove('open'); if (targetForm) { targetForm.submit(); return } if (target) target.remove(); toast('Deleted successfully') };
     /* table select all + bulk bar */
     $$('[data-check-all]').forEach(function (a) { a.onchange = function () { var t = a.closest('table'); $$('tbody .chk', t).forEach(function (c) { c.checked = a.checked }); bulk() } });

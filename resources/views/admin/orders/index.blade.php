@@ -16,14 +16,14 @@
     </div>
 
     <section class="card">
-        <div class="tabs">
+        <div class="tabs" data-live-tabs>
             <a href="{{ route('admin.orders.index', $keep(['status' => null])) }}" class="tab {{ $current === 'all' ? 'active' : '' }}">All <small>{{ $counts->sum() }}</small></a>
             @foreach (\App\Models\Order::STATUSES as $key => $label)
                 <a href="{{ route('admin.orders.index', $keep(['status' => $key])) }}" class="tab {{ $current === $key ? 'active' : '' }}">{{ $label }} <small>{{ $counts[$key] ?? 0 }}</small></a>
             @endforeach
         </div>
 
-        <form method="GET" action="{{ route('admin.orders.index') }}" class="flex flex-wrap items-center gap-3 p-5 border-b border-line">
+        <form method="GET" action="{{ route('admin.orders.index') }}" data-live-search class="flex flex-wrap items-center gap-3 p-5 border-b border-line">
             @if ($filters['status'] ?? null)
                 <input type="hidden" name="status" value="{{ $filters['status'] }}">
             @endif
@@ -49,11 +49,10 @@
             </div>
             <input type="date" name="date" value="{{ $filters['date'] ?? '' }}" class="input w-44" onchange="this.form.submit()" aria-label="Date">
             <button class="btn btn-ghost btn-sm" type="submit">Filter</button>
-            @if (array_filter($filters))
-                <a href="{{ route('admin.orders.index') }}" class="btn btn-ghost btn-sm">Reset</a>
-            @endif
+            <a href="{{ route('admin.orders.index') }}" class="btn btn-ghost btn-sm" data-live-reset @if (! array_filter($filters)) style="display:none" @endif>Reset</a>
         </form>
 
+        <div data-live-results>
         <div class="overflow-x-auto">
             <table class="tbl" id="tbl">
                 <thead>
@@ -120,6 +119,9 @@
                 </div>
             </div>
         @endif
+        </div>
     </section>
+
+    @include('admin.partials.live-search')
 
 @endsection

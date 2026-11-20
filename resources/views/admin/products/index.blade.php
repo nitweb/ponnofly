@@ -18,7 +18,7 @@
     </div>
 
     <section class="card">
-        <div class="tabs">
+        <div class="tabs" data-live-tabs>
             @foreach ($tabs as $key => $label)
                 <a href="{{ route('admin.products.index', $keep(['status' => $key === 'all' ? null : $key, 'page' => null])) }}" class="tab {{ $filters['status'] === $key ? 'active' : '' }}">
                     {{ $label }} @if (isset($counts[$key]))<small>{{ $counts[$key] }}</small>@endif
@@ -26,7 +26,7 @@
             @endforeach
         </div>
 
-        <form method="GET" action="{{ route('admin.products.index') }}" class="flex flex-wrap items-center gap-3 p-5 border-b border-line">
+        <form method="GET" action="{{ route('admin.products.index') }}" data-live-search class="flex flex-wrap items-center gap-3 p-5 border-b border-line">
             @if ($filters['status'] !== 'all')<input type="hidden" name="status" value="{{ $filters['status'] }}">@endif
             <div class="input-group flex-1 min-w-[220px] max-w-sm">
                 <svg class="ic"><use href="#i-search" /></svg>
@@ -59,6 +59,7 @@
             <button class="btn btn-ghost btn-sm" type="submit">Search</button>
         </form>
 
+        <div data-live-results>
         <div class="overflow-x-auto">
             <table class="tbl">
                 <thead>
@@ -148,6 +149,9 @@
                 </div>
             </div>
         @endif
+        </div>
     </section>
+
+    @include('admin.partials.live-search')
 
 @endsection

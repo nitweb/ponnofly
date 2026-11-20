@@ -10,17 +10,16 @@
     </div>
 
     <section class="card">
-        <form method="GET" action="{{ route('admin.customers.index') }}" class="flex flex-wrap items-center gap-3 p-5 border-b border-line">
+        <form method="GET" action="{{ route('admin.customers.index') }}" data-live-search class="flex flex-wrap items-center gap-3 p-5 border-b border-line">
             <div class="input-group flex-1 min-w-[220px] max-w-sm">
                 <svg class="ic"><use href="#i-search" /></svg>
                 <input class="input" name="q" value="{{ $term }}" placeholder="Search name, email, phone…">
             </div>
             <button class="btn btn-ghost btn-sm" type="submit">Search</button>
-            @if ($term !== '')
-                <a href="{{ route('admin.customers.index') }}" class="btn btn-ghost btn-sm">Reset</a>
-            @endif
+            <a href="{{ route('admin.customers.index') }}" class="btn btn-ghost btn-sm" data-live-reset @if ($term === '') style="display:none" @endif>Reset</a>
         </form>
 
+        <div data-live-results>
         <div class="overflow-x-auto">
             <table class="tbl">
                 <thead>
@@ -89,8 +88,10 @@
                 </div>
             </div>
         @endif
+        </div>
     </section>
 
+@include('admin.partials.live-search')
 @include('admin.partials.swal-confirm')
 
 @endsection
