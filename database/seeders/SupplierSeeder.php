@@ -37,6 +37,15 @@ class SupplierSeeder extends Seeder
                 'notes' => 'Products imported from Angel Rose Beauty Care BD.',
                 'is_active' => true,
             ],
+            [
+                'name' => 'ToyNDecor',
+                'contact_person' => null,
+                'phone' => null,
+                'email' => null,
+                'address' => 'toyndecor.com',
+                'notes' => 'Products imported from toyndecor.com',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($suppliers as $data) {
