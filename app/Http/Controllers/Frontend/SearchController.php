@@ -70,7 +70,6 @@ class SearchController extends Controller
                 'image' => $product->cover_url,
                 'price' => $this->money($product->display_price),
                 'category' => $product->category?->name,
-                'brand' => $product->brand?->name,
             ])
             ->all();
 

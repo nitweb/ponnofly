@@ -42,7 +42,7 @@
                     <li>
                         <details>
                             <summary class="flex justify-between items-center py-3.5 cursor-pointer">
-                                {{ $category->name }}
+                                <a href="{{ $category->url }}" class="flex-1">{{ $category->name }}</a>
                                 <svg class="chev w-5 h-5 transition-transform">
                                     <use href="#i-chev" />
                                 </svg>

@@ -38,7 +38,6 @@
         'image' => $images->map->url->all() ?: null,
         'description' => $description,
         'sku' => $product->sku,
-        'brand' => $product->brand ? ['@type' => 'Brand', 'name' => $product->brand->name] : null,
         'offers' => [
             '@type' => 'Offer',
             'url' => $product->url,
@@ -99,17 +98,6 @@
                 @endif
                 <h1 class="font-display font-extrabold text-3xl lg:text-4xl leading-tight mt-1">{{ $product->name }}</h1>
 
-                @if ($product->brand)
-                    <a href="{{ $product->brand->url }}" class="inline-flex items-center gap-3 mt-4 pr-4 rounded-xl border border-line bg-white hover:bg-accent transition-colors" title="More from {{ $product->brand->name }}">
-                        @if ($product->brand->logo)
-                            <img src="{{ $product->brand->logo_url }}" alt="" style="width:2.5rem;height:2.5rem;object-fit:contain;border-right:1px solid rgb(0 0 0 / .08);padding:.25rem">
-                        @else
-                            <span class="grid place-items-center font-display font-extrabold text-primary" style="width:2.5rem;height:2.5rem;border-right:1px solid rgb(0 0 0 / .08)">{{ mb_strtoupper(mb_substr($product->brand->name, 0, 1)) }}</span>
-                        @endif
-                        <span class="font-bold text-sm">{{ $product->brand->name }}</span>
-                        <svg class="w-4 h-4 -rotate-90" aria-hidden="true"><use href="#i-chev" /></svg>
-                    </a>
-                @endif
 
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-4">
                     <span id="stock-chip" class="px-2.5 py-1 rounded-lg bg-accent text-ink text-sm font-bold">
@@ -220,8 +208,7 @@
 
                 <p class="mt-5 text-sm text-ink/65">
                     @if ($product->sku)SKU: {{ $product->sku }} · @endif
-                    @if ($product->category)Category: {{ $product->category->name }} · @endif
-                    @if ($product->brand)Brand: <a href="{{ $product->brand->url }}" class="hover:text-primary underline">{{ $product->brand->name }}</a>@endif
+                    @if ($product->category)Category: {{ $product->category->name }}@endif
                 </p>
             </div>
         </article>
@@ -263,7 +250,6 @@
                 <h2 class="font-display font-extrabold text-2xl mb-4">Specifications</h2>
                 @php
                     $specs = array_filter([
-                        'Brand' => $product->brand?->name,
                         'Model' => $product->model,
                         'SKU' => $product->sku,
                         'Category' => $product->category?->name,

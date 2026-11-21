@@ -17,8 +17,6 @@
         @include('frontend.home._product_section', ['id' => 'cat'.$loop->index, 'title' => $section['category']->name, 'products' => $section['products'], 'link' => $section['category']->url, 'next' => $section['next']])
     @endforeach
 
-    @include('frontend.home.04_top_brands')
-
     <div class="pb-14"></div>
 
 @endsection

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Setting;
@@ -45,15 +44,6 @@ class SitemapController extends Controller
                 'lastmod' => $category->updated_at,
                 'changefreq' => 'weekly',
                 'priority' => '0.8',
-            ];
-        }
-
-        foreach (Brand::query()->where('is_active', true)->orderBy('id')->cursor() as $brand) {
-            $entries[] = [
-                'loc' => $base.'/brand/'.$brand->slug,
-                'lastmod' => $brand->updated_at,
-                'changefreq' => 'weekly',
-                'priority' => '0.6',
             ];
         }
 

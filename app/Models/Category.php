@@ -65,7 +65,7 @@ class Category extends Model
 
     /**
      * Active root categories with their active descendants attached as the `children` relation (any depth).
-     * An inactive category hides its whole subtree. Built once per request (no cache: Eloquent models cannot be unserialized from cache).
+     * An inactive category hides its whole subtree, and categories with no active products (own or in any descendant) are left out. Built once per request (no cache: Eloquent models cannot be unserialized from cache).
      *
      * @return Collection<int, self>
      */
@@ -73,12 +73,13 @@ class Category extends Model
     {
         return static::$menuTreeMemo ??= (function () {
             $byParent = [];
+            $productCounts = Product::query()->active()->whereNotNull('category_id')->selectRaw('category_id, count(*) as total')->groupBy('category_id')->pluck('total', 'category_id');
 
             foreach (static::query()->where('is_active', true)->orderBy('sort_order')->orderBy('name')->get() as $category) {
                 $byParent[$category->parent_id ?? 0][] = $category;
             }
 
-            $build = function (int $parentId, array $visited) use (&$build, $byParent): Collection {
+            $build = function (int $parentId, array $visited) use (&$build, $byParent, $productCounts): Collection {
                 $nodes = new Collection;
 
                 foreach ($byParent[$parentId] ?? [] as $category) {
@@ -86,7 +87,13 @@ class Category extends Model
                         continue;
                     }
 
-                    $category->setRelation('children', $build($category->id, [...$visited, $category->id]));
+                    $children = $build($category->id, [...$visited, $category->id]);
+
+                    if (($productCounts[$category->id] ?? 0) === 0 && $children->isEmpty()) {
+                        continue;
+                    }
+
+                    $category->setRelation('children', $children);
                     $nodes->push($category);
                 }
 

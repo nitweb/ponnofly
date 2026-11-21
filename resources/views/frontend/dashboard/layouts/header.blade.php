@@ -174,12 +174,12 @@
                             $promos = collect($category->promos ?? [])->filter(fn ($promo) => filled($promo['title'] ?? null))->values();
                         @endphp
                         <li class="mega-item static">
-                            <button @class(['mega-trigger', 'active' => $isCategoryActive, 'flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors', 'bg-primary-soft text-primary' => $isCategoryActive]) aria-haspopup="true">
+                            <a href="{{ $category->url }}" @class(['mega-trigger', 'active' => $isCategoryActive, 'flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-[15px] transition-colors', 'bg-primary-soft text-primary' => $isCategoryActive]) aria-haspopup="true" @if ($isCategoryActive) aria-current="page" @endif>
                                 {{ $category->name }}
                                 <svg class="chev w-4 h-4 transition-transform">
                                     <use href="#i-chev" />
                                 </svg>
-                            </button>
+                            </a>
                             <div class="mega-panel absolute left-0 right-0 top-full z-40">
                                 <div class="max-w-7xl mx-auto px-6">
                                     <div class="bg-white border border-line rounded-3xl shadow-sm mt-1 p-8 grid gap-8" style="grid-template-columns: minmax(0, 1fr){{ $promos->isNotEmpty() ? ' repeat('.$promos->count().', 16.5rem)' : '' }}">

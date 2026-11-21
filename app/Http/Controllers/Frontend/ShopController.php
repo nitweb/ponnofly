@@ -27,13 +27,6 @@ class ShopController extends Controller
         return $this->listing($request, $category);
     }
 
-    public function brand(Request $request, Brand $brand): View|JsonResponse
-    {
-        abort_unless($brand->is_active, 404);
-
-        return $this->listing($request, null, $brand);
-    }
-
     private function listing(Request $request, ?Category $category = null, ?Brand $brand = null): View|JsonResponse
     {
         $scope = fn (): Builder => Product::active()
@@ -83,7 +76,6 @@ class ShopController extends Controller
         }
 
         // Facets are built from everything in the current category/brand, before the sidebar filters are applied.
-        $brandCounts = $scope()->whereNotNull('brand_id')->selectRaw('brand_id, count(*) as total')->groupBy('brand_id')->pluck('total', 'brand_id');
         $variantQuery = fn () => ProductVariant::whereIn('product_id', $scope()->select('id'));
 
         $trail = [];
@@ -97,7 +89,7 @@ class ShopController extends Controller
             'brand' => $brand,
             'trail' => $trail,
             'products' => $products,
-            'facetBrands' => Brand::whereIn('id', $brandCounts->keys())->orderBy('name')->get()->each(fn (Brand $b) => $b->facet_count = $brandCounts[$b->id]),
+            'facetBrands' => collect(),
             'facetColors' => $variantQuery()->whereNotNull('color')->distinct()->orderBy('color')->pluck('color'),
             'facetSizes' => $variantQuery()->whereNotNull('size')->distinct()->orderBy('size')->pluck('size'),
             'priceCeiling' => (int) ceil((float) $scope()->max('price')),

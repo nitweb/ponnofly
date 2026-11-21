@@ -20,18 +20,15 @@
                 <button type="button" class="wish w-9 h-9 grid place-items-center rounded-full border border-line hover:bg-primary hover:text-white {{ $wished ? 'bg-primary text-white' : 'bg-white' }}" data-product-id="{{ $product->id }}" aria-label="Add {{ $pName }} to wishlist" aria-pressed="{{ $wished ? 'true' : 'false' }}">
                     <svg class="w-5 h-5"><use href="#i-heart" /></svg>
                 </button>
-                <button type="button" class="qv" aria-label="Quick view {{ $pName }}" data-id="{{ $product->id }}" data-has-variants="{{ $product->has_variants ? 1 : 0 }}" data-name="{{ $pName }}" data-price="{{ $fmt($shownPrice) }}" data-old="{{ $oldPrice ? $fmt($oldPrice) : '' }}" data-img="{{ $product->cover_url }}" data-href="{{ $product->url }}" data-brand="{{ $product->brand?->name }}">
+                <button type="button" class="qv" aria-label="Quick view {{ $pName }}" data-id="{{ $product->id }}" data-has-variants="{{ $product->has_variants ? 1 : 0 }}" data-name="{{ $pName }}" data-price="{{ $fmt($shownPrice) }}" data-old="{{ $oldPrice ? $fmt($oldPrice) : '' }}" data-img="{{ $product->cover_url }}" data-href="{{ $product->url }}">
                     <svg class="w-5 h-5"><use href="#i-eye" /></svg>
                 </button>
             </div>
         </div>
         <div class="p-4 flex flex-col flex-1">
-            @if ($product->category || $product->brand)
+            @if ($product->category)
                 <div class="flex items-center justify-between gap-2 text-xs font-bold">
                     <span class="text-primary truncate">{{ $product->category?->name }}</span>
-                    @if ($product->brand)
-                        <a href="{{ $product->brand->url }}" class="text-ink/60 hover:text-primary truncate" style="max-width:50%">{{ $product->brand->name }}</a>
-                    @endif
                 </div>
             @endif
             <h3 class="font-bold leading-snug mt-1 line-clamp-2">

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\FlashDeal;
 use App\Models\Product;
@@ -42,7 +41,6 @@ class HomeController extends Controller
             'banners' => Banner::active()->get(),
             'homeCategories' => $homeCategories,
             'shopCategories' => Category::shopByCategoryList(),
-            'homeBrands' => Brand::active()->featured()->get(),
             'flashDeal' => $flashDeal,
             'flashProducts' => $flashDeal?->activeProducts(8) ?? collect(),
             'featuredProducts' => Product::active()->where('is_featured', true)->with(self::RELATIONS)->latest('id')->limit(8)->get(),

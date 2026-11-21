@@ -31,7 +31,6 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/search/suggest', [SearchController::class, 'suggest'])->middleware('throttle:120,1')->name('search.suggest');
 Route::get('/flash-deals', [FlashDealController::class, 'index'])->name('flash-deals');
 Route::get('/category/{category:slug}', [ShopController::class, 'category'])->name('category.show');
-Route::get('/brand/{brand:slug}', [ShopController::class, 'brand'])->name('brand.show');
 Route::get('/product/{product:slug}', [StorefrontProductController::class, 'show'])->name('product.show');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

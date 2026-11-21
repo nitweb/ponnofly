@@ -117,21 +117,6 @@
             </div>
         </details>
 
-        @if (! $brand && $facetBrands->isNotEmpty())
-            <details class="border-b-2 border-line py-4" open>
-                <summary class="flex justify-between items-center cursor-pointer font-display font-extrabold text-lg">Brand</summary>
-                <div class="mt-3 max-h-52 overflow-y-auto pr-1">
-                    @foreach ($facetBrands as $facet)
-                        <label class="flex items-center gap-3 py-1.5 cursor-pointer text-[15px]">
-                            <input type="checkbox" name="brand[]" value="{{ $facet->slug }}" class="w-5 h-5 accent-primary" @checked(in_array($facet->slug, $filters['brands'], true))>
-                            <span class="flex-1">{{ $facet->name }}</span>
-                            <span class="text-xs text-ink/50">{{ $facet->facet_count }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </details>
-        @endif
-
         @if ($facetColors->isNotEmpty())
             <details class="border-b-2 border-line py-4" open>
                 <summary class="flex justify-between items-center cursor-pointer font-display font-extrabold text-lg">Color</summary>
