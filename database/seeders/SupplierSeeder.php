@@ -28,6 +28,15 @@ class SupplierSeeder extends Seeder
                 'notes' => 'Products imported from xaxisdigitalllc.com.',
                 'is_active' => true,
             ],
+            [
+                'name' => 'AngelRose',
+                'contact_person' => null,
+                'phone' => null,
+                'email' => null,
+                'address' => 'angelrosebeautycarebd.com',
+                'notes' => 'Products imported from Angel Rose Beauty Care BD.',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($suppliers as $data) {
