@@ -90,8 +90,33 @@
     });
   }
 
+  /* The cart snapshot lives in an inline script outside the swapped regions, so refresh it from the fetched page or the cart/checkout pages render stale (empty) totals. */
+  function syncCartSnapshot(doc) {
+    if (!window.NEBULA_CART) return;
+    var scripts = doc.querySelectorAll('script:not([src])');
+    for (var i = 0; i < scripts.length; i++) {
+      var t = scripts[i].textContent, k = t.indexOf('window.NEBULA_CART');
+      if (k < 0) continue;
+      var a = t.indexOf('{', t.indexOf('initial', k));
+      if (a < 0) return;
+      var depth = 0, inStr = false, esc = false;
+      for (var j = a; j < t.length; j++) {
+        var c = t[j];
+        if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+        if (c === '"') inStr = true;
+        else if (c === '{') depth++;
+        else if (c === '}' && --depth === 0) {
+          try { window.NEBULA_CART.initial = JSON.parse(t.slice(a, j + 1)); } catch (e) { }
+          return;
+        }
+      }
+      return;
+    }
+  }
+
   function swap(doc, finalUrl, opts) {
     if (!doc.querySelector('#main')) return false;
+    syncCartSnapshot(doc);
     syncHead(doc);
     document.body.setAttribute('data-page', doc.body.getAttribute('data-page') || '');
     document.body.style.overflow = '';
@@ -123,7 +148,7 @@
     var main = document.getElementById('main'); if (main) main.classList.add('spa-busy');
 
     var init = {
-      method: o.method || 'GET', credentials: 'same-origin', redirect: 'follow',
+      method: o.method || 'GET', credentials: 'same-origin', redirect: 'follow', cache: 'no-store',
       headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html,application/xhtml+xml' },
       signal: ctl ? ctl.signal : undefined
     };
