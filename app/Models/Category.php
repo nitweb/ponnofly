@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 class Category extends Model
 {
     /** How many root categories the header navigation shows (after "All Products"). */
-    public const NAV_LIMIT = 7;
+    public const NAV_LIMIT = 6;
 
     private static ?Collection $menuTreeMemo = null;
 
@@ -164,11 +164,31 @@ class Category extends Model
         }
 
         $flat = new Collection;
+        $direct = Product::query()->whereNotNull('category_id')->selectRaw('category_id, count(*) as total')->groupBy('category_id')->pluck('total', 'category_id');
+        $totals = [];
 
-        $walk = function (int $parentId, int $depth) use (&$walk, $byParent, $flat): void {
+        $total = function (int $id, array $visited = []) use (&$total, &$totals, $byParent, $direct): int {
+            if (isset($totals[$id])) {
+                return $totals[$id];
+            }
+
+            $sum = (int) ($direct[$id] ?? 0);
+
+            foreach ($byParent[$id] ?? [] as $child) {
+                if (! in_array($child->id, $visited, true)) {
+                    $sum += $total($child->id, [...$visited, $id]);
+                }
+            }
+
+            return $totals[$id] = $sum;
+        };
+
+        $walk = function (int $parentId, int $depth) use (&$walk, $byParent, $flat, $direct, $total): void {
             foreach ($byParent[$parentId] ?? [] as $category) {
                 $category->depth = $depth;
                 $category->children_count = count($byParent[$category->id] ?? []);
+                $category->products_direct = (int) ($direct[$category->id] ?? 0);
+                $category->products_total = $total($category->id);
                 $flat->push($category);
                 $walk($category->id, $depth + 1);
             }

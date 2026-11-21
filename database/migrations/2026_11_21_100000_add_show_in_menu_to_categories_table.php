@@ -13,13 +13,13 @@ return new class extends Migration
             $table->boolean('show_in_menu')->default(false)->after('show_on_home');
         });
 
-        // Keep today's header: the first 7 active top-level categories stay in the menu.
+        // Keep today's header: the first 6 active top-level categories stay in the menu.
         $ids = DB::table('categories')
             ->whereNull('parent_id')
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->orderBy('name')
-            ->limit(7)
+            ->limit(6)
             ->pluck('id');
 
         DB::table('categories')->whereIn('id', $ids)->update(['show_in_menu' => true]);

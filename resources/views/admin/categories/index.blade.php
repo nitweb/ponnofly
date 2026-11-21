@@ -27,6 +27,8 @@
                         <th>Category</th>
                         <th>Slug</th>
                         <th>Sub-categories</th>
+                        <th>Products</th>
+                        <th>Header menu</th>
                         <th>Active</th>
                         <th class="text-right">Actions</th>
                     </tr>
@@ -50,6 +52,21 @@
                             </td>
                             <td class="text-ink/60">/{{ $category->slug }}</td>
                             <td>{{ $category->children_count }}</td>
+                            <td>
+                                <a href="{{ route('admin.products.index', ['category' => $category->id]) }}" class="font-bold hover:text-primary" title="View products">{{ $category->products_total }}</a>
+                                @if ($category->children_count && $category->products_total !== $category->products_direct)
+                                    <p class="text-xs text-ink/50">{{ $category->products_direct }} direct</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($category->show_in_menu)
+                                    <span class="badge b-success" title="Shown in the header menu">On</span>
+                                @elseif ($category->depth === 0)
+                                    <span class="text-ink/40">Off</span>
+                                @else
+                                    <span class="text-ink/30">—</span>
+                                @endif
+                            </td>
                             <td>
                                 <form method="POST" action="{{ route('admin.categories.toggle', $category) }}">
                                     @csrf
@@ -77,7 +94,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-ink/55 py-10">No categories yet.</td>
+                            <td colspan="7" class="text-center text-ink/55 py-10">No categories yet.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -85,7 +102,7 @@
         </div>
 
         <div class="px-5 py-4 border-t border-line">
-            <p class="text-sm text-ink/55">Total <b class="text-ink">{{ $categories->count() }}</b> categories</p>
+            <p class="text-sm text-ink/55">Total <b class="text-ink">{{ $categories->count() }}</b> categories · <b class="text-ink">{{ $categories->where('show_in_menu', true)->count() }}</b> of {{ \App\Models\Category::NAV_LIMIT }} in the header menu</p>
         </div>
     </section>
 
