@@ -66,6 +66,12 @@
                 <!-- Actions -->
                 <div class="ml-auto lg:ml-0 flex items-center gap-1 sm:gap-2">
 
+                    <!-- Dark / light mode -->
+                    <button type="button" data-theme-toggle class="theme-toggle p-2.5 rounded-xl hover:bg-primary-soft grid place-items-center" aria-label="Toggle dark mode" aria-pressed="false" title="Dark / light mode">
+                        <svg class="i-moon w-6 h-6"><use href="#i-moon" /></svg>
+                        <svg class="i-sun w-6 h-6"><use href="#i-sun" /></svg>
+                    </button>
+
                     <!-- Account dropdown -->
                     @php
                         $customer = auth()->user();

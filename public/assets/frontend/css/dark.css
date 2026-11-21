@@ -1,123 +1,595 @@
 /* ==========================================================================
    Dark mode — applied automatically when the visitor's device/browser is
-   set to dark. Palette variables live in layouts/theme.blade.php.
+   set to dark, or when the visitor picks Dark with the header toggle
+   (html[data-theme]). Palette variables live in layouts/theme.blade.php.
    Loaded after every other stylesheet.
    ========================================================================== */
 @media (prefers-color-scheme: dark) {
-
-  :root {
+:root:not([data-theme="light"]) {
     color-scheme: dark;
     --soft-line: rgb(var(--color-line));
     --shadow-1: 0 1px 2px rgb(0 0 0 / .35), 0 2px 8px rgb(0 0 0 / .25);
     --shadow-2: 0 8px 24px rgb(0 0 0 / .45);
   }
-
-  html,
-  body,
-  body[data-page="success"] {
+:root:not([data-theme="light"]),
+:where(:root:not([data-theme="light"])) body,
+:where(:root:not([data-theme="light"])) body[data-page="success"] {
     background: rgb(var(--color-paper));
     color: rgb(var(--color-ink) / .92);
   }
-
-  /* ---------- Logo: show white on dark ---------- */
-  .site-logo {
+/* ---------- Logo: show white on dark ---------- */
+:where(:root:not([data-theme="light"])) .site-logo {
     filter: brightness(0) invert(1);
   }
-
-  /* ---------- Tailwind utilities ---------- */
-  .bg-white { background-color: rgb(var(--color-surface)); }
-  .bg-ink,
-  .peer:checked ~ .peer-checked\:bg-ink { background-color: rgb(var(--color-ink-deep)); }
-  .bg-ink\/60 { background-color: rgb(0 0 0 / .6); }
-  .bg-ink\/20 { background-color: rgb(0 0 0 / .35); }
-  .border-white { border-color: rgb(var(--color-surface)); }
-
-  /* dark text on amber stays dark */
-  .bg-accent.text-ink,
-  .bg-accent .text-ink,
-  .hover\:bg-accent.hover\:text-ink:hover,
-  .mv__card--m > .ic { color: rgb(var(--color-ink-deep)); }
-
-  /* ---------- Dark sections keep a deep background ---------- */
-  .mega-item:hover > .mega-trigger,
-  .mega-item:focus-within > .mega-trigger,
-  .u-1126c2,
-  .shop-bar__filters,
-  .sec--dark,
-  .faq-aside .dark,
-  .trk-how,
-  .mv__card--m { background: rgb(var(--color-ink-deep)); }
-
-  .ph,
-  .abt-hero { background: linear-gradient(115deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
-  .auth__side { background: linear-gradient(160deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
-  .cta { background: linear-gradient(115deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
-  .win__big { background: linear-gradient(150deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
-
-  /* ---------- Surfaces that were hard-coded white ---------- */
-  .s-pop, .s-all,
-  .card-actions .qv,
-  .shop-filter-btn, .shop-apply-bar,
-  main article.group,
-  #panel-spec table,
-  main section a.font-bold.underline.underline-offset-4,
-  .nf-card,
-  .abt-photo figcaption, .stats,
-  .tile, .auth__card, .seg a[aria-current=page], .soc__btn,
-  #district-list, #area-list,
-  .btn--ghost, .btn--light, .card, .chip,
-  .cmap__bar, .ap-list, .more-loader,
-  .qa, .key, .toc, .clause, .perk, .job,
-  .sec:not(.sec--dark) .step,
-  .win, .steps3 li,
-  .u-e84188,
-  .shop-search, .shop-bar, .sort__btn, .sort__menu,
-  .trk-node {
+/* ---------- Tailwind utilities ---------- */
+:where(:root:not([data-theme="light"])) .bg-white { background-color: rgb(var(--color-surface)); }
+:where(:root:not([data-theme="light"])) .bg-ink,
+:where(:root:not([data-theme="light"])) .peer:checked ~ .peer-checked\:bg-ink { background-color: rgb(var(--color-ink-deep)); }
+:where(:root:not([data-theme="light"])) .bg-ink\/60 { background-color: rgb(0 0 0 / .6); }
+:where(:root:not([data-theme="light"])) .bg-ink\/20 { background-color: rgb(0 0 0 / .35); }
+:where(:root:not([data-theme="light"])) .border-white { border-color: rgb(var(--color-surface)); }
+/* dark text on amber stays dark */
+:where(:root:not([data-theme="light"])) .bg-accent.text-ink,
+:where(:root:not([data-theme="light"])) .bg-accent .text-ink,
+:where(:root:not([data-theme="light"])) .hover\:bg-accent.hover\:text-ink:hover,
+:where(:root:not([data-theme="light"])) .mv__card--m > .ic { color: rgb(var(--color-ink-deep)); }
+/* ---------- Dark sections keep a deep background ---------- */
+:where(:root:not([data-theme="light"])) .mega-item:hover > .mega-trigger,
+:where(:root:not([data-theme="light"])) .mega-item:focus-within > .mega-trigger,
+:where(:root:not([data-theme="light"])) .u-1126c2,
+:where(:root:not([data-theme="light"])) .shop-bar__filters,
+:where(:root:not([data-theme="light"])) .sec--dark,
+:where(:root:not([data-theme="light"])) .faq-aside .dark,
+:where(:root:not([data-theme="light"])) .trk-how,
+:where(:root:not([data-theme="light"])) .mv__card--m { background: rgb(var(--color-ink-deep)); }
+:where(:root:not([data-theme="light"])) .ph,
+:where(:root:not([data-theme="light"])) .abt-hero { background: linear-gradient(115deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
+:where(:root:not([data-theme="light"])) .auth__side { background: linear-gradient(160deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
+:where(:root:not([data-theme="light"])) .cta { background: linear-gradient(115deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
+:where(:root:not([data-theme="light"])) .win__big { background: linear-gradient(150deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
+/* ---------- Surfaces that were hard-coded white ---------- */
+:where(:root:not([data-theme="light"])) .s-pop,
+:where(:root:not([data-theme="light"])) .s-all,
+:where(:root:not([data-theme="light"])) .card-actions .qv,
+:where(:root:not([data-theme="light"])) .shop-filter-btn,
+:where(:root:not([data-theme="light"])) .shop-apply-bar,
+:where(:root:not([data-theme="light"])) main article.group,
+:where(:root:not([data-theme="light"])) #panel-spec table,
+:where(:root:not([data-theme="light"])) main section a.font-bold.underline.underline-offset-4,
+:where(:root:not([data-theme="light"])) .nf-card,
+:where(:root:not([data-theme="light"])) .abt-photo figcaption,
+:where(:root:not([data-theme="light"])) .stats,
+:where(:root:not([data-theme="light"])) .tile,
+:where(:root:not([data-theme="light"])) .auth__card,
+:where(:root:not([data-theme="light"])) .seg a[aria-current=page],
+:where(:root:not([data-theme="light"])) .soc__btn,
+:where(:root:not([data-theme="light"])) #district-list,
+:where(:root:not([data-theme="light"])) #area-list,
+:where(:root:not([data-theme="light"])) .btn--ghost,
+:where(:root:not([data-theme="light"])) .btn--light,
+:where(:root:not([data-theme="light"])) .card,
+:where(:root:not([data-theme="light"])) .chip,
+:where(:root:not([data-theme="light"])) .cmap__bar,
+:where(:root:not([data-theme="light"])) .ap-list,
+:where(:root:not([data-theme="light"])) .more-loader,
+:where(:root:not([data-theme="light"])) .qa,
+:where(:root:not([data-theme="light"])) .key,
+:where(:root:not([data-theme="light"])) .toc,
+:where(:root:not([data-theme="light"])) .clause,
+:where(:root:not([data-theme="light"])) .perk,
+:where(:root:not([data-theme="light"])) .job,
+:where(:root:not([data-theme="light"])) .sec:not(.sec--dark) .step,
+:where(:root:not([data-theme="light"])) .win,
+:where(:root:not([data-theme="light"])) .steps3 li,
+:where(:root:not([data-theme="light"])) .u-e84188,
+:where(:root:not([data-theme="light"])) .shop-search,
+:where(:root:not([data-theme="light"])) .shop-bar,
+:where(:root:not([data-theme="light"])) .sort__btn,
+:where(:root:not([data-theme="light"])) .sort__menu,
+:where(:root:not([data-theme="light"])) .trk-node {
     background: rgb(var(--color-surface));
   }
-
-  .nf-tag::before { background: rgb(var(--color-surface)); }
-  #panel-spec th { background: rgb(var(--color-surface-2)); }
-
-  /* product image wells stay light so product photos read correctly */
-  main article.group > div:first-child,
-  .s-item img,
-  #qv-img { background: #eceae4; }
-
-  /* ---------- Header search ---------- */
-  #site-header form[role="search"] > div { background: rgb(var(--color-surface-2)); }
-  #site-header form[role="search"] > div:focus-within { background: rgb(var(--color-surface)); }
-
-  /* ---------- Form controls ---------- */
-  input:not([type="checkbox"]):not([type="radio"]),
-  select,
-  textarea,
-  .fld__box input,
-  .fld__box select,
-  .fld__box textarea {
+:where(:root:not([data-theme="light"])) .nf-tag::before { background: rgb(var(--color-surface)); }
+:where(:root:not([data-theme="light"])) #panel-spec th { background: rgb(var(--color-surface-2)); }
+/* product image wells stay light so product photos read correctly */
+:where(:root:not([data-theme="light"])) main article.group > div:first-child,
+:where(:root:not([data-theme="light"])) .s-item img,
+:where(:root:not([data-theme="light"])) #qv-img { background: #eceae4; }
+/* ---------- Header search ---------- */
+:where(:root:not([data-theme="light"])) #site-header form[role="search"] > div { background: rgb(var(--color-surface-2)); }
+:where(:root:not([data-theme="light"])) #site-header form[role="search"] > div:focus-within { background: rgb(var(--color-surface)); }
+/* ---------- Form controls ---------- */
+:where(:root:not([data-theme="light"])) input:not([type="checkbox"]):not([type="radio"]),
+:where(:root:not([data-theme="light"])) select,
+:where(:root:not([data-theme="light"])) textarea,
+:where(:root:not([data-theme="light"])) .fld__box input,
+:where(:root:not([data-theme="light"])) .fld__box select,
+:where(:root:not([data-theme="light"])) .fld__box textarea {
     background-color: rgb(var(--color-surface));
     color: rgb(var(--color-ink));
     border-color: rgb(var(--color-line));
   }
-
-  input::placeholder,
-  textarea::placeholder { color: rgb(var(--color-ink) / .45); }
-
-  /* ---------- Floating cart / misc ---------- */
-  #float-cart .fc-total { background: rgb(var(--color-surface)); }
-
-  /* ---------- Account status badges ---------- */
-  .acct-badge { background: rgb(var(--color-surface-2)); color: rgb(var(--color-ink)); }
-  .acct-badge[data-status="pending"] { background: rgb(133 77 14 / .3); color: #fcd34d; }
-  .acct-badge[data-status="processing"],
-  .acct-badge[data-status="shipped"],
-  .acct-badge[data-status="out_for_delivery"] { background: rgb(30 64 175 / .3); color: #93c5fd; }
-  .acct-badge[data-status="delivered"],
-  .acct-badge[data-status="approved"] { background: rgb(6 95 70 / .35); color: #6ee7b7; }
-  .acct-badge[data-status="rejected"],
-  .acct-badge[data-status="cancelled"],
-  .acct-badge[data-status="returned"] { background: rgb(153 27 27 / .35); color: #fca5a5; }
-
-  /* ---------- Third-party toasts ---------- */
-  .toastify { box-shadow: 0 10px 30px rgb(0 0 0 / .5); }
+:where(:root:not([data-theme="light"])) input::placeholder,
+:where(:root:not([data-theme="light"])) textarea::placeholder { color: rgb(var(--color-ink) / .45); }
+/* ---------- Floating cart / misc ---------- */
+:where(:root:not([data-theme="light"])) #float-cart .fc-total { background: rgb(var(--color-surface)); }
+/* ---------- Account status badges ---------- */
+:where(:root:not([data-theme="light"])) .acct-badge { background: rgb(var(--color-surface-2)); color: rgb(var(--color-ink)); }
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="pending"] { background: rgb(133 77 14 / .3); color: #fcd34d; }
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="processing"],
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="shipped"],
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="out_for_delivery"] { background: rgb(30 64 175 / .3); color: #93c5fd; }
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="delivered"],
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="approved"] { background: rgb(6 95 70 / .35); color: #6ee7b7; }
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="rejected"],
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="cancelled"],
+:where(:root:not([data-theme="light"])) .acct-badge[data-status="returned"] { background: rgb(153 27 27 / .35); color: #fca5a5; }
+/* ---------- Third-party toasts ---------- */
+:where(:root:not([data-theme="light"])) .toastify { box-shadow: 0 10px 30px rgb(0 0 0 / .5); }
+/* ---------- Refined dark look: depth, contrast and softer glare ---------- */
+:where(:root:not([data-theme="light"])) body {
+  background:
+    radial-gradient(1100px 520px at 50% -140px, rgb(var(--color-primary) / .14), transparent 70%),
+    rgb(var(--color-paper));
+  background-attachment: fixed;
 }
+:where(:root:not([data-theme="light"])) ::selection { background: rgb(var(--color-primary) / .55); color: #fff; }
+/* header: solid surface, thin divider instead of the heavy light-mode rule */
+:where(:root:not([data-theme="light"])) #site-header > .bg-white,
+:where(:root:not([data-theme="light"])) #site-header nav.bg-white { background: rgb(var(--color-surface)); }
+:where(:root:not([data-theme="light"])) #site-header > .bg-white { border-bottom: 1px solid rgb(var(--color-line)); box-shadow: 0 8px 24px rgb(0 0 0 / .28); }
+:where(:root:not([data-theme="light"])) #site-header nav.bg-white { border-bottom: 1px solid rgb(var(--color-line)); }
+:where(:root:not([data-theme="light"])) #site-header .bg-ink { background: rgb(var(--color-ink-deep)); }
+:where(:root:not([data-theme="light"])) #site-header #open-cart { background: rgb(var(--color-surface-2)); color: rgb(var(--color-ink)); border: 1px solid rgb(var(--color-line)); }
+:where(:root:not([data-theme="light"])) #site-header #open-cart:hover { background: rgb(var(--color-primary)); color: #fff; }
+/* navy (not black) bands such as the footer */
+:where(:root:not([data-theme="light"])) footer .bg-ink { background: linear-gradient(180deg, rgb(var(--color-surface)) 0%, rgb(var(--color-ink-deep)) 100%); }
+/* product cards: lifted off the page */
+:where(:root:not([data-theme="light"])) main article.group {
+  background: rgb(var(--color-surface));
+  border-color: rgb(var(--color-line));
+  box-shadow: 0 1px 0 rgb(255 255 255 / .04) inset, 0 8px 22px rgb(0 0 0 / .32);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+:where(:root:not([data-theme="light"])) main article.group:hover {
+  transform: translateY(-3px);
+  border-color: rgb(var(--color-primary) / .55);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .05) inset, 0 14px 32px rgb(0 0 0 / .45), 0 0 0 1px rgb(var(--color-primary) / .25);
+}
+:where(:root:not([data-theme="light"])) main article.group > div:first-child { background: rgb(var(--color-surface-2)); }
+:where(:root:not([data-theme="light"])) main article.group img { filter: brightness(.94) contrast(1.03); }
+:where(:root:not([data-theme="light"])) main article.group h3 a { color: rgb(var(--color-ink)); }
+:where(:root:not([data-theme="light"])) main article.group h3 a:hover { color: rgb(var(--color-primary)); }
+:where(:root:not([data-theme="light"])) main article.group .card-cart:not(.card-buy) {
+  background: rgb(var(--color-surface-2));
+  color: rgb(var(--color-ink));
+  border-color: rgb(var(--color-line));
+}
+:where(:root:not([data-theme="light"])) main article.group .card-cart:not(.card-buy):hover { background: rgb(var(--color-primary) / .22); }
+:where(:root:not([data-theme="light"])) main article.group .wish:not(.bg-primary) { background: rgb(var(--color-surface)); color: rgb(var(--color-ink)); }
+/* other white panels get a hairline and soft shadow so they do not melt into the page */
+:where(:root:not([data-theme="light"])) .bg-white.border,
+:where(:root:not([data-theme="light"])) .bg-white.rounded-2xl,
+:where(:root:not([data-theme="light"])) .bg-white.rounded-3xl { border-color: rgb(var(--color-line)); }
+:where(:root:not([data-theme="light"])) .shadow-sm,
+:where(:root:not([data-theme="light"])) .shadow-md { --tw-shadow-color: rgb(0 0 0 / .35); box-shadow: 0 6px 20px rgb(0 0 0 / .3); }
+/* text: brighter headings, calmer secondary text */
+:where(:root:not([data-theme="light"])) h1,
+:where(:root:not([data-theme="light"])) h2,
+:where(:root:not([data-theme="light"])) h3,
+:where(:root:not([data-theme="light"])) h4 { color: rgb(var(--color-ink)); }
+:where(:root:not([data-theme="light"])) .text-ink\/60,
+:where(:root:not([data-theme="light"])) .text-ink\/65,
+:where(:root:not([data-theme="light"])) .text-ink\/70 { color: rgb(var(--color-ink) / .72); }
+:where(:root:not([data-theme="light"])) .text-ink\/50,
+:where(:root:not([data-theme="light"])) .text-ink\/55 { color: rgb(var(--color-ink) / .6); }
+:where(:root:not([data-theme="light"])) a.underline-offset-4 { text-decoration-color: rgb(var(--color-primary) / .7); }
+/* focus rings stay visible on dark */
+:where(:root:not([data-theme="light"])) :focus-visible { outline-color: rgb(var(--color-primary)); }
+/* slim scrollbars */
+:where(:root:not([data-theme="light"])) * { scrollbar-color: rgb(var(--color-line)) transparent; }
+/* ---------- Premium finish ---------- */
+:where(:root:not([data-theme="light"])) body {
+  background:
+    radial-gradient(900px 480px at 12% -120px, rgb(var(--color-primary) / .16), transparent 70%),
+    radial-gradient(800px 420px at 92% 18%, rgb(var(--color-accent) / .06), transparent 70%),
+    rgb(var(--color-paper));
+  background-attachment: fixed;
+}
+/* announcement strip + glass header */
+:where(:root:not([data-theme="light"])) #site-header .bg-ink { background: linear-gradient(90deg, rgb(var(--color-ink-deep)), rgb(var(--color-surface-2)) 50%, rgb(var(--color-ink-deep))); }
+:where(:root:not([data-theme="light"])) #site-header > .bg-white {
+  background: rgb(var(--color-surface) / .8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgb(255 255 255 / .07);
+}
+:where(:root:not([data-theme="light"])) #site-header nav.bg-white {
+  background: rgb(var(--color-surface) / .8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgb(255 255 255 / .06);
+}
+/* cards: soft sheen on top, brand glow on hover */
+:where(:root:not([data-theme="light"])) main article.group {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / .045), rgb(255 255 255 / 0) 42%);
+  border-color: rgb(255 255 255 / .09);
+  border-radius: 18px;
+}
+:where(:root:not([data-theme="light"])) main article.group:hover {
+  border-color: rgb(var(--color-primary) / .6);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .06) inset, 0 18px 40px -12px rgb(0 0 0 / .65), 0 0 28px -6px rgb(var(--color-primary) / .35);
+}
+:where(:root:not([data-theme="light"])) main article.group > div:first-child { border-radius: 0 0 14px 14px; }
+:where(:root:not([data-theme="light"])) main article.group .font-display.font-extrabold.text-xl { color: #fff; letter-spacing: -.01em; }
+/* wishlist + quick view: glass circles that react on hover */
+:where(:root:not([data-theme="light"])) .card-actions .wish,
+:where(:root:not([data-theme="light"])) .card-actions .qv {
+  background: rgb(var(--color-surface) / .7);
+  color: rgb(var(--color-ink));
+  border: 1px solid rgb(255 255 255 / .14);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 16px -6px rgb(0 0 0 / .6);
+  transition: background-color .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+:where(:root:not([data-theme="light"])) main article.group .card-actions .wish:not([aria-pressed="true"]):hover,
+:where(:root:not([data-theme="light"])) main article.group .card-actions .wish:not([aria-pressed="true"]):focus-visible,
+:where(:root:not([data-theme="light"])) main article.group .card-actions .qv:hover,
+:where(:root:not([data-theme="light"])) main article.group .card-actions .qv:focus-visible {
+  background: rgb(var(--color-primary));
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.12);
+  box-shadow: 0 10px 22px -6px rgb(var(--color-primary) / .8);
+}
+:where(:root:not([data-theme="light"])) main article.group .card-actions .wish:active,
+:where(:root:not([data-theme="light"])) main article.group .card-actions .qv:active { transform: scale(.94); }
+/* buttons */
+:where(:root:not([data-theme="light"])) main article.group .card-cart:not(.card-buy) {
+  background: rgb(var(--color-surface-2));
+  color: rgb(var(--color-ink));
+  border: 1px solid rgb(255 255 255 / .1);
+}
+:where(:root:not([data-theme="light"])) main article.group .card-cart:not(.card-buy):hover,
+:where(:root:not([data-theme="light"])) main article.group .card-cart:not(.card-buy):focus-visible {
+  background: rgb(var(--color-primary) / .2);
+  color: #fff;
+  border-color: rgb(var(--color-primary) / .8);
+  box-shadow: 0 8px 18px -8px rgb(var(--color-primary) / .7);
+}
+:where(:root:not([data-theme="light"])) main article.group .card-cta .card-buy {
+  background: linear-gradient(135deg, rgb(var(--color-primary)), rgb(var(--color-primary-dark)));
+  color: #fff;
+  box-shadow: 0 8px 18px -8px rgb(var(--color-primary) / .85);
+}
+:where(:root:not([data-theme="light"])) main article.group .card-cta .card-buy:hover,
+:where(:root:not([data-theme="light"])) main article.group .card-cta .card-buy:focus-visible {
+  background: linear-gradient(135deg, rgb(var(--color-primary)), rgb(var(--color-primary)));
+  filter: brightness(1.12);
+  box-shadow: 0 12px 26px -8px rgb(var(--color-primary) / 1);
+}
+/* section headings + category tiles */
+:where(:root:not([data-theme="light"])) main section h2[id^="h-"]::before { box-shadow: 0 0 16px rgb(var(--color-primary) / .9); }
+:where(:root:not([data-theme="light"])) main section a.bg-white.rounded-2xl { transition: border-color .2s, box-shadow .2s, transform .2s; }
+:where(:root:not([data-theme="light"])) main section a.bg-white.rounded-2xl:hover {
+  border-color: rgb(var(--color-primary) / .6);
+  box-shadow: 0 14px 30px -12px rgb(0 0 0 / .7), 0 0 24px -8px rgb(var(--color-primary) / .45);
+}
+/* inputs */
+:where(:root:not([data-theme="light"])) input:focus,
+:where(:root:not([data-theme="light"])) textarea:focus,
+:where(:root:not([data-theme="light"])) select:focus {
+  border-color: rgb(var(--color-primary));
+  box-shadow: 0 0 0 3px rgb(var(--color-primary) / .25);
+  outline: none;
+}
+/* footer */
+:where(:root:not([data-theme="light"])) footer > .bg-ink {
+  border-top: 1px solid rgb(255 255 255 / .06);
+  box-shadow: inset 0 1px 0 rgb(var(--color-primary) / .35);
+}
+/* ---------- No shadows in dark mode (flat look; focus rings on inputs stay) ---------- */
+:where(:root:not([data-theme="light"])) *:not(input):not(textarea):not(select),
+:where(:root:not([data-theme="light"])) *::before,
+:where(:root:not([data-theme="light"])) *::after { box-shadow: none !important; }
+}
+
+/* ---------- Manual choice from the header toggle ---------- */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --soft-line: rgb(var(--color-line));
+    --shadow-1: 0 1px 2px rgb(0 0 0 / .35), 0 2px 8px rgb(0 0 0 / .25);
+    --shadow-2: 0 8px 24px rgb(0 0 0 / .45);
+  }
+:root[data-theme="dark"],
+:where(:root[data-theme="dark"]) body,
+:where(:root[data-theme="dark"]) body[data-page="success"] {
+    background: rgb(var(--color-paper));
+    color: rgb(var(--color-ink) / .92);
+  }
+/* ---------- Logo: show white on dark ---------- */
+:where(:root[data-theme="dark"]) .site-logo {
+    filter: brightness(0) invert(1);
+  }
+/* ---------- Tailwind utilities ---------- */
+:where(:root[data-theme="dark"]) .bg-white { background-color: rgb(var(--color-surface)); }
+:where(:root[data-theme="dark"]) .bg-ink,
+:where(:root[data-theme="dark"]) .peer:checked ~ .peer-checked\:bg-ink { background-color: rgb(var(--color-ink-deep)); }
+:where(:root[data-theme="dark"]) .bg-ink\/60 { background-color: rgb(0 0 0 / .6); }
+:where(:root[data-theme="dark"]) .bg-ink\/20 { background-color: rgb(0 0 0 / .35); }
+:where(:root[data-theme="dark"]) .border-white { border-color: rgb(var(--color-surface)); }
+/* dark text on amber stays dark */
+:where(:root[data-theme="dark"]) .bg-accent.text-ink,
+:where(:root[data-theme="dark"]) .bg-accent .text-ink,
+:where(:root[data-theme="dark"]) .hover\:bg-accent.hover\:text-ink:hover,
+:where(:root[data-theme="dark"]) .mv__card--m > .ic { color: rgb(var(--color-ink-deep)); }
+/* ---------- Dark sections keep a deep background ---------- */
+:where(:root[data-theme="dark"]) .mega-item:hover > .mega-trigger,
+:where(:root[data-theme="dark"]) .mega-item:focus-within > .mega-trigger,
+:where(:root[data-theme="dark"]) .u-1126c2,
+:where(:root[data-theme="dark"]) .shop-bar__filters,
+:where(:root[data-theme="dark"]) .sec--dark,
+:where(:root[data-theme="dark"]) .faq-aside .dark,
+:where(:root[data-theme="dark"]) .trk-how,
+:where(:root[data-theme="dark"]) .mv__card--m { background: rgb(var(--color-ink-deep)); }
+:where(:root[data-theme="dark"]) .ph,
+:where(:root[data-theme="dark"]) .abt-hero { background: linear-gradient(115deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
+:where(:root[data-theme="dark"]) .auth__side { background: linear-gradient(160deg, rgb(var(--color-ink-deep)) 0%, rgb(var(--color-primary-dark) / .55) 55%, rgb(var(--color-primary) / .7) 100%); }
+:where(:root[data-theme="dark"]) .cta { background: linear-gradient(115deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
+:where(:root[data-theme="dark"]) .win__big { background: linear-gradient(150deg, rgb(var(--color-ink-deep)), rgb(var(--color-primary) / .7)); }
+/* ---------- Surfaces that were hard-coded white ---------- */
+:where(:root[data-theme="dark"]) .s-pop,
+:where(:root[data-theme="dark"]) .s-all,
+:where(:root[data-theme="dark"]) .card-actions .qv,
+:where(:root[data-theme="dark"]) .shop-filter-btn,
+:where(:root[data-theme="dark"]) .shop-apply-bar,
+:where(:root[data-theme="dark"]) main article.group,
+:where(:root[data-theme="dark"]) #panel-spec table,
+:where(:root[data-theme="dark"]) main section a.font-bold.underline.underline-offset-4,
+:where(:root[data-theme="dark"]) .nf-card,
+:where(:root[data-theme="dark"]) .abt-photo figcaption,
+:where(:root[data-theme="dark"]) .stats,
+:where(:root[data-theme="dark"]) .tile,
+:where(:root[data-theme="dark"]) .auth__card,
+:where(:root[data-theme="dark"]) .seg a[aria-current=page],
+:where(:root[data-theme="dark"]) .soc__btn,
+:where(:root[data-theme="dark"]) #district-list,
+:where(:root[data-theme="dark"]) #area-list,
+:where(:root[data-theme="dark"]) .btn--ghost,
+:where(:root[data-theme="dark"]) .btn--light,
+:where(:root[data-theme="dark"]) .card,
+:where(:root[data-theme="dark"]) .chip,
+:where(:root[data-theme="dark"]) .cmap__bar,
+:where(:root[data-theme="dark"]) .ap-list,
+:where(:root[data-theme="dark"]) .more-loader,
+:where(:root[data-theme="dark"]) .qa,
+:where(:root[data-theme="dark"]) .key,
+:where(:root[data-theme="dark"]) .toc,
+:where(:root[data-theme="dark"]) .clause,
+:where(:root[data-theme="dark"]) .perk,
+:where(:root[data-theme="dark"]) .job,
+:where(:root[data-theme="dark"]) .sec:not(.sec--dark) .step,
+:where(:root[data-theme="dark"]) .win,
+:where(:root[data-theme="dark"]) .steps3 li,
+:where(:root[data-theme="dark"]) .u-e84188,
+:where(:root[data-theme="dark"]) .shop-search,
+:where(:root[data-theme="dark"]) .shop-bar,
+:where(:root[data-theme="dark"]) .sort__btn,
+:where(:root[data-theme="dark"]) .sort__menu,
+:where(:root[data-theme="dark"]) .trk-node {
+    background: rgb(var(--color-surface));
+  }
+:where(:root[data-theme="dark"]) .nf-tag::before { background: rgb(var(--color-surface)); }
+:where(:root[data-theme="dark"]) #panel-spec th { background: rgb(var(--color-surface-2)); }
+/* product image wells stay light so product photos read correctly */
+:where(:root[data-theme="dark"]) main article.group > div:first-child,
+:where(:root[data-theme="dark"]) .s-item img,
+:where(:root[data-theme="dark"]) #qv-img { background: #eceae4; }
+/* ---------- Header search ---------- */
+:where(:root[data-theme="dark"]) #site-header form[role="search"] > div { background: rgb(var(--color-surface-2)); }
+:where(:root[data-theme="dark"]) #site-header form[role="search"] > div:focus-within { background: rgb(var(--color-surface)); }
+/* ---------- Form controls ---------- */
+:where(:root[data-theme="dark"]) input:not([type="checkbox"]):not([type="radio"]),
+:where(:root[data-theme="dark"]) select,
+:where(:root[data-theme="dark"]) textarea,
+:where(:root[data-theme="dark"]) .fld__box input,
+:where(:root[data-theme="dark"]) .fld__box select,
+:where(:root[data-theme="dark"]) .fld__box textarea {
+    background-color: rgb(var(--color-surface));
+    color: rgb(var(--color-ink));
+    border-color: rgb(var(--color-line));
+  }
+:where(:root[data-theme="dark"]) input::placeholder,
+:where(:root[data-theme="dark"]) textarea::placeholder { color: rgb(var(--color-ink) / .45); }
+/* ---------- Floating cart / misc ---------- */
+:where(:root[data-theme="dark"]) #float-cart .fc-total { background: rgb(var(--color-surface)); }
+/* ---------- Account status badges ---------- */
+:where(:root[data-theme="dark"]) .acct-badge { background: rgb(var(--color-surface-2)); color: rgb(var(--color-ink)); }
+:where(:root[data-theme="dark"]) .acct-badge[data-status="pending"] { background: rgb(133 77 14 / .3); color: #fcd34d; }
+:where(:root[data-theme="dark"]) .acct-badge[data-status="processing"],
+:where(:root[data-theme="dark"]) .acct-badge[data-status="shipped"],
+:where(:root[data-theme="dark"]) .acct-badge[data-status="out_for_delivery"] { background: rgb(30 64 175 / .3); color: #93c5fd; }
+:where(:root[data-theme="dark"]) .acct-badge[data-status="delivered"],
+:where(:root[data-theme="dark"]) .acct-badge[data-status="approved"] { background: rgb(6 95 70 / .35); color: #6ee7b7; }
+:where(:root[data-theme="dark"]) .acct-badge[data-status="rejected"],
+:where(:root[data-theme="dark"]) .acct-badge[data-status="cancelled"],
+:where(:root[data-theme="dark"]) .acct-badge[data-status="returned"] { background: rgb(153 27 27 / .35); color: #fca5a5; }
+/* ---------- Third-party toasts ---------- */
+:where(:root[data-theme="dark"]) .toastify { box-shadow: 0 10px 30px rgb(0 0 0 / .5); }
+
+/* ---------- Refined dark look: depth, contrast and softer glare ---------- */
+:where(:root[data-theme="dark"]) body {
+  background:
+    radial-gradient(1100px 520px at 50% -140px, rgb(var(--color-primary) / .14), transparent 70%),
+    rgb(var(--color-paper));
+  background-attachment: fixed;
+}
+:where(:root[data-theme="dark"]) ::selection { background: rgb(var(--color-primary) / .55); color: #fff; }
+/* header: solid surface, thin divider instead of the heavy light-mode rule */
+:where(:root[data-theme="dark"]) #site-header > .bg-white,
+:where(:root[data-theme="dark"]) #site-header nav.bg-white { background: rgb(var(--color-surface)); }
+:where(:root[data-theme="dark"]) #site-header > .bg-white { border-bottom: 1px solid rgb(var(--color-line)); box-shadow: 0 8px 24px rgb(0 0 0 / .28); }
+:where(:root[data-theme="dark"]) #site-header nav.bg-white { border-bottom: 1px solid rgb(var(--color-line)); }
+:where(:root[data-theme="dark"]) #site-header .bg-ink { background: rgb(var(--color-ink-deep)); }
+:where(:root[data-theme="dark"]) #site-header #open-cart { background: rgb(var(--color-surface-2)); color: rgb(var(--color-ink)); border: 1px solid rgb(var(--color-line)); }
+:where(:root[data-theme="dark"]) #site-header #open-cart:hover { background: rgb(var(--color-primary)); color: #fff; }
+/* navy (not black) bands such as the footer */
+:where(:root[data-theme="dark"]) footer .bg-ink { background: linear-gradient(180deg, rgb(var(--color-surface)) 0%, rgb(var(--color-ink-deep)) 100%); }
+/* product cards: lifted off the page */
+:where(:root[data-theme="dark"]) main article.group {
+  background: rgb(var(--color-surface));
+  border-color: rgb(var(--color-line));
+  box-shadow: 0 1px 0 rgb(255 255 255 / .04) inset, 0 8px 22px rgb(0 0 0 / .32);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+:where(:root[data-theme="dark"]) main article.group:hover {
+  transform: translateY(-3px);
+  border-color: rgb(var(--color-primary) / .55);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .05) inset, 0 14px 32px rgb(0 0 0 / .45), 0 0 0 1px rgb(var(--color-primary) / .25);
+}
+:where(:root[data-theme="dark"]) main article.group > div:first-child { background: rgb(var(--color-surface-2)); }
+:where(:root[data-theme="dark"]) main article.group img { filter: brightness(.94) contrast(1.03); }
+:where(:root[data-theme="dark"]) main article.group h3 a { color: rgb(var(--color-ink)); }
+:where(:root[data-theme="dark"]) main article.group h3 a:hover { color: rgb(var(--color-primary)); }
+:where(:root[data-theme="dark"]) main article.group .card-cart:not(.card-buy) {
+  background: rgb(var(--color-surface-2));
+  color: rgb(var(--color-ink));
+  border-color: rgb(var(--color-line));
+}
+:where(:root[data-theme="dark"]) main article.group .card-cart:not(.card-buy):hover { background: rgb(var(--color-primary) / .22); }
+:where(:root[data-theme="dark"]) main article.group .wish:not(.bg-primary) { background: rgb(var(--color-surface)); color: rgb(var(--color-ink)); }
+/* other white panels get a hairline and soft shadow so they do not melt into the page */
+:where(:root[data-theme="dark"]) .bg-white.border,
+:where(:root[data-theme="dark"]) .bg-white.rounded-2xl,
+:where(:root[data-theme="dark"]) .bg-white.rounded-3xl { border-color: rgb(var(--color-line)); }
+:where(:root[data-theme="dark"]) .shadow-sm,
+:where(:root[data-theme="dark"]) .shadow-md { --tw-shadow-color: rgb(0 0 0 / .35); box-shadow: 0 6px 20px rgb(0 0 0 / .3); }
+/* text: brighter headings, calmer secondary text */
+:where(:root[data-theme="dark"]) h1,
+:where(:root[data-theme="dark"]) h2,
+:where(:root[data-theme="dark"]) h3,
+:where(:root[data-theme="dark"]) h4 { color: rgb(var(--color-ink)); }
+:where(:root[data-theme="dark"]) .text-ink\/60,
+:where(:root[data-theme="dark"]) .text-ink\/65,
+:where(:root[data-theme="dark"]) .text-ink\/70 { color: rgb(var(--color-ink) / .72); }
+:where(:root[data-theme="dark"]) .text-ink\/50,
+:where(:root[data-theme="dark"]) .text-ink\/55 { color: rgb(var(--color-ink) / .6); }
+:where(:root[data-theme="dark"]) a.underline-offset-4 { text-decoration-color: rgb(var(--color-primary) / .7); }
+/* focus rings stay visible on dark */
+:where(:root[data-theme="dark"]) :focus-visible { outline-color: rgb(var(--color-primary)); }
+/* slim scrollbars */
+:where(:root[data-theme="dark"]) * { scrollbar-color: rgb(var(--color-line)) transparent; }
+
+/* ---------- Premium finish ---------- */
+:where(:root[data-theme="dark"]) body {
+  background:
+    radial-gradient(900px 480px at 12% -120px, rgb(var(--color-primary) / .16), transparent 70%),
+    radial-gradient(800px 420px at 92% 18%, rgb(var(--color-accent) / .06), transparent 70%),
+    rgb(var(--color-paper));
+  background-attachment: fixed;
+}
+/* announcement strip + glass header */
+:where(:root[data-theme="dark"]) #site-header .bg-ink { background: linear-gradient(90deg, rgb(var(--color-ink-deep)), rgb(var(--color-surface-2)) 50%, rgb(var(--color-ink-deep))); }
+:where(:root[data-theme="dark"]) #site-header > .bg-white {
+  background: rgb(var(--color-surface) / .8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgb(255 255 255 / .07);
+}
+:where(:root[data-theme="dark"]) #site-header nav.bg-white {
+  background: rgb(var(--color-surface) / .8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgb(255 255 255 / .06);
+}
+/* cards: soft sheen on top, brand glow on hover */
+:where(:root[data-theme="dark"]) main article.group {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / .045), rgb(255 255 255 / 0) 42%);
+  border-color: rgb(255 255 255 / .09);
+  border-radius: 18px;
+}
+:where(:root[data-theme="dark"]) main article.group:hover {
+  border-color: rgb(var(--color-primary) / .6);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .06) inset, 0 18px 40px -12px rgb(0 0 0 / .65), 0 0 28px -6px rgb(var(--color-primary) / .35);
+}
+:where(:root[data-theme="dark"]) main article.group > div:first-child { border-radius: 0 0 14px 14px; }
+:where(:root[data-theme="dark"]) main article.group .font-display.font-extrabold.text-xl { color: #fff; letter-spacing: -.01em; }
+/* wishlist + quick view: glass circles that react on hover */
+:where(:root[data-theme="dark"]) .card-actions .wish,
+:where(:root[data-theme="dark"]) .card-actions .qv {
+  background: rgb(var(--color-surface) / .7);
+  color: rgb(var(--color-ink));
+  border: 1px solid rgb(255 255 255 / .14);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 16px -6px rgb(0 0 0 / .6);
+  transition: background-color .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+:where(:root[data-theme="dark"]) main article.group .card-actions .wish:not([aria-pressed="true"]):hover,
+:where(:root[data-theme="dark"]) main article.group .card-actions .wish:not([aria-pressed="true"]):focus-visible,
+:where(:root[data-theme="dark"]) main article.group .card-actions .qv:hover,
+:where(:root[data-theme="dark"]) main article.group .card-actions .qv:focus-visible {
+  background: rgb(var(--color-primary));
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.12);
+  box-shadow: 0 10px 22px -6px rgb(var(--color-primary) / .8);
+}
+:where(:root[data-theme="dark"]) main article.group .card-actions .wish:active,
+:where(:root[data-theme="dark"]) main article.group .card-actions .qv:active { transform: scale(.94); }
+/* buttons */
+:where(:root[data-theme="dark"]) main article.group .card-cart:not(.card-buy) {
+  background: rgb(var(--color-surface-2));
+  color: rgb(var(--color-ink));
+  border: 1px solid rgb(255 255 255 / .1);
+}
+:where(:root[data-theme="dark"]) main article.group .card-cart:not(.card-buy):hover,
+:where(:root[data-theme="dark"]) main article.group .card-cart:not(.card-buy):focus-visible {
+  background: rgb(var(--color-primary) / .2);
+  color: #fff;
+  border-color: rgb(var(--color-primary) / .8);
+  box-shadow: 0 8px 18px -8px rgb(var(--color-primary) / .7);
+}
+:where(:root[data-theme="dark"]) main article.group .card-cta .card-buy {
+  background: linear-gradient(135deg, rgb(var(--color-primary)), rgb(var(--color-primary-dark)));
+  color: #fff;
+  box-shadow: 0 8px 18px -8px rgb(var(--color-primary) / .85);
+}
+:where(:root[data-theme="dark"]) main article.group .card-cta .card-buy:hover,
+:where(:root[data-theme="dark"]) main article.group .card-cta .card-buy:focus-visible {
+  background: linear-gradient(135deg, rgb(var(--color-primary)), rgb(var(--color-primary)));
+  filter: brightness(1.12);
+  box-shadow: 0 12px 26px -8px rgb(var(--color-primary) / 1);
+}
+/* section headings + category tiles */
+:where(:root[data-theme="dark"]) main section h2[id^="h-"]::before { box-shadow: 0 0 16px rgb(var(--color-primary) / .9); }
+:where(:root[data-theme="dark"]) main section a.bg-white.rounded-2xl { transition: border-color .2s, box-shadow .2s, transform .2s; }
+:where(:root[data-theme="dark"]) main section a.bg-white.rounded-2xl:hover {
+  border-color: rgb(var(--color-primary) / .6);
+  box-shadow: 0 14px 30px -12px rgb(0 0 0 / .7), 0 0 24px -8px rgb(var(--color-primary) / .45);
+}
+/* inputs */
+:where(:root[data-theme="dark"]) input:focus,
+:where(:root[data-theme="dark"]) textarea:focus,
+:where(:root[data-theme="dark"]) select:focus {
+  border-color: rgb(var(--color-primary));
+  box-shadow: 0 0 0 3px rgb(var(--color-primary) / .25);
+  outline: none;
+}
+/* footer */
+:where(:root[data-theme="dark"]) footer > .bg-ink {
+  border-top: 1px solid rgb(255 255 255 / .06);
+  box-shadow: inset 0 1px 0 rgb(var(--color-primary) / .35);
+}
+
+/* ---------- No shadows in dark mode (flat look; focus rings on inputs stay) ---------- */
+:where(:root[data-theme="dark"]) *:not(input):not(textarea):not(select),
+:where(:root[data-theme="dark"]) *::before,
+:where(:root[data-theme="dark"]) *::after { box-shadow: none !important; }
+
+/* ---------- Header theme toggle icons ---------- */
+.theme-toggle .i-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }

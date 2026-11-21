@@ -12,8 +12,8 @@
     $accent = $rgb($setting('color_accent'));
 
     // Dark mode palette (used when the visitor's device is set to dark)
-    $darkPaper = [11, 17, 28];
-    $darkSurface = [20, 28, 42];
+    $darkPaper = [14, 20, 35];
+    $darkSurface = [23, 32, 52];
     $darkPrimary = array_map('intval', explode(' ', $mix($primary, $white, 0.35)));
     $fontStacks = [
         'Plus Jakarta Sans' => "'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif",
@@ -39,7 +39,7 @@
     }
 
     @media (prefers-color-scheme: dark) {
-        :root {
+        :root:not([data-theme="light"]) {
             --color-primary: {{ implode(' ', $darkPrimary) }};
             --color-primary-dark: {{ $mix($primary, $white, 0.2) }};
             --color-primary-soft: {{ $mix($darkPaper, $darkPrimary, 0.16) }};
@@ -48,12 +48,29 @@
             --color-primary-300: {{ $mix($darkSurface, $darkPrimary, 0.58) }};
             --color-accent-dark: {{ $mix($accent, $white, 0.12) }};
             --color-accent-soft: {{ $mix($darkSurface, $accent, 0.16) }};
-            --color-ink: 226 232 240;
+            --color-ink: 235 240 248;
             --color-paper: {{ implode(' ', $darkPaper) }};
-            --color-line: 42 53 73;
+            --color-line: 48 61 90;
             --color-surface: {{ implode(' ', $darkSurface) }};
-            --color-surface-2: 28 38 56;
-            --color-ink-deep: 6 10 18;
+            --color-surface-2: 33 44 70;
+            --color-ink-deep: 9 14 26;
         }
+    }
+
+    :root[data-theme="dark"] {
+        --color-primary: {{ implode(' ', $darkPrimary) }};
+        --color-primary-dark: {{ $mix($primary, $white, 0.2) }};
+        --color-primary-soft: {{ $mix($darkPaper, $darkPrimary, 0.16) }};
+        --color-primary-100: {{ $mix($darkSurface, $darkPrimary, 0.24) }};
+        --color-primary-200: {{ $mix($darkSurface, $darkPrimary, 0.4) }};
+        --color-primary-300: {{ $mix($darkSurface, $darkPrimary, 0.58) }};
+        --color-accent-dark: {{ $mix($accent, $white, 0.12) }};
+        --color-accent-soft: {{ $mix($darkSurface, $accent, 0.16) }};
+        --color-ink: 235 240 248;
+        --color-paper: {{ implode(' ', $darkPaper) }};
+        --color-line: 48 61 90;
+        --color-surface: {{ implode(' ', $darkSurface) }};
+        --color-surface-2: 33 44 70;
+        --color-ink-deep: 9 14 26;
     }
 </style>

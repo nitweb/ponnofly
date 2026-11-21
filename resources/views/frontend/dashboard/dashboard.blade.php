@@ -5,6 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
+    <script>
+        (function () {
+            var root = document.documentElement, mq = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null, saved = null;
+            try { saved = localStorage.getItem('theme'); } catch (e) { }
+            function apply(t) {
+                root.setAttribute('data-theme', t);
+                document.querySelectorAll('[data-theme-toggle]').forEach(function (b) { b.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false'); });
+            }
+            apply(saved === 'dark' || saved === 'light' ? saved : (mq && mq.matches ? 'dark' : 'light'));
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('[data-theme-toggle]')) return;
+                var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                apply(next);
+                try { localStorage.setItem('theme', next); } catch (err) { }
+            });
+            if (mq && mq.addEventListener) mq.addEventListener('change', function (e) {
+                var s = null; try { s = localStorage.getItem('theme'); } catch (err) { }
+                if (!s) apply(e.matches ? 'dark' : 'light');
+            });
+            document.addEventListener('DOMContentLoaded', function () { apply(root.getAttribute('data-theme')); });
+            window.addEventListener('spa:load', function () { apply(root.getAttribute('data-theme')); });
+        })();
+    </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
         $siteTitle = trim($__env->yieldContent('frontend_title')) ?: $setting('meta_title');
@@ -147,6 +170,15 @@
 
     <!-- SVG ICON SPRITE -->
     <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+
+        <symbol id="i-moon" viewBox="0 0 24 24">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+        </symbol>
+
+        <symbol id="i-sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.2" />
+            <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+        </symbol>
 
         <symbol id="i-search" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4" />
