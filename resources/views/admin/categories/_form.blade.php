@@ -2,6 +2,7 @@
     $selectedParent = old('parent_id', $category?->parent_id ?? request('parent'));
     $isActive = session()->hasOldInput() ? (bool) old('is_active') : ($category?->is_active ?? true);
     $showOnHome = session()->hasOldInput() ? (bool) old('show_on_home') : ($category?->show_on_home ?? false);
+    $showInMenu = session()->hasOldInput() ? (bool) old('show_in_menu') : ($category?->show_in_menu ?? false);
     $promo = fn (int $index, string $key) => old("promos.{$index}.{$key}", data_get($category?->promos, "{$index}.{$key}", ''));
 @endphp
 
@@ -162,6 +163,14 @@
                         </div>
                         <label class="switch"><input type="checkbox" name="show_on_home" value="1" @checked($showOnHome)><i></i></label>
                     </div>
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <p class="font-semibold">Show in header menu</p>
+                            <p class="text-xs text-ink/50">Top-level categories only, up to {{ \App\Models\Category::NAV_LIMIT }}. Its sub-categories open in the mega menu.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" name="show_in_menu" value="1" @checked($showInMenu)><i></i></label>
+                    </div>
+                    @error('show_in_menu')<p class="text-danger text-xs -mt-3">{{ $message }}</p>@enderror
                     <div>
                         <label class="lbl" for="sort_order">Display order</label>
                         <input class="input" id="sort_order" name="sort_order" type="number" min="0" value="{{ old('sort_order', $category?->sort_order ?? 1) }}">

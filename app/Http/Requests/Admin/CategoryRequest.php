@@ -18,6 +18,7 @@ class CategoryRequest extends FormRequest
         $this->merge([
             'is_active' => $this->boolean('is_active'),
             'show_on_home' => $this->boolean('show_on_home'),
+            'show_in_menu' => $this->boolean('show_in_menu') && blank($this->input('parent_id')),
         ]);
     }
 
@@ -50,6 +51,21 @@ class CategoryRequest extends FormRequest
             'sort_order' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'show_on_home' => ['boolean'],
+            'show_in_menu' => ['boolean', function (string $attribute, mixed $value, \Closure $fail) use ($category) {
+                if (! $value) {
+                    return;
+                }
+
+                $others = Category::query()
+                    ->whereNull('parent_id')
+                    ->where('show_in_menu', true)
+                    ->when($category, fn ($q) => $q->where('id', '!=', $category->id))
+                    ->count();
+
+                if ($others >= Category::NAV_LIMIT) {
+                    $fail('The header menu can show up to '.Category::NAV_LIMIT.' categories. Turn one off first.');
+                }
+            }],
             'promos' => ['nullable', 'array', 'max:2'],
             'promos.*.badge' => ['nullable', 'string', 'max:40'],
             'promos.*.title' => ['nullable', 'string', 'max:100'],

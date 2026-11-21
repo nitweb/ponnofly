@@ -10,11 +10,12 @@ use Illuminate\Support\Collection;
 
 #[Fillable([
     'parent_id', 'name', 'slug', 'description', 'image', 'icon',
-    'meta_title', 'meta_description', 'is_active', 'show_on_home', 'sort_order', 'promos',
+    'meta_title', 'meta_description', 'is_active', 'show_on_home', 'show_in_menu', 'sort_order', 'promos',
 ])]
 class Category extends Model
 {
-    public const NAV_SLUGS = ['medical', 'fashion', 'electronics', 'home-living', 'beauty', 'grocery', 'sports'];
+    /** How many root categories the header navigation shows (after "All Products"). */
+    public const NAV_LIMIT = 7;
 
     private static ?Collection $menuTreeMemo = null;
 
@@ -23,6 +24,7 @@ class Category extends Model
         return [
             'is_active' => 'boolean',
             'show_on_home' => 'boolean',
+            'show_in_menu' => 'boolean',
             'promos' => 'array',
         ];
     }
@@ -105,16 +107,13 @@ class Category extends Model
     }
 
     /**
-     * Root categories pinned to the header navigation (in NAV_SLUGS order).
+     * Visible root categories the admin ticked "Show in header menu" (up to NAV_LIMIT, by sort order).
      *
      * @return Collection<int, self>
      */
     public static function navTree(): Collection
     {
-        return static::menuTree()
-            ->filter(fn (self $category) => in_array($category->slug, self::NAV_SLUGS, true))
-            ->sortBy(fn (self $category) => array_search($category->slug, self::NAV_SLUGS, true))
-            ->values();
+        return static::menuTree()->filter(fn (self $category) => $category->show_in_menu)->take(self::NAV_LIMIT)->values();
     }
 
     /**
@@ -124,9 +123,7 @@ class Category extends Model
      */
     public static function shopByCategoryList(): Collection
     {
-        return static::menuTree()
-            ->reject(fn (self $category) => in_array($category->slug, self::NAV_SLUGS, true))
-            ->values();
+        return static::menuTree()->reject(fn (self $category) => $category->show_in_menu)->values();
     }
 
     /**

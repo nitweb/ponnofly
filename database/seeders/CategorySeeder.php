@@ -104,6 +104,7 @@ class CategorySeeder extends Seeder
                     'sort_order' => $index + 1,
                     'is_active' => true,
                     'show_on_home' => $node['home'] ?? false,
+                    'show_in_menu' => $parentId === null && $index < Category::NAV_LIMIT,
                     'promos' => $node['promos'] ?? null,
                 ],
             );
