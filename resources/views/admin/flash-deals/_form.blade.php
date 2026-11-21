@@ -28,6 +28,19 @@
     }
 @endphp
 
+<style>
+    .deal-picker { position: relative; }
+    .deal-results { position: absolute; left: 0; right: 0; top: calc(100% + .35rem); z-index: 30; background: #fff; border: 1px solid rgb(0 0 0 / .1); border-radius: .9rem; box-shadow: 0 12px 32px rgb(0 0 0 / .14); max-height: 24rem; overflow-y: auto; padding: .35rem; }
+    .deal-item { display: flex; align-items: center; gap: .75rem; width: 100%; text-align: left; padding: .5rem; border-radius: .65rem; cursor: pointer; background: none; border: 0; }
+    .deal-item:hover, .deal-item.is-active { background: rgb(0 0 0 / .05); }
+    .deal-item[disabled] { opacity: .5; cursor: default; }
+    .deal-item img { width: 52px; height: 52px; object-fit: cover; border-radius: .55rem; flex: none; background: #f3f4f6; }
+    .deal-item .n { display: block; font-weight: 700; line-height: 1.25; }
+    .deal-item .m { display: block; font-size: .75rem; opacity: .6; margin-top: .15rem; }
+    .deal-item .p { margin-left: auto; font-weight: 800; white-space: nowrap; }
+    .deal-note { padding: .85rem; font-size: .875rem; opacity: .6; }
+</style>
+
 <div class="grid xl:grid-cols-3 gap-6 items-start">
     <div class="xl:col-span-2 space-y-6">
 
@@ -64,19 +77,14 @@
         <section class="card">
             <div class="card-h"><h3>Deal products</h3></div>
             <div>
-                <div class="p-5 border-b border-line flex gap-3">
-                    <div class="input-group flex-1">
-                        <svg class="ic"><use href="#i-search" /></svg>
-                        <input class="input" id="deal-search" list="deal-products" placeholder="Search a product to add…" autocomplete="off">
-                        <datalist id="deal-products">
-                            @foreach ($catalogData as $item)
-                                <option value="{{ $item['name'] }} [#{{ $item['id'] }}]">{{ $item['sku'] }}</option>
-                            @endforeach
-                        </datalist>
+                <div class="p-5 border-b border-line">
+                    <div class="deal-picker">
+                        <div class="input-group">
+                            <svg class="ic"><use href="#i-search" /></svg>
+                            <input class="input" id="deal-search" type="search" placeholder="Search products by name or SKU to add…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="deal-results">
+                        </div>
+                        <div id="deal-results" class="deal-results" role="listbox" hidden></div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="deal-add">
-                        <svg class="ic ic-sm"><use href="#i-plus" /></svg>Add
-                    </button>
                 </div>
 
                 @error('products')<p class="text-danger text-xs px-5 pt-3">{{ $message }}</p>@enderror
@@ -174,7 +182,6 @@
 
 <script>
     (function () {
-        var catalog = @json($catalogData);
         var body = document.getElementById('deal-rows');
         var empty = document.getElementById('deal-empty');
         var search = document.getElementById('deal-search');
@@ -211,10 +218,41 @@
             document.getElementById('deal-duration').textContent = out;
         }
 
-        function add() {
-            var match = /\[#(\d+)\]\s*$/.exec(search.value);
-            var product = match ? catalog[match[1]] : null;
-            if (!product || body.querySelector('tr[data-id="' + product.id + '"]')) { search.value = ''; return; }
+        var results = document.getElementById('deal-results');
+        var timer = null, controller = null, current = [], active = -1;
+
+        function inDeal(id) { return !!body.querySelector('tr[data-id="' + id + '"]'); }
+
+        function closeResults() { results.hidden = true; results.innerHTML = ''; search.setAttribute('aria-expanded', 'false'); current = []; active = -1; }
+
+        function render(products) {
+            current = products; active = -1;
+            if (!products.length) { results.innerHTML = '<p class="deal-note">No products found.</p>'; }
+            else {
+                results.innerHTML = products.map(function (p, i) {
+                    var added = inDeal(p.id);
+                    return '<button type="button" class="deal-item" role="option" data-i="' + i + '"' + (added ? ' disabled' : '') + '>' +
+                        '<img src="' + esc(p.img) + '" alt="" loading="lazy">' +
+                        '<span><span class="n">' + esc(p.name) + '</span><span class="m">' + esc([p.sku, p.category, added ? 'Already added' : ''].filter(Boolean).join(' · ')) + '</span></span>' +
+                        '<span class="p">' + money(p.price) + '</span></button>';
+                }).join('');
+            }
+            results.hidden = false; search.setAttribute('aria-expanded', 'true');
+        }
+
+        function query() {
+            var q = search.value.trim();
+            if (q.length < 2) { closeResults(); return; }
+            if (controller) controller.abort();
+            controller = new AbortController();
+            fetch(@json(route('admin.flash-deals.search-products')) + '?q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json' }, signal: controller.signal })
+                .then(function (r) { return r.json(); })
+                .then(function (d) { if (search.value.trim() === q) render(d.products || []); })
+                .catch(function () {});
+        }
+
+        function add(product) {
+            if (!product || inDeal(product.id)) return;
             var i = counter++;
             body.insertAdjacentHTML('beforeend',
                 '<tr data-id="' + product.id + '" data-price="' + product.price + '">' +
@@ -226,11 +264,35 @@
                 '<td><input class="input !w-24" type="number" min="0" name="products[' + i + '][deal_stock]" placeholder="∞"></td>' +
                 '<td><button type="button" class="icon-btn danger" data-deal-rm><svg class="ic"><use href="#i-trash"/></svg></button></td></tr>');
             search.value = '';
+            closeResults();
             refresh();
         }
 
-        document.getElementById('deal-add').addEventListener('click', add);
-        search.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); add(); } });
+        function highlight(n) {
+            var items = results.querySelectorAll('.deal-item:not([disabled])');
+            if (!items.length) return;
+            active = (n + items.length) % items.length;
+            items.forEach(function (el, k) { el.classList.toggle('is-active', k === active); });
+            items[active].scrollIntoView({ block: 'nearest' });
+        }
+
+        search.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(query, 250); });
+        search.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); highlight(active + 1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); highlight(active - 1); }
+            else if (e.key === 'Escape') { closeResults(); }
+            else if (e.key === 'Enter') {
+                e.preventDefault();
+                var items = results.querySelectorAll('.deal-item:not([disabled])');
+                var el = items[active >= 0 ? active : 0];
+                if (el) add(current[+el.dataset.i]);
+            }
+        });
+        results.addEventListener('click', function (e) {
+            var el = e.target.closest('.deal-item');
+            if (el && !el.disabled) add(current[+el.dataset.i]);
+        });
+        document.addEventListener('click', function (e) { if (!e.target.closest('.deal-picker')) closeResults(); });
         body.addEventListener('input', function (e) { if (e.target.matches('[data-pct]')) refresh(); });
         body.addEventListener('click', function (e) {
             var button = e.target.closest('[data-deal-rm]');

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\FlashDealRequest;
 use App\Models\FlashDeal;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -58,6 +60,35 @@ class FlashDealController extends Controller
         return to_route('admin.flash-deals.index')->with('success', 'Flash deal updated');
     }
 
+    /** Live product suggestions for the deal product picker. */
+    public function searchProducts(Request $request): JsonResponse
+    {
+        $term = trim((string) preg_replace('/\s+/u', ' ', (string) $request->query('q', '')));
+
+        if (mb_strlen($term) < 2) {
+            return response()->json(['products' => []]);
+        }
+
+        $products = Product::active()
+            ->where(fn ($q) => $q->matching($term)->orWhere('sku', 'like', "%{$term}%"))
+            ->with(['images', 'category'])
+            ->orderByRaw('case when name like ? then 0 else 1 end', [$term.'%'])
+            ->orderByDesc('sold_count')
+            ->limit(10)
+            ->get()
+            ->map(fn (Product $product) => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'price' => (float) $product->price,
+                'img' => $product->cover_url,
+                'category' => $product->category?->name,
+            ])
+            ->all();
+
+        return response()->json(['products' => $products]);
+    }
+
     public function toggle(FlashDeal $flashDeal): RedirectResponse
     {
         $flashDeal->update(['is_active' => ! $flashDeal->is_active]);
@@ -78,18 +109,7 @@ class FlashDealController extends Controller
     private function formData(): array
     {
         return [
-            'catalog' => Product::active()
-                ->with('images')
-                ->orderBy('name')
-                ->get()
-                ->map(fn (Product $product) => [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'sku' => $product->sku,
-                    'price' => (float) $product->price,
-                    'img' => $product->cover_url,
-                ])
-                ->keyBy('id'),
+            'catalog' => collect(),
         ];
     }
 

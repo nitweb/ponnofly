@@ -111,6 +111,7 @@ Route::middleware('auth:admin')
         });
         // Flash Deal Routes
         Route::middleware('permission:flash')->group(function () {
+            Route::get('flash-deals/search-products', [FlashDealController::class, 'searchProducts'])->name('flash-deals.search-products');
             Route::patch('flash-deals/{flash_deal}/toggle', [FlashDealController::class, 'toggle'])->name('flash-deals.toggle');
             Route::resource('flash-deals', FlashDealController::class)->except('show');
         });
