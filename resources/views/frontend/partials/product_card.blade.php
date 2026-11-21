@@ -9,7 +9,7 @@
 @endphp
 <li>
     <article class="group relative bg-white border border-line rounded-2xl overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full">
-        <div class="relative overflow-hidden bg-primary-soft">
+        <div class="relative overflow-hidden bg-primary-soft skel-img">
             <a href="{{ $product->url }}" class="block aspect-square" tabindex="-1" aria-hidden="true">
                 <img src="{{ $product->cover_url }}" alt="{{ $pName }}" width="600" height="600" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </a>

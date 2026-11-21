@@ -23,7 +23,7 @@
 
   var SWAP = ['#site-header', '#mobile-menu', '#cart-drawer', '#main', 'footer', '#qv'];
   var scripts = [];
-  var busy = 0, seq = 0, ctl = null, bar = null, barTimer = null;
+  var busy = 0, seq = 0, ctl = null, bar = null, barTimer = null, curPath = location.pathname;
 
   function own(url) { return url.origin === location.origin; }
   function same(a, b) { return a.pathname === b.pathname && a.search === b.search; }
@@ -146,6 +146,7 @@
     ctl = window.AbortController ? new AbortController() : null;
     busy++; progress(true);
     var main = document.getElementById('main'); if (main) main.classList.add('spa-busy');
+    if (!o.method && !o.keepScroll && target.pathname !== curPath && window.spaSkeleton) { if (!o.pop) window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); window.spaSkeleton.show(target.href); }
 
     var init = {
       method: o.method || 'GET', credentials: 'same-origin', redirect: 'follow', cache: 'no-store',
@@ -173,6 +174,7 @@
       if (o.pop) { /* url already changed by the browser */ }
       else if (o.replace || same(d.final, new URL(location.href)) && d.final.hash === location.hash && o.method) history.replaceState({ y: 0 }, '', d.final.href);
       else history.pushState({ y: 0 }, '', d.final.href);
+      curPath = d.final.pathname;
       swap(doc, d.final, { keepScroll: keep, y: y });
     }).catch(function (e) {
       if (id !== seq || (e && e.name === 'AbortError')) return;
@@ -182,6 +184,7 @@
       if (id !== seq) return;
       busy = 0; progress(false);
       var m = document.getElementById('main'); if (m) m.classList.remove('spa-busy');
+      if (window.spaSkeleton) window.spaSkeleton.hide();
     });
   }
   window.spaGo = go;

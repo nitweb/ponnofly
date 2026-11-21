@@ -126,6 +126,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/refresh.css') }}?v={{ filemtime(public_path('assets/frontend/css/refresh.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/extras.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/extras.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/pages/customer.css') }}?v={{ filemtime(public_path('assets/frontend/css/pages/customer.css')) }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/css/skeleton.css') }}?v={{ filemtime(public_path('assets/frontend/css/skeleton.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/dark.css') }}?v={{ filemtime(public_path('assets/frontend/css/dark.css')) }}">
     @if ($setting('ga_id'))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $setting('ga_id') }}"></script>
@@ -410,6 +411,7 @@
             ids: @json($wishlistIds)
         };
     </script>
+    <script src="{{ asset('assets/frontend/js/skeleton.js') }}?v={{ filemtime(public_path('assets/frontend/js/skeleton.js')) }}" defer></script>
     <script src="{{ asset('assets/frontend/js/cart.js') }}?v={{ filemtime(public_path('assets/frontend/js/cart.js')) }}" defer></script>
     <script src="{{ asset('assets/frontend/js/wishlist.js') }}?v={{ filemtime(public_path('assets/frontend/js/wishlist.js')) }}" defer></script>
     <script src="{{ asset('assets/frontend/js/loop-slider.js') }}" defer></script>

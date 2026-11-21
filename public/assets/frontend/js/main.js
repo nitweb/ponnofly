@@ -242,7 +242,9 @@
     var g = document.querySelector(m.getAttribute('data-target')), u = m.getAttribute('data-next');
     if (!g || !u || m.getAttribute('aria-busy')) return;
     m.setAttribute('aria-busy', 'true');
-    m.innerHTML = '<span class="more-loader" role="status"><span class="more-spin" aria-hidden="true"></span>Loading more products…</span>';
+    function clearSkel() { g.querySelectorAll('[data-skel]').forEach(function (n) { n.remove() }) }
+    if (window.spaSkeleton) { m.innerHTML = '<span class="sr-only" role="status">Loading more products…</span>'; g.insertAdjacentHTML('beforeend', window.spaSkeleton.cards(4)) }
+    else m.innerHTML = '<span class="more-loader" role="status"><span class="more-spin" aria-hidden="true"></span>Loading more products…</span>';
     var started = Date.now();
     fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'append=1', { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
@@ -251,10 +253,11 @@
         return new Promise(function (ok) { setTimeout(function () { ok(d) }, Math.max(0, 700 - (Date.now() - started))) });
       })
       .then(function (d) {
+        clearSkel();
         g.insertAdjacentHTML('beforeend', d.html);
         if (d.next) { m.setAttribute('data-next', d.next); m.innerHTML = '' } else { m.remove(); return }
       })
-      .catch(function () { m.innerHTML = '' })
+      .catch(function () { clearSkel(); m.innerHTML = '' })
       .then(function () { m.removeAttribute('aria-busy'); queueMore() });
   }
   var moreTick = false;
@@ -273,16 +276,19 @@
     var form = document.getElementById('shop-form'), q = document.getElementById('shop-q'), box = document.getElementById('shop-results');
     if (!form || !q || !box) return;
     var tm, ctl = null, seq = 0;
-    function done() { box.style.opacity = ''; box.removeAttribute('aria-busy') }
+    var snap = null;
+    function done() { box.style.opacity = ''; box.removeAttribute('aria-busy'); snap = null }
     function load(url, scroll) {
       var id = ++seq;
       if (ctl) ctl.abort();
       ctl = window.AbortController ? new AbortController() : null;
-      box.setAttribute('aria-busy', 'true'); box.style.opacity = '.5';
+      if (snap === null) snap = box.innerHTML;
+      box.setAttribute('aria-busy', 'true');
+      if (window.spaSkeleton) box.innerHTML = window.spaSkeleton.results(); else box.style.opacity = '.5';
       fetch(url, { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, credentials: 'same-origin', signal: ctl ? ctl.signal : undefined })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json() })
         .then(function (d) { if (id !== seq) return; box.innerHTML = d.html; done(); if (scroll) box.scrollIntoView({ behavior: 'smooth', block: 'start' }) })
-        .catch(function (e) { if (id !== seq || (e && e.name === 'AbortError')) return; done() });
+        .catch(function (e) { if (id !== seq || (e && e.name === 'AbortError')) return; if (snap !== null) box.innerHTML = snap; done() });
     }
     function search(scroll) { load((form.getAttribute('action') || location.pathname) + '?' + new URLSearchParams(new FormData(form)).toString(), scroll) }
     q.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(search, 250) });
@@ -325,7 +331,7 @@
       function run2() {
         var q = input.value.trim(), id = ++seq;
         if (q.length < 2) { if (ctl) ctl.abort(); hide(); return }
-        if (!cache[q]) show('<div class="s-msg">Searching…</div>');
+        if (!cache[q]) show(window.spaSkeleton ? window.spaSkeleton.suggest() : '<div class="s-msg">Searching…</div>');
         fetchHits(q).then(function (d) { if (id === seq) render(q, d) }).catch(function (e) {
           if (id !== seq || (e && e.name === 'AbortError')) return;
           show('<a class="s-all" href="' + esc(shopUrl(q)) + '">Search for “' + esc(q) + '” in shop</a>');
