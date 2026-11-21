@@ -27,6 +27,7 @@
                         <th>Brand</th>
                         <th>Slug</th>
                         <th>Country</th>
+                        <th>Products</th>
                         <th>Order</th>
                         <th>Featured</th>
                         <th>Active</th>
@@ -48,6 +49,7 @@
                             </td>
                             <td class="text-ink/60">/{{ $brand->slug }}</td>
                             <td class="text-ink/60">{{ $brand->country ?: '—' }}</td>
+                            <td><a href="{{ route('admin.products.index', ['brand' => $brand->id]) }}" class="font-bold hover:text-primary" title="View products">{{ $brand->products_count }}</a></td>
                             <td>{{ $brand->sort_order }}</td>
                             <td><span class="badge {{ $brand->is_featured ? 'b-success' : 'b-muted' }}">{{ $brand->is_featured ? 'Yes' : 'No' }}</span></td>
                             <td>
@@ -73,7 +75,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="text-ink/55">No brands yet.</td></tr>
+                        <tr><td colspan="8" class="text-ink/55">No brands yet.</td></tr>
                     @endforelse
                 </tbody>
             </table>

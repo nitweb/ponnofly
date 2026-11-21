@@ -22,7 +22,7 @@ class BrandController extends Controller
     public function index(): View
     {
         return view('admin.brands.index', [
-            'brands' => Brand::orderBy('sort_order')->orderBy('name')->paginate(10),
+            'brands' => Brand::withCount('products')->orderBy('sort_order')->orderBy('name')->paginate(10),
         ]);
     }
 

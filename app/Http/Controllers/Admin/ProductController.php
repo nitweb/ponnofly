@@ -48,6 +48,10 @@ class ProductController extends Controller
             $query->where('supplier_id', $supplierId);
         }
 
+        if ($brandId = (int) $request->query('brand')) {
+            $query->where('brand_id', $brandId);
+        }
+
         match ($status) {
             'active' => $query->where('status', 'active'),
             'draft' => $query->where('status', 'draft'),

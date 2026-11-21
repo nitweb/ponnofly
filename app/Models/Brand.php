@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'name', 'slug', 'website', 'country', 'description', 'logo',
@@ -13,6 +14,11 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Brand extends Model
 {
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
     protected function casts(): array
     {
         return [
